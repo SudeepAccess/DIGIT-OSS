@@ -101,7 +101,7 @@ const ScrutinyFormcontainer = (props) => {
         <Row>
           
           <div class="col-md-12 bg-light text-right" style={{ position: "relative", marginBottom: 30 }}>
-          {/* <Button style={{ textAlign: "right" }}> <a href="http://localhost:3000/digit-ui/citizen/obps/Loi" >Generate LOI</a></Button> */}
+          <Button style={{ textAlign: "right" }}> <a href="http://localhost:3000/digit-ui/citizen/obps/Loi" >Generate LOI</a></Button>
           {/* <input type="radio" value="No" id="No" onChange1={handleChange} name="Yes" onClick={handleshow19} /> */}
           </div>
           {showhide19 === "Submit" && (
