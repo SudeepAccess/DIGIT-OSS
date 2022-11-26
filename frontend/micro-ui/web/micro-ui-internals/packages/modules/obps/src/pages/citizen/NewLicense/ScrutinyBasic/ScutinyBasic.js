@@ -51,6 +51,7 @@ const ScrutitnyForms = () => {
   const [disapprovalData, setDisapprovalData] = useState({});
   const [applictaionNo, setApplicationNO] = useState(null);
   const [iconStates,setIconState]= useState(null)
+  const [urlGetShareHoldingDoc,setDocShareHoldingUrl] = useState("")
 
   const getUncheckedPersonalinfos = (data) => {
     setDisplayPersonalInfo(data.data);
@@ -104,7 +105,7 @@ const ScrutitnyForms = () => {
   };
   const handleGetInputFieldsValues = async () => {
     try {
-      const Resp = await axios.get("/tl-services/new/licenses/_get?id=181").then((response) => {
+      const Resp = await axios.get("/tl-services/new/licenses/_get?id=225").then((response) => {
         return response.data;
       });
 
@@ -286,6 +287,11 @@ const ScrutitnyForms = () => {
   console.log("remarks api", remarksResponse.egScrutiny !== undefined ? remarksResponse.egScrutiny : null);
 
   console.log("remakes data parsnalinfo", remarksChanges);
+
+
+
+
+
   return (
     <div>
       <div style={{ position: "relative", maxWidth: "100%", padding: 2 }}>
@@ -328,9 +334,12 @@ const ScrutitnyForms = () => {
           <div>
             <AppliedLandinfo
               appliedInfoRef={appliedInfoRef}
-              purpose={purpose}
+              purpose={apiResppnse.newServiceInfoData?apiResppnse.newServiceInfoData[0]?.ApplicantPurpose?.purpose:null}
+
               passUncheckedList={getUncheckedAppliedLandInfo}
               passCheckedList={getCheckedAppliedInfoValue}
+              ApiResponseData={apiResppnse.newServiceInfoData !== undefined ? apiResppnse.newServiceInfoData[0].DetailsofAppliedLand
+                : null}
               heightApplied={defaultheightApplied}
               dataForIcons={iconStates}
             ></AppliedLandinfo>
@@ -341,6 +350,8 @@ const ScrutitnyForms = () => {
               feeandchargesInfoRef={feeandchargesInfoRef}
               passUncheckedList={getUncheckedFeeandChargesInfo}
               heightFee={defaultheightFee}
+              ApiResponseData={apiResppnse.newServiceInfoData !== undefined ? apiResppnse.newServiceInfoData[0].FeesAndCharges
+                : null}
             ></Feeandcharges>
             {/* </Col> */}
           </div>

@@ -243,7 +243,7 @@ const Feeandcharges = (props) => {
                     <hr />
                     <br></br>
 
-                    <div class="row">
+                    {/* <div class="row">
                       <div class="col-sm-12 text-right">
                         <button id="btnSearch" class="btn btn-primary btn-md ">
                           {" "}
@@ -251,7 +251,7 @@ const Feeandcharges = (props) => {
                         </button>{" "}
                         &nbsp;&nbsp;
                       </div>
-                    </div>
+                    </div> */}
                   </Col>
                 </Row>
               </Form.Group>
