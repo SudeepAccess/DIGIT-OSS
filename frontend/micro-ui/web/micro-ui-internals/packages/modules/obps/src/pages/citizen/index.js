@@ -81,7 +81,7 @@ const App = ({ path }) => {
         <PrivateRoute path={`${path}/bank`} component={CommonBank} />
         <PrivateRoute path={`${path}/electricalPlan`} component={electricalPlanService} />
         <Route path={`${path}/card`} component={CardNewLicence} />
-        <PrivateRoute path={`${path}/servicePlan`} component={ServicePlanService} />
+        <Route path={`${path}/servicePlan`} component={ServicePlanService} />
         <PrivateRoute path={`${path}/submitNew`} component={SubmitNew} />
         <PrivateRoute path={`${path}/renew`} component={RenewNew} />
         <PrivateRoute path={`${path}/replace`} component={Replace} />

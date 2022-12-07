@@ -27,7 +27,7 @@ const ServicePlanService = () => {
           auth_token: null,
         },
 
-        servicePlanRequest: {
+        ServicePlanRequest: {
           ...data,
           //   loiNumber: data?.loiNumber,
           //   undertaking: data?.undertaking,

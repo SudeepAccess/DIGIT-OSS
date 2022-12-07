@@ -170,7 +170,7 @@ const FeesChargesForm = (props) => {
 
   const getSubmitDataLabel = async () => {
     try {
-      const Resp = await axios.get(`http://103.166.62.118:8443/land-services/new/licenses/_get?id=${props.getId}`).then((response) => {
+      const Resp = await axios.get(`http://103.166.62.118:80/land-services/new/licenses/_get?id=${props.getId}`).then((response) => {
         return response;
       });
       console.log("RESP+++", Resp?.data);
@@ -182,7 +182,7 @@ const FeesChargesForm = (props) => {
 
   const getWholeData = async () => {
     try {
-      const Resp = await axios.get(`http://103.166.62.118:8443/tl-services/new/licenses/object/_get?id=${props.getId}`);
+      const Resp = await axios.get(`http://103.166.62.118:80/tl-services/new/licenses/object/_get?id=${props.getId}`);
       console.log("Resp====", Resp?.data);
       // let temp = {};
       // Object.keys(Resp?.data).forEach((el) => {

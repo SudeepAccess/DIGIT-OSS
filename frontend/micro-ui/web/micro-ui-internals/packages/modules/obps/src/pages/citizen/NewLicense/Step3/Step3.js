@@ -164,7 +164,7 @@ const LandScheduleForm = (props) => {
 
   const getSubmitDataLabel = async () => {
     try {
-      const Resp = await axios.get(`http://103.166.62.118:8443/land-services/new/licenses/_get?id=${props.getId}`);
+      const Resp = await axios.get(`http://103.166.62.118:80/land-services/new/licenses/_get?id=${props.getId}`);
       const userData = Resp?.data?.newServiceInfoData?.[0]?.LandSchedule;
     } catch (error) {
       return error.message;
