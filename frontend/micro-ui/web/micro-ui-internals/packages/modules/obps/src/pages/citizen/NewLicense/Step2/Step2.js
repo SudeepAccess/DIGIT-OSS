@@ -151,6 +151,7 @@ const ApllicantPuropseForm = (props) => {
               setModalData(filteredData);
             }}
             color="error"
+            // color="error"
           />
         </div>
       ),
