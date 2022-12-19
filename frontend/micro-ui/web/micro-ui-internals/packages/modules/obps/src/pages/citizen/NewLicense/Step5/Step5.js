@@ -6,11 +6,15 @@ import { Button, Form } from "react-bootstrap";
 // import Typography from '@material-ui/core/Typography'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Card, Row, Col } from "react-bootstrap";
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { getDocShareholding } from "../docView/docView.help";
 import axios from "axios";
 import { round } from "lodash";
 import { useHistory } from "react-router-dom";
 import Spinner from "../../../../components/Loader";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { VALIDATION_SCHEMA } from "../../../../utils/schema/step4";
 // import Pdf from "../Documents/Document.pdf";
 
 // import InfoIcon from '@mui/icons-material/Info';
@@ -37,7 +41,7 @@ const FeesChargesForm = (props) => {
   const [modal, setmodal] = useState(false);
   const [modal1, setmodal1] = useState(false);
   const [loader, setLoader] = useState(false);
-
+  const [scrutinyFeeCharge, setScrutinyFeeCharge] = useState("");
   const {
     register,
     handleSubmit,
@@ -45,11 +49,10 @@ const FeesChargesForm = (props) => {
     control,
     setValue,
     watch,
-    reset,
   } = useForm({
-    mode: "onSubmit",
-    reValidateMode: "onBlur",
-    // resolver: yupResolver(VALIDATION_SCHEMA),
+    mode: "onChange",
+    reValidateMode: "onChange",
+    resolver: yupResolver(VALIDATION_SCHEMA),
     shouldFocusError: true,
   });
   const [submitDataLabel, setSubmitDataLabel] = useState([]);
@@ -57,32 +60,36 @@ const FeesChargesForm = (props) => {
   const [FeesChargesFormSubmitted, SetFeesChargesFormSubmitted] = useState(false);
 
   const FeesChrgesFormSubmitHandler = async (data) => {
-    try {
-      const postDistrict = {
-        NewServiceInfo: {
-          pageName: "FeesAndCharges",
-          id: props.getId,
-          newServiceInfoData: {
-            FeesAndCharges: {
-              totalArea: data.totalArea,
-              purpose: data.purpose,
-              devPlan: data.potential,
-              scrutinyFee: data.scrutinyFee,
-              licenseFee: data.licenseFee,
-              conversionCharges: data.conversionCharges,
-              remark: data.remark,
-              adjustFee: data.licNumber,
-            },
-          },
+    setLoader(true);
+    const token = window?.localStorage?.getItem("token");
+    const postDistrict = {
+      pageName: "FeesAndCharges",
+      ApplicationStatus: "DRAFT",
+      id: props?.getId,
+      createdBy: props?.userData?.id,
+      updatedBy: props?.userData?.id,
+      LicenseDetails: {
+        FeesAndCharges: {
+          ...data,
         },
-      };
-
-      const Resp = await axios.post("/land-services/new/_create", postDistrict).then((Resp) => {
-        return Resp;
-      });
-
+      },
+      RequestInfo: {
+        apiId: "Rainmaker",
+        ver: "v1",
+        ts: 0,
+        action: "_search",
+        did: "",
+        key: "",
+        msgId: "090909",
+        requesterId: "",
+        authToken: token,
+        userInfo: props?.userData,
+      },
+    };
+    try {
+      const Resp = await axios.post("/tl-services/new/_create", postDistrict);
       props.Step5Continue(data, Resp?.data?.NewServiceInfo?.[0]?.id);
-      SetFeesChargesFormSubmitted(Resp.data);
+      // SetFeesChargesFormSubmitted(Resp.data);
     } catch (error) {
       return error?.message;
     }
@@ -160,7 +167,7 @@ const FeesChargesForm = (props) => {
       setValue("scrutinyFee", charges?.scrutinyFeeCharges);
       setValue("licenseFee", charges?.licenseFeeCharges);
       setValue("conversionCharges", charges?.conversionCharges);
-      // setCalculateData(Resp.data);
+      setValue("payableNow", charges?.scrutinyFeeCharges + (charges?.licenseFeeCharges * 25) / 100);
     } catch (error) {
       return error;
     }
@@ -173,7 +180,7 @@ const FeesChargesForm = (props) => {
     setLoader(true);
     try {
       const Resp = await axios
-        .get(`http://103.166.62.118:8443/tl-services/new/license/report?id=${props.getId}`, {
+        .get(`http://103.166.62.118:80/tl-services/new/license/report?id=${props.getId}`, {
           responseType: "blob",
         })
         .then((response) => {
@@ -193,7 +200,7 @@ const FeesChargesForm = (props) => {
 
   const getSubmitDataLabel = async () => {
     try {
-      const Resp = await axios.get(`http://103.166.62.118:8443/land-services/new/licenses/_get?id=${props.getId}`).then((response) => {
+      const Resp = await axios.get(`http://103.166.62.118:80/land-services/new/licenses/_get?id=${props.getId}`).then((response) => {
         return response;
       });
       setSubmitDataLabel(Resp?.data);
@@ -204,7 +211,7 @@ const FeesChargesForm = (props) => {
 
   const getWholeData = async () => {
     try {
-      const Resp = await axios.get(`http://103.166.62.118:8443/tl-services/new/licenses/object/_get?id=${props.getId}`);
+      const Resp = await axios.get(`http://103.166.62.118:80/tl-services/new/licenses/object/_get?id=${props.getId}`);
       // let temp = {};
       // Object.keys(Resp?.data).forEach((el) => {
       //   const newKey = el?.replace(/"/g, "");
@@ -222,6 +229,25 @@ const FeesChargesForm = (props) => {
   useEffect(() => {
     getSubmitDataLabel();
   }, []);
+  const [fileStoreId, setFileStoreId] = useState({});
+  const getDocumentData = async (file, fieldName) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("tenantId", "hr");
+    formData.append("module", "property-upload");
+    formData.append("tag", "tag-property");
+    setLoader(true);
+    try {
+      const Resp = await axios.post("/filestore/v1/files", formData, {});
+      setValue(fieldName, Resp?.data?.files?.[0]?.fileStoreId);
+      setFileStoreId({ ...fileStoreId, [fieldName]: Resp?.data?.files?.[0]?.fileStoreId });
+      // setDocId(Resp?.data?.files?.[0]?.fileStoreId);
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
+      return error.message;
+    }
+  };
 
   const handleChangePurpose = (data) => {
     const purposeSelected = data.data;
@@ -251,12 +277,8 @@ const FeesChargesForm = (props) => {
   const totalAreaAcre =
     dataArea * 0.125 + dataAreaMarla * 0.0062 + dataAreaSarai * 0.00069 + dataAreaBigha * 0.33 + dataAreaBiswa * 0.0309 + dataAreaBiswansi * 0.619;
 
-  const dataScrutiny = props?.getLicData?.FeesAndCharges?.scrutinyFee;
-  const dataLicence = props?.getLicData?.FeesAndCharges?.licenseFee;
-  const data = dataLicence + (25 % dataScrutiny);
-
   return (
-    <>
+    <div>
       {loader && <Spinner />}
       <form onSubmit={handleSubmit(FeesChrgesFormSubmitHandler)}>
         <Card style={{ width: "126%", border: "5px solid #1266af" }}>
@@ -341,8 +363,8 @@ const FeesChargesForm = (props) => {
                       <h6 data-toggle="tooltip" data-placement="top" title="Total Fees (License fee 25% + Scrutiny Fees)">
                         (i)&nbsp;Amount Payable <span style={{ color: "red" }}>*</span>&nbsp;&nbsp;
                       </h6>
-
-                      <input
+                      <input type="text" className="form-control" disabled {...register("payableNow")} />
+                      {/* <input
                         type="text"
                         className="form-control"
                         disabled
@@ -352,7 +374,8 @@ const FeesChargesForm = (props) => {
                         onChange1={handleTotalFeesChange}
                         onChange={(e) => setPayableNow(e.target.value)}
                         value={payableNow}
-                      />
+                      /> */}
+
                       {errors.totalFee && <p></p>}
                     </div>
 
@@ -377,6 +400,9 @@ const FeesChargesForm = (props) => {
                       <label for="Yes">Yes</label>&nbsp;&nbsp;
                       <input type="radio" value="No" id="No" onChange={handleChange} name="Yes" onClick={handleshow0} />
                       <label for="No">No</label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.licNumber && errors?.licNumber?.message}
+                      </h3>
                       {showhide0 === "Yes" && (
                         <div className="row ">
                           <div className="col col-12">
@@ -402,9 +428,27 @@ const FeesChargesForm = (props) => {
                                         <h2>
                                           Consent letter in case of Another Developer (verified by the Department)
                                           <span style={{ color: "red" }}>*</span>
+                                          {fileStoreId?.consentLetter ? (
+                                            <a onClick={() => getDocShareholding(fileStoreId?.consentLetter)} className="btn btn-sm col-md-6">
+                                              <VisibilityIcon color="info" className="icon" />
+                                            </a>
+                                          ) : (
+                                            <p></p>
+                                          )}
                                         </h2>
                                       </label>
-                                      <input type="file" className="form-control" {...register("consentLetter")} />
+                                      <div>
+                                        <input
+                                          type="file"
+                                          className="form-control"
+                                          required
+                                          onChange={(e) => getDocumentData(e?.target?.files[0], "consentLetter")}
+                                        />
+                                      </div>
+
+                                      <h3 className="error-message" style={{ color: "red" }}>
+                                        {errors?.consentLetter && errors?.consentLetter?.message}
+                                      </h3>
                                     </div>
                                   </div>
                                 </div>
@@ -459,7 +503,7 @@ const FeesChargesForm = (props) => {
                   </Modal>
                   <div className="">
                     <div className="form-check">
-                      <input className="form-check-input" formControlName="agreeCheck" type="checkbox" value="" id="flexCheckDefault" />
+                      <input className="form-check-input" formControlName="agreeCheck" type="checkbox" value="" id="flexCheckDefault" required />
                       <label className="checkbox" for="flexCheckDefault">
                         I agree and accept the terms and conditions.
                         <span className="text-danger">
@@ -507,7 +551,7 @@ const FeesChargesForm = (props) => {
                     <div class="col-sm-12 text-right">
                       {/* <button id="btnSearch" class="btn btn-primary btn-md ">
                       {" "} */}
-                      {/* <a href="http://103.166.62.118:8443/tl-services/new/license/report?id=875" target="_blank"> */}
+                      {/* <a href="http://103.166.62.118:80/tl-services/new/license/report?id=875" target="_blank"> */}
                       <div onClick={() => showPdf()} id="btnSearch" class="btn btn-primary btn-md">
                         View as PDF &nbsp;&nbsp; <VisibilityIcon color="white" />
                       </div>
@@ -524,7 +568,7 @@ const FeesChargesForm = (props) => {
           </Card>
         </Card>
       </form>
-    </>
+    </div>
   );
 };
 export default FeesChargesForm;

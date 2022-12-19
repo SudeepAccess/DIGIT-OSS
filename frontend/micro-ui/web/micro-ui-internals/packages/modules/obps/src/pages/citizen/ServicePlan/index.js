@@ -6,19 +6,31 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { getDocShareholding } from "../NewLicense/docView/docView.help";
 
 const ServicePlanService = () => {
-  const { register, handleSubmit } = useForm();
   const [file, setFile] = useState(null);
   const [LOCNumber, setLOCNumber] = useState("");
   const [submitDataLabel, setSubmitDataLabel] = useState([]);
   const [ServicePlanDataLabel, setServicePlanDataLabel] = useState([]);
   const [docUpload, setDocuploadData] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    setValue,
+    watch,
+  } = useForm({
+    mode: "onChange",
+
+    shouldFocusError: true,
+  });
 
   const servicePlan = async (data) => {
+    const token = window?.localStorage?.getItem("token");
     console.log(data);
     try {
       const postDistrict = {
         requestInfo: {
-          api_id: "1",
+          api_id: "Rainmaker",
           ver: "1",
           ts: null,
           action: "create",
@@ -26,7 +38,7 @@ const ServicePlanService = () => {
           key: "",
           msg_id: "",
           requester_id: "",
-          auth_token: null,
+          authToken: token,
         },
 
         ServicePlanRequest: {
@@ -46,16 +58,17 @@ const ServicePlanService = () => {
     formData.append("tenantId", "hr");
     formData.append("module", "property-upload");
     formData.append("tag", "tag-property");
-    setLoader(true);
+    // setLoader(true);
     try {
       const Resp = await axios.post("/filestore/v1/files", formData, {});
       setValue(fieldName, Resp?.data?.files?.[0]?.fileStoreId);
       setFileStoreId({ ...fileStoreId, [fieldName]: Resp?.data?.files?.[0]?.fileStoreId });
       // setDocId(Resp?.data?.files?.[0]?.fileStoreId);
-      setLoader(false);
+      console.log("getval======", getValues());
+      // setLoader(false);
     } catch (error) {
-      setLoader(false);
-      return error.message;
+      // setLoader(false);
+      console.log(error.message);
     }
   };
 
@@ -186,9 +199,12 @@ const ServicePlanService = () => {
                   <input
                     type="file"
                     className="form-control"
-                    {...register("environmentalClearance")}
-                    onChange1={(e) => setFile({ file: e.target.files[0] })}
+                    // {...register("environmentalClearance")}
+                    onChange={(e) => getDocumentData(e?.target?.files[0], "environmentalClearance")}
                   />
+                  <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.environmentalClearance)}>
+                    {" "}
+                  </VisibilityIcon>
                 </td>
               </tr>
               <tr>
@@ -204,9 +220,12 @@ const ServicePlanService = () => {
                   <input
                     type="file"
                     className="form-control"
-                    {...register("shapeFileAsPerTemplate")}
-                    onChange1={(e) => setFile({ file: e.target.files[0] })}
+                    // {...register("shapeFileAsPerTemplate")}
+                    onChange={(e) => getDocumentData(e?.target?.files[0], "shapeFileAsPerTemplate")}
                   />
+                  <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.shapeFileAsPerTemplate)}>
+                    {" "}
+                  </VisibilityIcon>
                 </td>
               </tr>
               <tr>
@@ -219,7 +238,15 @@ const ServicePlanService = () => {
                   <h2>AutoCAD (DXF) file.</h2>
                 </td>
                 <td component="th" scope="row">
-                  <input type="file" className="form-control" {...register("autoCadFile")} onChange1={(e) => setFile({ file: e.target.files[0] })} />
+                  <input
+                    type="file"
+                    className="form-control"
+                    // {...register("autoCadFile")}
+                    onChange={(e) => getDocumentData(e?.target?.files[0], "autoCadFile")}
+                  />
+                  <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.autoCadFile)}>
+                    {" "}
+                  </VisibilityIcon>
                 </td>
               </tr>
               <tr>
@@ -235,9 +262,12 @@ const ServicePlanService = () => {
                   <input
                     type="file"
                     className="form-control"
-                    {...register("certifieadCopyOfThePlan")}
-                    onChange1={(e) => setFile({ file: e.target.files[0] })}
+                    // {...register("certifieadCopyOfThePlan")}
+                    onChange={(e) => getDocumentData(e?.target?.files[0], "certifieadCopyOfThePlan")}
                   />
+                  <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.certifieadCopyOfThePlan)}>
+                    {" "}
+                  </VisibilityIcon>
                 </td>
               </tr>
             </tbody>

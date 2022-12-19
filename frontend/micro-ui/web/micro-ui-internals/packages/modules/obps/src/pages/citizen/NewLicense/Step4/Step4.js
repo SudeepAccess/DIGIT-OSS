@@ -4,6 +4,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import DDJAYForm from "../Step4/DdjayForm";
 import ResidentialPlottedForm from "./ResidentialPlotted";
 import IndustrialPlottedForm from "./IndustrialPlotted";
+import CommercialPlottedForm from "./CommercialPlotted";
 import LayoutPlan from "./LayoutPlan";
 import DemarcationPlan from "./DemarcationPlan";
 import { Form } from "react-bootstrap";
@@ -14,6 +15,8 @@ import axios from "axios";
 import Spinner from "../../../../components/Loader";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { getDocShareholding } from "../docView/docView.help";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { VALIDATION_SCHEMA } from "../../../../utils/schema/step4";
 
 const AppliedDetailForm = (props) => {
   // console.log("DD", props);
@@ -29,6 +32,10 @@ const AppliedDetailForm = (props) => {
     setValue,
     formState: { errors },
   } = useForm({
+    mode: "onChange",
+    reValidateMode: "onChange",
+    resolver: yupResolver(VALIDATION_SCHEMA),
+    shouldFocusError: true,
     defaultValues: {
       dgpsDetails: [
         {
@@ -349,6 +356,9 @@ const AppliedDetailForm = (props) => {
                         <input {...register("regularOption")} type="radio" value="Irregular" id="regularOption" />
                         &nbsp;&nbsp; Irregular &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.regularOption && errors?.regularOption?.message}
+                      </h3>
                     </h5>
                   </div>
                   {watch("regularOption") === "regular" && (
@@ -364,7 +374,7 @@ const AppliedDetailForm = (props) => {
                             Width in mtr <CalculateIcon color="primary" />
                           </td>
                           <td>
-                            Area in sqmtr <CalculateIcon color="primary" />
+                            Area (in sqm) <CalculateIcon color="primary" />
                           </td>
                         </tr>
                       </thead>
@@ -382,6 +392,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 Gen <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.resplotno && errors?.resplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -407,6 +420,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 NPNL <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.npnlplotno && errors?.npnlplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -432,6 +448,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 EWS <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.ewsplotno && errors?.ewsplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -457,6 +476,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 Commercial <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.complotno && errors?.complotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -482,6 +504,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 Community Sites <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.siteplotno && errors?.siteplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -507,6 +532,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 Parks <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.parkplotno && errors?.parkplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -541,6 +569,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 STP <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.publicplotno && errors?.publicplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -566,6 +597,10 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 ETP <span style={{ color: "red" }}>*</span>
                               </p>
+
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.etpplotno && errors?.etpplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -591,6 +626,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 WTP <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.wtpplotno && errors?.wtpplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -616,6 +654,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 UGT <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.ugtplotno && errors?.ugtplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -641,6 +682,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 Milk Booth <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.milkboothplotno && errors?.milkboothplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -666,6 +710,9 @@ const AppliedDetailForm = (props) => {
                               <p className="mb-2">
                                 GSS <span style={{ color: "red" }}>*</span>
                               </p>
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.gssplotno && errors?.gssplotno?.message}
+                              </h3>
                             </div>
                           </td>
                           <td component="th" scope="row">
@@ -697,7 +744,7 @@ const AppliedDetailForm = (props) => {
                             <td>
                               Dimensions (in mtrs) <CalculateIcon color="primary" />
                             </td>
-                            <td>Enter Area</td>
+                            <td>Enter Area (in sqm)</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -707,6 +754,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   Residential <span style={{ color: "red" }}>*</span>
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.resDimension && errors?.resDimension?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -724,6 +774,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   Commercial <span style={{ color: "red" }}>*</span>{" "}
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.comDimension && errors?.comDimension?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -749,7 +802,7 @@ const AppliedDetailForm = (props) => {
                             <td>
                               Dimension (in mtrs) <CalculateIcon color="primary" />
                             </td>
-                            <td>Enter Area</td>
+                            <td>Enter Area (in sqm)</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -759,6 +812,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   Sectoral Plan Road <span style={{ color: "red" }}>*</span>
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.secPlanPlot && errors?.secPlanPlot?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -783,6 +839,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   Green Belt <span style={{ color: "red" }}>*</span>
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.greenBeltPlot && errors?.greenBeltPlot?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -807,6 +866,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   24/18 mtr wide internal circulation Plan road <span style={{ color: "red" }}>*</span>
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.internalPlot && errors?.internalPlot?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -831,6 +893,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   Other Roads <span style={{ color: "red" }}>*</span>
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.otherPlot && errors?.otherPlot?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -855,6 +920,9 @@ const AppliedDetailForm = (props) => {
                                 <p className="mb-2">
                                   Undetermined use(UD) <span style={{ color: "red" }}>*</span>
                                 </p>
+                                <h3 className="error-message" style={{ color: "red" }}>
+                                  {errors?.undeterminedPlot && errors?.undeterminedPlot?.message}
+                                </h3>
                               </div>
                             </td>
                             <td align="right">
@@ -877,6 +945,7 @@ const AppliedDetailForm = (props) => {
                   <div>{Purpose === "DDJAY_APHP" && <DDJAYForm watch={watch} register={register} />}</div>
                   <div>{Purpose === "RPL" && <ResidentialPlottedForm register={register} />}</div>
                   <div>{Purpose === "IPL" && <IndustrialPlottedForm register={register} />}</div>
+                  <div>{Purpose === "CPL" && <CommercialPlottedForm register={register} />}</div>
                   <h5 className="text-black">NILP </h5>
                   <br></br>
                   <div className="table table-bordered table-responsive">
@@ -894,6 +963,9 @@ const AppliedDetailForm = (props) => {
                           {" "}
                           Whether you want to surrender the 10% area of licence colony to Govt. the instead of providing 10% under EWS and NPNL plots
                           <span style={{ color: "red" }}>*</span>
+                          <h3 className="error-message" style={{ color: "red" }}>
+                            {errors?.surrender && errors?.surrender?.message}
+                          </h3>
                         </td>
                         <td style={{ display: "flex", gap: "8px" }} component="th" scope="row">
                           <label htmlFor="surrender">
@@ -904,6 +976,7 @@ const AppliedDetailForm = (props) => {
                             <input {...register("surrender")} type="radio" value="N" id="surrender" />
                             &nbsp; No &nbsp;&nbsp;
                           </label>
+
                           {watch("surrender") === "Y" && (
                             <div className="row ">
                               <div className="col col-12">
@@ -919,6 +992,9 @@ const AppliedDetailForm = (props) => {
                         <td>2. </td>
                         <td>
                           Whether any pocket proposed to be transferred less than 1 acre <span style={{ color: "red" }}>*</span>
+                          <h3 className="error-message" style={{ color: "red" }}>
+                            {errors?.pocketProposed && errors?.pocketProposed?.message}
+                          </h3>
                         </td>
                         <td style={{ display: "flex", gap: "8px" }} component="th" scope="row">
                           <label htmlFor="pocketProposed">
@@ -929,6 +1005,7 @@ const AppliedDetailForm = (props) => {
                             <input {...register("pocketProposed")} type="radio" value="N" id="pocketProposed" />
                             &nbsp; No &nbsp;&nbsp;
                           </label>
+
                           {watch("pocketProposed") === "Y" && (
                             <div className="row ">
                               <div className="col col-6">
@@ -951,6 +1028,9 @@ const AppliedDetailForm = (props) => {
                         <td>
                           Whether you want to deposit an amount @ of 3 times of collector rate instead of the surrender 10% land to Govt.
                           <span style={{ color: "red" }}>*</span>{" "}
+                          <h3 className="error-message" style={{ color: "red" }}>
+                            {errors?.deposit && errors?.deposit?.message}
+                          </h3>
                         </td>
                         <td style={{ display: "flex", gap: "8px" }} component="th" scope="row">
                           <label htmlFor="deposit">
@@ -961,6 +1041,7 @@ const AppliedDetailForm = (props) => {
                             <input {...register("deposit")} type="radio" value="N" id="deposit" />
                             &nbsp; No &nbsp;&nbsp;
                           </label>
+
                           {watch("deposit") === "Y" && (
                             <div className="row ">
                               <div className="col col-12">
@@ -978,6 +1059,9 @@ const AppliedDetailForm = (props) => {
                         <td>4. </td>
                         <td>
                           Whether the surrendered area is having a minimum of 18 mtr independent access <span style={{ color: "red" }}>*</span>
+                          <h3 className="error-message" style={{ color: "red" }}>
+                            {errors?.surrendered && errors?.surrendered?.message}
+                          </h3>
                         </td>
                         <td style={{ display: "flex", gap: "8px" }} component="th" scope="row">
                           <label htmlFor="surrendered">
@@ -988,6 +1072,7 @@ const AppliedDetailForm = (props) => {
                             <input {...register("surrendered")} type="radio" value="N" id="surrendered" />
                             &nbsp; No &nbsp;&nbsp;
                           </label>
+
                           {watch("surrendered") === "Y" && (
                             <div className="row ">
                               <div className="col col-12">
@@ -1021,13 +1106,21 @@ const AppliedDetailForm = (props) => {
                         title="Whether you hosted the existing approved layout plan & in-principle approved layout on the website of your company/organization Yes/No if yes upload"
                       >
                         Hosted approved layout plan.<span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.hostedLayoutPlan)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.hostedLayoutPlan ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.hostedLayoutPlan)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "hostedLayoutPlan")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "hostedLayoutPlan")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.hostedLayoutPlan && errors?.hostedLayoutPlan?.message}
+                      </h3>
                     </div>
 
                     <div className="col col-3">
@@ -1037,24 +1130,41 @@ const AppliedDetailForm = (props) => {
                         data-placement="top"
                         title="Consent of RERA if there is any change in the phasing ."
                       >
-                        Consent of RERA. <span style={{ color: "red" }}>*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.consentRera)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Consent of RERA. <span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.consentRera ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.consentRera)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "consentRera")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "consentRera")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.consentRera && errors?.consentRera?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h6 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
-                        Sectoral Plan.<span style={{ color: "red" }}>*</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.sectoralPlan)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Sectoral Plan.<span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.sectoralPlan ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.sectoralPlan)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "sectoralPlan")} />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "sectoralPlan")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.sectoralPlan && errors?.sectoralPlan?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h6
@@ -1064,13 +1174,25 @@ const AppliedDetailForm = (props) => {
                         title="Copy of detailed specifications and designs for electric supply including street lighting"
                       >
                         Designs for electric supply.<span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.detailedElectricSupply)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.detailedElectricSupply ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.detailedElectricSupply)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input
+                          type="file"
+                          className="form-control"
+                          onChange={(e) => getDocumentData(e?.target?.files[0], "detailedElectricSupply")}
+                        />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "detailedElectricSupply")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.detailedElectricSupply && errors?.detailedElectricSupply?.message}
+                      </h3>
                     </div>
                   </div>
                   <br></br>
@@ -1082,13 +1204,24 @@ const AppliedDetailForm = (props) => {
                         data-placement="top"
                         title="Copy of plans showing cross sections of proposed roads indicating, in particular, the width of proposed carriage ways cycle tracks and footpaths etc"
                       >
-                        Plans showing cross sections.<span style={{ color: "red" }}>*</span> <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>{" "}
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.planCrossSection)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Plans showing cross sections.<span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.planCrossSection ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.planCrossSection)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "planCrossSection")} />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "planCrossSection")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.planCrossSection && errors?.planCrossSection?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h6
                         style={{ display: "flex" }}
@@ -1097,13 +1230,21 @@ const AppliedDetailForm = (props) => {
                         title="Copy of plans indicating, in addition, the position of sewers, stormwater channels, water supply and any other public health services."
                       >
                         Plans indicating position of public.<span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.publicHealthServices)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.publicHealthServices ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.publicHealthServices)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "publicHealthServices")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "publicHealthServices")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.publicHealthServices && errors?.publicHealthServices?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h6
@@ -1112,13 +1253,22 @@ const AppliedDetailForm = (props) => {
                         data-placement="top"
                         title="Copy of detailed specifications and designs of road works and estimated costs thereof"
                       >
-                        Specifications and designs.<span style={{ color: "red" }}>*</span> &nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.designRoad)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Specifications and designs.<span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.designRoad ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.designRoad)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "designRoad")} />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "designRoad")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.designRoad && errors?.designRoad?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h6
@@ -1128,13 +1278,21 @@ const AppliedDetailForm = (props) => {
                         title="Copy of detailed specifications and designs of sewerage, storm, water and water supply works and estimated costs thereof"
                       >
                         Designs of sewerage and storm. <span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.designSewarage)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.designSewarage ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.designSewarage)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "designSewarage")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "designSewarage")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.designSewarage && errors?.designSewarage?.message}
+                      </h3>
                     </div>
                   </div>
                   <br></br>
@@ -1147,14 +1305,23 @@ const AppliedDetailForm = (props) => {
                         title="Copy of detailed specifications and designs for disposal and treatment of storm and sullage water and estimated costs of works."
                       >
                         Disposal treatment.<span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.designDisposal)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.designDisposal ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.designDisposal)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "designDisposal")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "designDisposal")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.designDisposal && errors?.designDisposal?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h6
                         style={{ display: "flex" }}
@@ -1163,14 +1330,23 @@ const AppliedDetailForm = (props) => {
                         title="Whether intimated each of the allottees through registered post regarding the proposed changes in the layout plan: - If yes selected upload"
                       >
                         Undertaking that no change. <span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.undertakingChange)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.undertakingChange ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.undertakingChange)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "undertakingChange")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "undertakingChange")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.undertakingChange && errors?.undertakingChange?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h6
                         style={{ display: "flex" }}
@@ -1179,24 +1355,41 @@ const AppliedDetailForm = (props) => {
                         title="Explanatory note regarding the salient feature of the proposed colony."
                       >
                         Salient feature of the colony. <span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.proposedColony)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.proposedColony ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.proposedColony)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "proposedColony")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "proposedColony")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.proposedColony && errors?.proposedColony?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h6 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
                         Report any objection. <span style={{ color: "red" }}>*</span>&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.reportObjection)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.reportObjection ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.reportObjection)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "reportObjection")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "reportObjection")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.reportObjection && errors?.reportObjection?.message}
+                      </h3>
                     </div>
                   </div>
                   <br></br>
@@ -1208,14 +1401,22 @@ const AppliedDetailForm = (props) => {
                         data-placement="top"
                         title="Undertaking that no change has been made in the phasing "
                       >
-                        Undertaking.<span style={{ color: "red" }}>*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon> &nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.undertaking)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Undertaking.<span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.undertaking ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.undertaking)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h6>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "undertaking")} />
+                      </div>
 
-                      <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "undertaking")} />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.undertaking && errors?.undertaking?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       {Purpose === "RPL" && <LayoutPlan watch={watch} register={register} />}

@@ -62,9 +62,9 @@ function LayoutPlanClu() {
                           type="radio"
                           value="true"
                           label="Yes"
-                          name="Anyotherfeature"
-                          id="Anyotherfeature"
-                          {...register(" Anyotherfeature")}
+                          name="anyOtherFeature"
+                          id="anyOtherFeature"
+                          {...register(" anyOtherFeature")}
                           onChange={(e) => handleselects(e)}
                         />
 
@@ -72,9 +72,9 @@ function LayoutPlanClu() {
                           type="radio"
                           value="false"
                           label="No"
-                          name="Anyotherfeature"
-                          id="Anyotherfeature"
-                          {...register("Anyotherfeature")}
+                          name="c"
+                          id="anyOtherFeature"
+                          {...register("anyOtherFeature")}
                           onChange={(e) => handleselects(e)}
                         />
                       </Col>
