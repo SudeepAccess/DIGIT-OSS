@@ -152,6 +152,7 @@ const ApllicantPuropseForm = (props) => {
             }}
             color="error"
             // color="error"
+            // color="error"
           />
         </div>
       ),
