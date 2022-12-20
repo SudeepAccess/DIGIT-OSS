@@ -34,8 +34,8 @@ const CheckPage = ({ onSubmit, value }) => {
       sessionStorage.removeItem("Digit.BUILDING_PERMIT");
     };
 
-  const { result, formData, documents } = value;
-  console.log("form DATA", value?.formData);
+  const { result, formData, documents } = value; 
+  // console.log("form DATA",value?.formData);
   let consumerCode = value?.result?.Licenses[0].applicationNumber;
   const fetchBillParams = { consumerCode };
 
@@ -176,7 +176,7 @@ const CheckPage = ({ onSubmit, value }) => {
             ))}
           </Card>
           <Card style={{ paddingRight: "16px" }}>
-            <CardHeader styles={{ fontSize: "24px" }}>{t("BPA_SUMMARY_FEE_EST")}</CardHeader>
+            {/* <CardHeader styles={{ fontSize: "24px" }}>{t("BPA_SUMMARY_FEE_EST")}</CardHeader>
             <StatusTable>
               {paymentDetails?.billResponse?.Bill[0]?.billDetails[0]?.billAccountDetails.map((bill, index) => (
                 <div key={index}>
@@ -191,9 +191,9 @@ const CheckPage = ({ onSubmit, value }) => {
             </StatusTable>
             <hr style={{ color: "#cccccc", backgroundColor: "#cccccc", height: "2px", marginTop: "20px", marginBottom: "20px" }} />
             <CardHeader styles={{ fontSize: "24px" }}>{t("BPA_COMMON_TOTAL_AMT")}</CardHeader>
-            <CardHeader>₹ {paymentDetails?.billResponse?.Bill?.[0]?.billDetails[0]?.amount}</CardHeader>
-            <SubmitBar label={t("CS_COMMON_SUBMIT")} onSubmit={onSubmit} />
-            {/* <SubmitBar label={t("CS_COMMON_SUBMIT")} onSubmit={onSubmit} disabled={paymentDetails?.billResponse?.Bill?.[0]?.billDetails[0]?.amount ? false : true} /> */}
+            <CardHeader>₹ {paymentDetails?.billResponse?.Bill?.[0]?.billDetails[0]?.amount}</CardHeader> */}
+            {/* <SubmitBar label={t("CS_COMMON_SUBMIT")} onSubmit={onSubmit} /> */}
+            <SubmitBar label={t("CS_COMMON_SUBMIT")} onSubmit={onSubmit} disabled={paymentDetails?.billResponse?.Bill?.[0]?.billDetails[0]?.amount ? false : true} />
           </Card>
         </div>
       </div>

@@ -4,20 +4,14 @@ import Hamburger from "./Hamburger";
 import { NotificationBell } from "./svgindex";
 
 const TopBar = ({ img, isMobile, logoUrl, onLogout, toggleSidebar, ulb, userDetails, notificationCount, notificationCountLoaded, cityOfCitizenShownBesideLogo, onNotificationIconClick, hideNotificationIconOnSomeUrlsWhenNotLoggedIn }) => {
-  // const [profileName,setProfileName]=useState("Noname")
-  // const userData = JSON.parse(localStorage.getItem('user-info'));
-  // console.log(userData);
-  // useEffect(()=>{
-  //   if (userData!==null && userData!==undefined && userData.name!==undefined) {
-  //     setProfileName(userData.name)
-  //   }
-  // }, [userData])
+  const userInfo = Digit.UserService.getUser();
 
   return (
     <div className="navbar">
       <div className="center-container">
      
       {isMobile && <Hamburger handleClick={toggleSidebar} />}
+        <a href="/digit-ui/citizen">
         <img
           className="city"
           id="topbar-logo" 
@@ -25,8 +19,9 @@ const TopBar = ({ img, isMobile, logoUrl, onLogout, toggleSidebar, ulb, userDeta
           height="100px"
           alt="TCP"
         />
+        </a>
         <div className="RightMostTopBarOptions">
-        {/* <h3 className="mx-2 fw-bold">{profileName}</h3> */}
+        <h3 className="mx-2 fw-bold">{userInfo?.info?.name}</h3>
           {!hideNotificationIconOnSomeUrlsWhenNotLoggedIn ? <span className="EventNotificationWrapper" onClick={onNotificationIconClick}>
             { notificationCountLoaded && notificationCount ? <span><p>{notificationCount}</p></span> : null }
             <NotificationBell style={{display:"inline-block"}} />

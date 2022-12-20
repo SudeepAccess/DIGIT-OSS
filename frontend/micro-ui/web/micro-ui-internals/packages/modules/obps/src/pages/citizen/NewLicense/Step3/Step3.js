@@ -6,6 +6,7 @@ import { Card, Row, Col } from "react-bootstrap";
 // import { Checkbox } from "@mui/material";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import FileUpload from "@mui/icons-material/FileUpload";
 import axios from "axios";
 import ReactMultiSelect from "../../../../../../../react-components/src/atoms/ReactMultiSelect";
 import Spinner from "../../../../components/Loader";
@@ -172,7 +173,7 @@ const LandScheduleForm = (props) => {
 
   const getSubmitDataLabel = async () => {
     try {
-      const Resp = await axios.get(`http://103.166.62.118:8443/land-services/new/licenses/_get?id=${props.getId}`);
+      const Resp = await axios.get(`http://103.166.62.118:80/land-services/new/licenses/_get?id=${props.getId}`);
       const userData = Resp?.data?.newServiceInfoData?.[0]?.LandSchedule;
     } catch (error) {
       return error.message;
@@ -224,6 +225,9 @@ const LandScheduleForm = (props) => {
                             <input {...register("licenseApplied")} type="radio" value="N" id="licenseApplied" />
                             &nbsp; No &nbsp;&nbsp;
                           </label>
+                          <h3 className="error-message" style={{ color: "red" }}>
+                            {errors?.licenseApplied && errors?.licenseApplied?.message}
+                          </h3>
                         </h2>
                       </div>
 
@@ -236,7 +240,14 @@ const LandScheduleForm = (props) => {
                                   Licence No. of Parent Licence <span style={{ color: "red" }}>*</span>
                                 </h2>
                               </label>
-                              <input type="text" className="form-control" {...register("licenseNumber")} />
+                              <input
+                                type="text"
+                                className="form-control"
+                                {...register("licenseNumber")}
+                                required
+                                maxLength={20}
+                                pattern="(/^[^\s][a-zA-Z0-9\s]+$"
+                              />
                               <h3 className="error-message" style={{ color: "red" }}>
                                 {errors?.licenseNumber && errors?.licenseNumber?.message}
                               </h3>
@@ -253,6 +264,7 @@ const LandScheduleForm = (props) => {
                                 placeholder="Potential Zone"
                                 data={getPotentialOptons?.data}
                                 labels="Potential"
+                                required
                                 loading={getPotentialOptons?.isLoading}
                               />
                             </div>
@@ -267,6 +279,7 @@ const LandScheduleForm = (props) => {
                                 name="siteLoc"
                                 placeholder="Purpose"
                                 data={purposeOptions?.data}
+                                required
                                 loading={purposeOptions?.isLoading}
                                 labels="siteLoc"
                               />
@@ -306,13 +319,20 @@ const LandScheduleForm = (props) => {
                                   <CalculateIcon color="primary" />
                                 </h2>{" "}
                               </label>
-                              <input type="number" className="form-control" {...register("approachRoadWidth")}></input>
+                              <input
+                                type="number"
+                                className="form-control"
+                                {...register("approachRoadWidth")}
+                                required
+                                minLength={10}
+                                maxLength={20}
+                              ></input>
                             </div>
                             <div className="col col-3">
                               <label>
                                 <h2>Specify Others</h2>
                               </label>
-                              <input type="number" {...register("specify")} className="form-control" />
+                              <input type="text" {...register("specify")} className="form-control" />
                             </div>
                             <div className="col col-3">
                               <label>
@@ -326,6 +346,7 @@ const LandScheduleForm = (props) => {
                                 placeholder="Type of Land"
                                 data={typeOfLand?.data}
                                 labels="typeland"
+                                required
                               />
 
                               {/* <select className="form-control" id="typeLand" {...register("typeLand")}>
@@ -341,11 +362,11 @@ const LandScheduleForm = (props) => {
                               </h2>
 
                               <label htmlFor="thirdParty">
-                                <input {...register("thirdParty")} type="radio" value="Y" id="thirdParty" />
+                                <input {...register("thirdParty")} type="radio" value="Y" id="thirdParty" required />
                                 &nbsp; Yes &nbsp;&nbsp;
                               </label>
                               <label htmlFor="thirdParty">
-                                <input {...register("thirdParty")} type="radio" value="N" id="thirdParty" />
+                                <input {...register("thirdParty")} type="radio" value="N" id="thirdParty" required />
                                 &nbsp; No &nbsp;&nbsp;
                               </label>
                               {watch("thirdParty") === "Y" && (
@@ -364,41 +385,56 @@ const LandScheduleForm = (props) => {
                                       {" "}
                                       <h2>
                                         Document Upload <span style={{ color: "red" }}>*</span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;
-                                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.thirdPartyDoc)}>
-                                          {" "}
-                                        </VisibilityIcon>
+                                        {fileStoreId?.thirdPartyDoc ? (
+                                          <a onClick={() => getDocShareholding(fileStoreId?.thirdPartyDoc)} className="btn btn-sm col-md-6">
+                                            <VisibilityIcon color="info" className="icon" />
+                                          </a>
+                                        ) : (
+                                          <p></p>
+                                        )}
                                       </h2>
                                     </label>
-                                    <input
-                                      type="file"
-                                      className="form-control"
-                                      // {...register("thirdPartyDoc")}
-                                      onChange={(e) => getDocumentData(e?.target?.files[0], "thirdPartyDoc")}
-                                    />
+                                    <div>
+                                      <input
+                                        type="file"
+                                        className="form-control"
+                                        onChange={(e) => getDocumentData(e?.target?.files[0], "thirdPartyDoc")}
+                                      />
+                                    </div>
+
+                                    <h3 className="error-message" style={{ color: "red" }}>
+                                      {errors?.thirdPartyDoc && errors?.thirdPartyDoc?.message}
+                                    </h3>
                                   </div>
                                 </div>
                               )}
                               {watch("thirdParty") === "N" && (
                                 <div className="row ">
-                                  <div className="col col">
+                                  <div className="col col-12">
                                     <label>
+                                      {" "}
                                       <h2>
                                         Document Upload <span style={{ color: "red" }}>*</span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;
-                                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.thirdPartyDoc)}>
-                                          {" "}
-                                        </VisibilityIcon>
+                                        {fileStoreId?.thirdPartyDoc ? (
+                                          <a onClick={() => getDocShareholding(fileStoreId?.thirdPartyDoc)} className="btn btn-sm col-md-6">
+                                            <VisibilityIcon color="info" className="icon" />
+                                          </a>
+                                        ) : (
+                                          <p></p>
+                                        )}
                                       </h2>
                                     </label>
-                                    <input
-                                      type="file"
-                                      className="form-control"
-                                      // {...register("thirdPartyDoc")}
-                                      onChange={(e) => getDocumentData(e?.target?.files[0], "thirdPartyDoc")}
-                                    />
+                                    <div>
+                                      <input
+                                        type="file"
+                                        className="form-control"
+                                        onChange={(e) => getDocumentData(e?.target?.files[0], "thirdPartyDoc")}
+                                      />
+                                    </div>
+
+                                    <h3 className="error-message" style={{ color: "red" }}>
+                                      {errors?.thirdPartyDoc && errors?.thirdPartyDoc?.message}
+                                    </h3>
                                   </div>
                                 </div>
                               )}
@@ -422,6 +458,9 @@ const LandScheduleForm = (props) => {
                             <input {...register("migrationLic")} type="radio" value="N" id="migrationLic" />
                             &nbsp; No &nbsp;&nbsp;
                           </label>
+                          <h3 className="error-message" style={{ color: "red" }}>
+                            {errors?.migrationLic && errors?.migrationLic?.message}
+                          </h3>
                         </h2>
                       </div>
                       {watch("migrationLic") === "Y" && (
@@ -433,7 +472,7 @@ const LandScheduleForm = (props) => {
                                   Area Applied under Migration <span style={{ color: "red" }}>*</span>
                                 </h2>{" "}
                               </label>
-                              <input type="text" className="form-control" {...register("areaUnderMigration")} />
+                              <input type="text" className="form-control" {...register("areaUnderMigration")} required />
                             </div>
                             <div className="col col-3">
                               <label>
@@ -456,7 +495,7 @@ const LandScheduleForm = (props) => {
                                   Licence No. <span style={{ color: "red" }}>*</span>
                                 </h2>
                               </label>
-                              <input type="text" className="form-control" {...register("licNo")} />
+                              <input type="text" className="form-control" {...register("licNo")} required minLength={10} maxLength={20} />
                             </div>
                             <div className="col col-3">
                               <label>
@@ -464,7 +503,7 @@ const LandScheduleForm = (props) => {
                                   Area of Parent Licence <span style={{ color: "red" }}>*</span>
                                 </h2>
                               </label>
-                              <input type="text" className="form-control" {...register("areaofParentLic")} />
+                              <input type="text" className="form-control" {...register("areaofParentLic")} required minLength={1} maxLength={20} />
                             </div>
                           </div>
                           <br></br>
@@ -477,23 +516,25 @@ const LandScheduleForm = (props) => {
                               </label>
                               &nbsp;&nbsp;<br></br>
                               <label htmlFor="validityOfParentLic">
-                                <input {...register("validityOfParentLic")} type="radio" value="Y" id="validityOfParentLic" />
+                                <input {...register("validityOfParentLic")} type="radio" value="Y" id="validityOfParentLic" required />
                                 &nbsp; Yes &nbsp;&nbsp;
                               </label>
                               <label htmlFor="validityOfParentLic">
-                                <input {...register("validityOfParentLic")} type="radio" value="N" id="validityOfParentLic" />
+                                <input {...register("validityOfParentLic")} type="radio" value="N" id="validityOfParentLic" required />
                                 &nbsp; No &nbsp;&nbsp;
                               </label>
                             </div>
-                            {watch("validityOfParentLic") === "Y" && (
+                            {watch("validityOfParentLic") === "N" && (
                               <div className="row ">
                                 <div className="col col-6">
                                   <label>
                                     <h2>
-                                      Number of Renewal Fees to be deposited <span style={{ color: "red" }}>*</span>
+                                      Number of Renewal Fees to be deposited{" "}
+                                      <span className="text-primary"> (Kindly avail for renewal of Licence)</span>{" "}
+                                      <span style={{ color: "red" }}>*</span>
                                     </h2>
                                   </label>
-                                  <input type="text" className="form-control" {...register("renewalFee")} />
+                                  <input type="text" className="form-control" {...register("renewalFee")} required />
                                 </div>
                                 <div className="col col-6">
                                   <label>
@@ -501,7 +542,7 @@ const LandScheduleForm = (props) => {
                                       Freshly applied area,other than migration <span style={{ color: "red" }}>*</span>
                                     </h2>{" "}
                                   </label>
-                                  <input type="text" className="form-control" {...register("freshlyApplied")} />
+                                  <input type="text" className="form-control" {...register("freshlyApplied")} required minLength={2} maxLength={20} />
                                 </div>
                               </div>
                             )}
@@ -513,18 +554,25 @@ const LandScheduleForm = (props) => {
                                 title=" Approved Layout of Plan/ Site plan for(GH)Showing Area(s)/Proposed migration."
                               >
                                 Approved Layout of Plan.<span style={{ color: "red" }}>*</span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.approvedLayoutPlan)}>
-                                  {" "}
-                                </VisibilityIcon>
+                                {fileStoreId?.approvedLayoutPlan ? (
+                                  <a onClick={() => getDocShareholding(fileStoreId?.approvedLayoutPlan)} className="btn btn-sm col-md-6">
+                                    <VisibilityIcon color="info" className="icon" />
+                                  </a>
+                                ) : (
+                                  <p></p>
+                                )}
                               </h2>
-                              <input
-                                type="file"
-                                className="form-control"
-                                // {...register("approvedLayoutPlan")}
-                                onChange={(e) => getDocumentData(e?.target?.files[0], "approvedLayoutPlan")}
-                              />
+                              <div>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  onChange={(e) => getDocumentData(e?.target?.files[0], "approvedLayoutPlan")}
+                                />
+                              </div>
+
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.approvedLayoutPlan && errors?.approvedLayoutPlan?.message}
+                              </h3>
                             </div>
                             <div className="col col-3">
                               <h2
@@ -533,34 +581,48 @@ const LandScheduleForm = (props) => {
                                 title="Proposed Layout of Plan /site plan for area applied for migration."
                               >
                                 Proposed Layout of Plan.<span style={{ color: "red" }}>*</span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.proposedLayoutPlan)}>
-                                  {" "}
-                                </VisibilityIcon>
+                                {fileStoreId?.proposedLayoutPlan ? (
+                                  <a onClick={() => getDocShareholding(fileStoreId?.proposedLayoutPlan)} className="btn btn-sm col-md-6">
+                                    <VisibilityIcon color="info" className="icon" />
+                                  </a>
+                                ) : (
+                                  <p></p>
+                                )}
                               </h2>
-                              <input
-                                type="file"
-                                className="form-control"
-                                // {...register("proposedLayoutPlan")}
-                                onChange={(e) => getDocumentData(e?.target?.files[0], "proposedLayoutPlan")}
-                              />
+                              <div>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  onChange={(e) => getDocumentData(e?.target?.files[0], "proposedLayoutPlan")}
+                                />
+                              </div>
+
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.proposedLayoutPlan && errors?.proposedLayoutPlan?.message}
+                              </h3>
                             </div>
                             <div className="col col-3">
                               <h2 data-toggle="tooltip" data-placement="top" title="Upload Previously approved Layout Plan.">
                                 Upload Previously approved.<span style={{ color: "red" }}>*</span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.uploadPreviouslyLayoutPlan)}>
-                                  {" "}
-                                </VisibilityIcon>
+                                {fileStoreId?.uploadPreviouslyLayoutPlan ? (
+                                  <a onClick={() => getDocShareholding(fileStoreId?.uploadPreviouslyLayoutPlan)} className="btn btn-sm col-md-6">
+                                    <VisibilityIcon color="info" className="icon" />
+                                  </a>
+                                ) : (
+                                  <p></p>
+                                )}
                               </h2>
-                              <input
-                                type="file"
-                                className="form-control"
-                                // {...register("uploadPreviouslyLayoutPlan")}
-                                onChange={(e) => getDocumentData(e?.target?.files[0], "uploadPreviouslyLayoutPlan")}
-                              />
+                              <div>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  onChange={(e) => getDocumentData(e?.target?.files[0], "uploadPreviouslyLayoutPlan")}
+                                />
+                              </div>
+
+                              <h3 className="error-message" style={{ color: "red" }}>
+                                {errors?.uploadPreviouslyLayoutPlan && errors?.uploadPreviouslyLayoutPlan?.message}
+                              </h3>
                             </div>
                           </div>
                         </div>
@@ -586,13 +648,16 @@ const LandScheduleForm = (props) => {
                       <input {...register("encumburance")} type="radio" value="gair/marusi" id="encumburance" />
                       &nbsp;&nbsp; Gair/Marusi &nbsp;&nbsp;
                     </label>
+                    <h3 className="error-message" style={{ color: "red" }}>
+                      {errors?.encumburance && errors?.encumburance?.message}
+                    </h3>
                   </div>
                   <div className="row">
                     <div className="col col-4">
                       <label>
                         <h2>Any other, please specify:</h2>
                       </label>
-                      <input type="text" className="form-control" {...register("encumburanceOther")} />
+                      <input type="text" className="form-control" {...register("encumburanceOther")} required minLength={2} maxLength={100} />
                     </div>
                   </div>
                   <br></br>
@@ -610,6 +675,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("litigation")} type="radio" value="N" id="litigation" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.litigation && errors?.litigation?.message}
+                      </h3>
                     </h6>
                   </div>
                   <div className="row">
@@ -627,18 +695,21 @@ const LandScheduleForm = (props) => {
                           <div className="col col-6">
                             <h2 data-toggle="tooltip" data-placement="top" title="Upload Document">
                               Document Upload <span style={{ color: "red" }}>*</span>{" "}
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                              <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.litigationDoc)}>
-                                {" "}
-                              </VisibilityIcon>
+                              {fileStoreId?.litigationDoc ? (
+                                <a onClick={() => getDocShareholding(fileStoreId?.litigationDoc)} className="btn btn-sm col-md-6">
+                                  <VisibilityIcon color="info" className="icon" />
+                                </a>
+                              ) : (
+                                <p></p>
+                              )}
                             </h2>
-                            <input
-                              type="file"
-                              className="form-control"
-                              // {...register("litigationDoc")}
-                              onChange={(e) => getDocumentData(e?.target?.files[0], "litigationDoc")}
-                            />
+                            <div>
+                              <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "litigationDoc")} />
+                            </div>
+
+                            <h3 className="error-message" style={{ color: "red" }}>
+                              {errors?.litigationDoc && errors?.litigationDoc?.message}
+                            </h3>
                           </div>
                         </div>
                       )}
@@ -658,6 +729,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("court")} type="radio" value="N" id="court" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.court && errors?.court?.message}
+                      </h3>
                     </h6>
                   </div>
                   <div className="row">
@@ -675,18 +749,21 @@ const LandScheduleForm = (props) => {
                           <div className="col col-6">
                             <h2 data-toggle="tooltip" data-placement="top" title="Upload Document">
                               Document Upload <span style={{ color: "red" }}>*</span>
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                              <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.courtDoc)}>
-                                {" "}
-                              </VisibilityIcon>
+                              {fileStoreId?.courtDoc ? (
+                                <a onClick={() => getDocShareholding(fileStoreId?.courtDoc)} className="btn btn-sm col-md-6">
+                                  <VisibilityIcon color="info" className="icon" />
+                                </a>
+                              ) : (
+                                <p></p>
+                              )}
                             </h2>
-                            <input
-                              type="file"
-                              className="form-control"
-                              // {...register("courtDoc")}
-                              onChange={(e) => getDocumentData(e?.target?.files[0], "courtDoc")}
-                            />
+                            <div>
+                              <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "courtDoc")} />
+                            </div>
+
+                            <h3 className="error-message" style={{ color: "red" }}>
+                              {errors?.courtDoc && errors?.courtDoc?.message}
+                            </h3>
                           </div>
                         </div>
                       )}
@@ -707,6 +784,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("insolvency")} type="radio" value="N" id="insolvency" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.insolvency && errors?.insolvency?.message}
+                      </h3>
                     </h6>
                   </div>
                   <div className="row">
@@ -725,18 +805,21 @@ const LandScheduleForm = (props) => {
                             <h2 data-toggle="tooltip" data-placement="top" title="Upload Document">
                               {" "}
                               Document Upload <span style={{ color: "red" }}>*</span>
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                              <VisibilityIcon color="primary" onClick={() => getDocShareholding(data?.insolvencyDoc)}>
-                                {" "}
-                              </VisibilityIcon>
+                              {fileStoreId?.insolvencyDoc ? (
+                                <a onClick={() => getDocShareholding(fileStoreId?.insolvencyDoc)} className="btn btn-sm col-md-6">
+                                  <VisibilityIcon color="info" className="icon" />
+                                </a>
+                              ) : (
+                                <p></p>
+                              )}
                             </h2>
-                            <input
-                              type="file"
-                              className="form-control"
-                              // {...register("insolvencyDoc")}
-                              onChange={(e) => getDocumentData(e?.target?.files[0], "insolvencyDoc")}
-                            />
+                            <div>
+                              <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "insolvencyDoc")} />
+                            </div>
+
+                            <h3 className="error-message" style={{ color: "red" }}>
+                              {errors?.insolvencyDoc && errors?.insolvencyDoc?.message}
+                            </h3>
                           </div>
                         </div>
                       )}
@@ -761,22 +844,29 @@ const LandScheduleForm = (props) => {
                         <input {...register("appliedLand")} type="radio" value="N" id="appliedLand" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.appliedLand && errors?.appliedLand?.message}
+                      </h3>
                       {watch("appliedLand") === "Y" && (
                         <div className="row ">
                           <div className="col col-12">
                             <h6 data-toggle="tooltip" data-placement="top" title="Upload Document">
                               Document Upload <span style={{ color: "red" }}>*</span>&nbsp;&nbsp;
-                              <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>
-                              <VisibilityIcon color="primary" onClick={() => getDocShareholding(data?.registeringAuthorityDoc)}>
-                                {" "}
-                              </VisibilityIcon>
+                              {fileStoreId?.docUpload ? (
+                                <a onClick={() => getDocShareholding(fileStoreId?.docUpload)} className="btn btn-sm col-md-6">
+                                  <VisibilityIcon color="info" className="icon" />
+                                </a>
+                              ) : (
+                                <p></p>
+                              )}
                             </h6>
-                            <input
-                              type="file"
-                              className="form-control"
-                              // {...register("docUpload")}
-                              onChange={(e) => getDocumentData(e?.target?.files[0], "docUpload")}
-                            />
+                            <div>
+                              <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "docUpload")} />
+                            </div>
+
+                            <h3 className="error-message" style={{ color: "red" }}>
+                              {errors?.docUpload && errors?.docUpload?.message}
+                            </h3>
                           </div>
                         </div>
                       )}
@@ -795,17 +885,20 @@ const LandScheduleForm = (props) => {
                         <input {...register("revenueRasta")} type="radio" value="N" id="revenueRasta" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.revenueRasta && errors?.revenueRasta?.message}
+                      </h3>
                       {watch("revenueRasta") === "Y" && (
                         <div className="row ">
                           <div className="col col">
                             <label>
                               <h2>
                                 {" "}
-                                Width of revenue rasta <span style={{ color: "red" }}>*</span>&nbsp;
+                                Width of revenue rasta (in sqm)<span style={{ color: "red" }}>*</span>&nbsp;
                                 <CalculateIcon color="primary" />
                               </h2>
                             </label>
-                            <input type="number" className="form-control" {...register("revenueRastaWidth")} />
+                            <input type="number" className="form-control" {...register("revenueRastaWidth")} required minLength={10} maxLength={99} />
                           </div>
                         </div>
                       )}
@@ -823,6 +916,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("waterCourse")} type="radio" value="N" id="waterCourse" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.waterCourse && errors?.waterCourse?.message}
+                      </h3>
                       {watch("waterCourse") === "Y" && (
                         <div className="row ">
                           <div className="col col">
@@ -839,7 +935,10 @@ const LandScheduleForm = (props) => {
                     </div>
 
                     <div className="col col-3 ">
-                      <h2>(d) &nbsp;Whether in Compact Block.</h2> <span style={{ color: "red" }}>*</span> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <h2>
+                        (d) &nbsp;Whether in Compact Block.<span style={{ color: "red" }}>*</span>
+                      </h2>{" "}
+                      &nbsp;&nbsp;&nbsp;&nbsp;
                       <label htmlFor="compactBlock">
                         <input {...register("compactBlock")} type="radio" value="Y" id="compactBlock" />
                         &nbsp; Yes &nbsp;&nbsp;
@@ -848,6 +947,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("compactBlock")} type="radio" value="N" id="compactBlock" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.compactBlock && errors?.compactBlock?.message}
+                      </h3>
                       {watch("compactBlock") === "Y" && (
                         <div className="row ">
                           <div className="col col">
@@ -877,6 +979,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("landSandwiched")} type="radio" value="N" id="landSandwiched" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.landSandwiched && errors?.landSandwiched?.message}
+                      </h3>
                       {watch("landSandwiched") === "Y" && (
                         <div className="row ">
                           <div className="col col-12">
@@ -903,13 +1008,16 @@ const LandScheduleForm = (props) => {
                         <input {...register("acquistion")} type="radio" value="N" id="acquistion" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.acquistion && errors?.acquistion?.message}
+                      </h3>
                       {watch("acquistion") === "Y" && (
                         <div className="row ">
                           <div className="col col-12">
                             <label>
                               Remark <span style={{ color: "red" }}>*</span>
                             </label>
-                            <input type="text" className="form-control" {...register("acquistionRemark")} />
+                            <input type="text" className="form-control" {...register("acquistionRemark")} required minLength={10} maxLength={99} />
                           </div>
                         </div>
                       )}
@@ -920,8 +1028,10 @@ const LandScheduleForm = (props) => {
                           Date of section 4 notification <span style={{ color: "red" }}>*</span>{" "}
                         </h2>{" "}
                       </label>
-                      <input type="date" {...register("sectionFour")} className="form-control" />
-                      <div className="invalid-feedback">{errors?.sectionFour?.message}</div>
+                      <input type="date" {...register("sectionFour")} className="form-control" required />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.sectionFour && errors?.sectionFour?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <label>
@@ -929,8 +1039,10 @@ const LandScheduleForm = (props) => {
                           Date of section 6 notification <span style={{ color: "red" }}>*</span>{" "}
                         </h2>
                       </label>
-                      <input type="date" className="form-control" {...register("sectionSix")} />
-                      <div className="invalid-feedback">{errors?.sectionSix?.message}</div>
+                      <input type="date" className="form-control" {...register("sectionSix")} required />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.sectionSix && errors?.sectionSix?.message}
+                      </h3>
                     </div>
                   </div>{" "}
                   <br></br>
@@ -950,19 +1062,22 @@ const LandScheduleForm = (props) => {
                         <input {...register("orderUpload")} type="radio" value="N" id="orderUpload" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.orderUpload && errors?.orderUpload?.message}
+                      </h3>
                       {watch("orderUpload") === "Y" && (
                         <div className="row ">
                           <div className="col col-3 ">
                             <h2>
                               Whether land compensation received <span style={{ color: "red" }}>*</span>{" "}
                             </h2>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+
                             <label htmlFor="landCompensation">
-                              <input {...register("landCompensation")} type="radio" value="Y" id="landCompensation" />
+                              <input {...register("landCompensation")} type="radio" value="Y" id="landCompensation" required />
                               &nbsp; Yes &nbsp;&nbsp;
                             </label>
                             <label htmlFor="landCompensation">
-                              <input {...register("landCompensation")} type="radio" value="N" id="landCompensation" />
+                              <input {...register("landCompensation")} type="radio" value="N" id="landCompensation" required />
                               &nbsp; No &nbsp;&nbsp;
                             </label>
                           </div>
@@ -976,6 +1091,7 @@ const LandScheduleForm = (props) => {
                             <ReactMultiSelect
                               control={control}
                               name="releaseStatus"
+                              required
                               placeholder="Status of release"
                               data={releaseStatus}
                               labels="Potential"
@@ -988,7 +1104,7 @@ const LandScheduleForm = (props) => {
                                 Date of Award <span style={{ color: "red" }}>*</span>{" "}
                               </h2>
                             </label>
-                            <input type="date" {...register("awardDate")} className="form-control" />
+                            <input type="date" {...register("awardDate")} className="form-control" required />
                             <div className="invalid-feedback">{errors?.awardDate?.message}</div>
                           </div>
                           <div className="col col-3">
@@ -997,7 +1113,7 @@ const LandScheduleForm = (props) => {
                                 Date of Release <span style={{ color: "red" }}>*</span>{" "}
                               </h2>{" "}
                             </label>
-                            <input type="date" {...register("releaseDate")} className="form-control" />
+                            <input type="date" {...register("releaseDate")} className="form-control" required />
                             <div className="invalid-feedback">{errors?.releaseDate?.message}</div>
                           </div>
                           <div className="col col-3">
@@ -1006,7 +1122,7 @@ const LandScheduleForm = (props) => {
                                 Site Details <span style={{ color: "red" }}>*</span>{" "}
                               </h2>
                             </label>
-                            <input type="text" {...register("siteDetail")} className="form-control" />
+                            <input type="text" {...register("siteDetail")} className="form-control" required minLength={2} maxLength={99} />
                             <div className="invalid-feedback">{errors?.siteDetail?.message}</div>
                           </div>
                         </div>
@@ -1027,6 +1143,9 @@ const LandScheduleForm = (props) => {
                           <input {...register("siteApproachable")} type="radio" value="N" id="siteApproachable" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
+                        <h3 className="error-message" style={{ color: "red" }}>
+                          {errors?.siteApproachable && errors?.siteApproachable?.message}
+                        </h3>
                       </h2>
                     </div>
                   </div>
@@ -1049,6 +1168,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("vacant")} type="radio" value="N" id="vacant" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.vacant && errors?.vacant?.message}
+                      </h3>
                       {watch("vacant") === "Y" && (
                         <div className="row ">
                           <div className="col col">
@@ -1069,7 +1191,7 @@ const LandScheduleForm = (props) => {
                                 Vacant Remark <span style={{ color: "red" }}>*</span>
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("vacantRemark")} />
+                            <input type="text" className="form-control" {...register("vacantRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1087,13 +1209,16 @@ const LandScheduleForm = (props) => {
                         <input {...register("construction")} type="radio" value="N" id="construction" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.construction && errors?.construction?.message}
+                      </h3>
                       {watch("construction") === "Y" && (
                         <div className="row ">
                           <div className="col col">
                             <label>
                               Type of Construction <span style={{ color: "red" }}>*</span>
                             </label>
-                            <input type="text" className="form-control" {...register("typeOfConstruction")} />
+                            <input type="text" className="form-control" {...register("typeOfConstruction")} required />
                           </div>
                         </div>
                       )}
@@ -1123,6 +1248,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("ht")} type="radio" value="N" id="HTLine" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.ht && errors?.ht?.message}
+                      </h3>
                       {watch("ht") === "Y" && (
                         <div className="row ">
                           <div className="col col">
@@ -1131,7 +1259,7 @@ const LandScheduleForm = (props) => {
                                 HT Remark <span style={{ color: "red" }}>*</span>
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("htRemark")} />
+                            <input type="text" className="form-control" {...register("htRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1143,7 +1271,7 @@ const LandScheduleForm = (props) => {
                                 HT Remark <span style={{ color: "red" }}>*</span>
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("htRemark")} />
+                            <input type="text" className="form-control" {...register("htRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1162,13 +1290,16 @@ const LandScheduleForm = (props) => {
                         <input {...register("gas")} type="radio" value="N" id="IOCGasPipeline" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.gas && errors?.gas?.message}
+                      </h3>
                       {watch("gas") === "Y" && (
                         <div className="row ">
                           <div className="col col">
                             <label>
                               IOC Remark <span style={{ color: "red" }}>*</span>
                             </label>
-                            <input type="text" className="form-control" {...register("gasRemark")} />
+                            <input type="text" className="form-control" {...register("gasRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1178,7 +1309,7 @@ const LandScheduleForm = (props) => {
                             <label>
                               IOC Remark <span style={{ color: "red" }}>*</span>
                             </label>
-                            <input type="text" className="form-control" {...register("gasRemark")} />
+                            <input type="text" className="form-control" {...register("gasRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1199,13 +1330,16 @@ const LandScheduleForm = (props) => {
                         <input {...register("nallah")} type="radio" value="N" id="nallah" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.nallah && errors?.nallah?.message}
+                      </h3>
                       {watch("nallah") === "Y" && (
                         <div className="row ">
                           <div className="col col">
                             <label>
                               Nallah Remark <span style={{ color: "red" }}>*</span>
                             </label>
-                            <input type="text" className="form-control" {...register("nallahRemark")} />
+                            <input type="text" className="form-control" {...register("nallahRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1215,7 +1349,7 @@ const LandScheduleForm = (props) => {
                             <label>
                               Nallah Remark <span style={{ color: "red" }}>*</span>
                             </label>
-                            <input type="text" className="form-control" {...register("nallahRemark")} />
+                            <input type="text" className="form-control" {...register("nallahRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1233,16 +1367,19 @@ const LandScheduleForm = (props) => {
                         <input {...register("road")} type="radio" value="N" id="road" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.road && errors?.road?.message}
+                      </h3>
                       {watch("road") === "Y" && (
                         <div className="row ">
                           <div className="col col-12">
                             <label>
                               <h2>
-                                Width of Revenue rasta/road <span style={{ color: "red" }}>*</span> &nbsp;&nbsp;
+                                Width of Revenue rasta/road (in sqm)<span style={{ color: "red" }}>*</span> &nbsp;&nbsp;
                                 <CalculateIcon color="primary" />
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("roadWidth")} />
+                            <input type="text" className="form-control" {...register("roadWidth")} required minLength={2} maxLength={20} />
                           </div>
                           <div className="col col-12">
                             <label>
@@ -1262,7 +1399,7 @@ const LandScheduleForm = (props) => {
                                 Remark <span style={{ color: "red" }}>*</span>
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("roadRemark")} />
+                            <input type="text" className="form-control" {...register("roadRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1280,6 +1417,9 @@ const LandScheduleForm = (props) => {
                         <input {...register("marginalLand")} type="radio" value="N" id="marginalLand" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.marginalLand && errors?.marginalLand?.message}
+                      </h3>
                       {watch("marginalLand") === "Y" && (
                         <div className="row ">
                           <div className="col col">
@@ -1288,7 +1428,7 @@ const LandScheduleForm = (props) => {
                                 Remark of Marginal Land <span style={{ color: "red" }}>*</span>
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("marginalLandRemark")} />
+                            <input type="text" className="form-control" {...register("marginalLandRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1322,16 +1462,19 @@ const LandScheduleForm = (props) => {
                         <input {...register("utilityLine")} type="radio" value="N" id="utilityLine" />
                         &nbsp; No &nbsp;&nbsp;
                       </label>
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.utilityLine && errors?.utilityLine?.message}
+                      </h3>
                       {watch("utilityLine") === "Y" && (
                         <div className="row ">
                           <div className="col col-12">
                             <label>
                               <h2>
-                                Width of row <span style={{ color: "red" }}>*</span>&nbsp;&nbsp;
+                                Width of row (in sqm) <span style={{ color: "red" }}>*</span>&nbsp;&nbsp;
                                 <CalculateIcon color="primary" />
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("utilityWidth")} />
+                            <input type="text" className="form-control" {...register("utilityWidth")} required minLength={2} maxLength={99} />
                           </div>
                           <div className="col col-12">
                             <label>
@@ -1351,7 +1494,7 @@ const LandScheduleForm = (props) => {
                                 Remark <span style={{ color: "red" }}>*</span>
                               </h2>
                             </label>
-                            <input type="text" className="form-control" {...register("utilityRemark")} />
+                            <input type="text" className="form-control" {...register("utilityRemark")} required />
                           </div>
                         </div>
                       )}
@@ -1365,71 +1508,81 @@ const LandScheduleForm = (props) => {
                   <div className="row">
                     <div className="col col-3">
                       <h2 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
-                        Land schedule <span style={{ color: "red" }}>*</span>{" "}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon
-                          classNmae="text-right"
-                          color="primary"
-                          onClick={() => getDocShareholding(fileStoreId?.landSchedule)}
-                        ></VisibilityIcon>
+                        Land schedule <span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.landSchedule ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.landSchedule)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "landSchedule")} />
+                      </div>
 
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("landSchedule")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "landSchedule")}
-                      />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.landSchedule && errors?.landSchedule?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h2 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
                         Copy of Mutation <span style={{ color: "red" }}>*</span>{" "}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.mutation)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.mutation ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.mutation)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "mutation")} />
+                      </div>
 
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("mutation")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "mutation")}
-                      />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.mutation && errors?.mutation?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h2 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
-                        Copy of Jamabandi <span style={{ color: "red" }}>*</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.jambandhi)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Copy of Jamabandi <span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.jambandhi ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.jambandhi)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "jambandhi")} />
+                      </div>
 
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("jambandhi")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "jambandhi")}
-                      />
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.jambandhi && errors?.jambandhi?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h2 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
                         Details of lease / patta <span style={{ color: "red" }}>*</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.detailsOfLease)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.detailsOfLease ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.detailsOfLease)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("detailsOfLease")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "detailsOfLease")}
-                      />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "detailsOfLease")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.detailsOfLease && errors?.detailsOfLease?.message}
+                      </h3>
                     </div>
                   </div>
                   <br></br>
@@ -1442,17 +1595,21 @@ const LandScheduleForm = (props) => {
                         title=" Add sales/Deed/exchange/gift deed, mutation, lease/Patta"
                       >
                         Add sales/Deed/exchange <span style={{ color: "red" }}>*</span>
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.addSalesDeed)}>
-                          {" "}
-                        </VisibilityIcon>
+                        {fileStoreId?.addSalesDeed ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.addSalesDeed)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("addSalesDeed")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "addSalesDeed")}
-                      />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "addSalesDeed")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.addSalesDeed && errors?.addSalesDeed?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h2
@@ -1461,48 +1618,61 @@ const LandScheduleForm = (props) => {
                         data-placement="top"
                         title="Copy of spa/GPA/board resolution to sign collaboration agrrement"
                       >
-                        Copy of spa/GPA/board. <span style={{ color: "red" }}>*</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.copyofSpaBoard)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Copy of spa/GPA/board. <span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.copyofSpaBoard ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.copyofSpaBoard)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("copyofSpaBoard")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "copyofSpaBoard")}
-                      />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "copyofSpaBoard")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.copyofSpaBoard && errors?.copyofSpaBoard?.message}
+                      </h3>
                     </div>
                     <div className="col col-3">
                       <h2 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
-                        Revised Land Schedule <span style={{ color: "red" }}>*</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.revisedLanSchedule)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Revised Land Schedule <span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.revisedLanSchedule ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.revisedLanSchedule)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("revisedLansSchedule")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "revisedLanSchedule")}
-                      />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "revisedLanSchedule")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.revisedLanSchedule && errors?.revisedLanSchedule?.message}
+                      </h3>
                     </div>
+
                     <div className="col col-3">
                       <h2 style={{ display: "flex" }} data-toggle="tooltip" data-placement="top" title="Upload Document">
-                        Copy of Shajra Plan <span style={{ color: "red" }}>*</span> &nbsp;&nbsp;&nbsp;&nbsp;
-                        <ArrowCircleUpIcon color="primary"></ArrowCircleUpIcon>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <VisibilityIcon color="primary" onClick={() => getDocShareholding(fileStoreId?.copyOfShajraPlan)}>
-                          {" "}
-                        </VisibilityIcon>
+                        Copy of Shajra Plan <span style={{ color: "red" }}>*</span>
+                        {fileStoreId?.copyOfShajraPlan ? (
+                          <a onClick={() => getDocShareholding(fileStoreId?.copyOfShajraPlan)} className="btn btn-sm col-md-6">
+                            <VisibilityIcon color="info" className="icon" />
+                          </a>
+                        ) : (
+                          <p></p>
+                        )}
                       </h2>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // {...register("copyOfShajraPlan")}
-                        onChange={(e) => getDocumentData(e?.target?.files[0], "copyOfShajraPlan")}
-                      />
+                      <div>
+                        <input type="file" className="form-control" onChange={(e) => getDocumentData(e?.target?.files[0], "copyOfShajraPlan")} />
+                      </div>
+
+                      <h3 className="error-message" style={{ color: "red" }}>
+                        {errors?.copyOfShajraPlan && errors?.copyOfShajraPlan?.message}
+                      </h3>
                     </div>
                   </div>
                   <div class="row">
