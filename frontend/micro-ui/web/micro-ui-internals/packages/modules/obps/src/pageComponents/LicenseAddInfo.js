@@ -1443,7 +1443,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                   </div>
                 </div>
               )}
-              {(showDevTypeFields && showDevTypeFields !== "Individual" && showDevTypeFields !== "Proprietorship Firm" && showDevTypeFields !== "Hindu Undivided Family" && showDevTypeFields !== "Others" && showDevTypeFields !== "Society" && showDevTypeFields !== "Firm" && showDevTypeFields !== "Limited Liability Partnership") && (
+              {(showDevTypeFields && showDevTypeFields !== "Individual" && showDevTypeFields !== "Proprietorship Firm" && showDevTypeFields !== "Hindu Undivided Family" && showDevTypeFields !== "Others" && showDevTypeFields !== "Society" && showDevTypeFields !== "Firm" && showDevTypeFields !== "Limited Liability Partnership" && showDevTypeFields !== "Partnership Firm") && (
                 <div className="card mb-3">
                   <h5 className="card-title fw-bold">Shareholding Patterns <span className="text-danger font-weight-bold">*</span></h5>
                   {/* {JSON.stringify(modalValuesArray)} */}
@@ -1660,7 +1660,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                   </div>
                 </div>
               )}
-              {(showDevTypeFields && showDevTypeFields !== "Individual" && showDevTypeFields !== "Proprietorship Firm" && showDevTypeFields !== "Hindu Undivided Family" && showDevTypeFields !== "Others" && showDevTypeFields !== "Society" && showDevTypeFields !== "Firm" && showDevTypeFields !== "Limited Liability Partnership") && (
+              {(showDevTypeFields && showDevTypeFields !== "Individual" && showDevTypeFields !== "Proprietorship Firm" && showDevTypeFields !== "Hindu Undivided Family" && showDevTypeFields !== "Others" && showDevTypeFields !== "Society" && showDevTypeFields !== "Firm" && showDevTypeFields !== "Limited Liability Partnership" && showDevTypeFields !== "Partnership Firm") && (
                 <div className="card mb-3">
                   <h5 className="card-title fw-bold">Directors Information</h5>
                   <div className="card-body">
