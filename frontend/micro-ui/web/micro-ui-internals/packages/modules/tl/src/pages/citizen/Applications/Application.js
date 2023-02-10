@@ -66,7 +66,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
@@ -79,7 +79,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
@@ -92,7 +92,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
@@ -105,7 +105,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
@@ -118,7 +118,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
@@ -131,7 +131,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
@@ -144,7 +144,7 @@ const MyApplications = ({ view }) => {
               paddingTop: "12px",
               paddingBottom: "12px",
               textAlign: "left",
-              backgroundColor: "#04AA6D",
+              backgroundColor: "rgb(65, 105, 225)",
               color: "white",
             }}
           >
