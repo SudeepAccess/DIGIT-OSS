@@ -43,6 +43,12 @@ const ServicePlanService = () => {
     'layoutExcel': false,
     'anyOtherdoc': false
   })
+  const [layoutPlan, setLayoutplan] = useState('')
+  const [revisedLayout, setRevisedLayout] = useState('')
+  const [demarcation, setDemarcation] = useState('')
+  const [demarcationgis, setDemarcationgis] = useState('')
+  const [layoutExcel, setLayoutExcel] = useState('')
+  const [anyOtherdoc, setAnyotherDoc] = useState('')
   const [servicePlanRes, setServicePlanRes] = useState('')
   const [submitDataLabel, setSubmitDataLabel] = useState([]);
   const [ServicePlanDataLabel, setServicePlanDataLabel] = useState([]);
@@ -323,7 +329,7 @@ const ServicePlanService = () => {
     setPurpose(Resp?.data?.Licenses?.[0]?.tradeLicenseDetail?.additionalDetail?.[0]?.ApplicantPurpose?.purpose)
     setTotalArea(Resp?.data?.Licenses?.[0]?.tradeLicenseDetail?.additionalDetail?.[0]?.ApplicantPurpose?.totalArea)
     
-  console.log({ devName, developmentPlan, purpose, totalArea });
+  console.log({ devName, developmentPlan, purpose, totalArea, purpose});
 
    } catch (error) {
     console.log(error)
@@ -359,6 +365,12 @@ const ServicePlanService = () => {
         setAutoCad(response?.data?.servicePlanResponse[0].autoCadFile)
         setCertifiedCopy(response?.data?.servicePlanResponse[0].certifieadCopyOfThePlan)
         setServicePlanRes(response?.data?.servicePlanResponse[0])
+        setLayoutplan(response?.data?.servicePlanResponse[0].layoutPlan)
+        setRevisedLayout(response?.data?.servicePlanResponse[0].revisedLayout)
+        setDemarcation(response?.data?.servicePlanResponse[0].demarcation)
+        setDemarcationgis(response?.data?.servicePlanResponse[0].demarcationgis)
+        setLayoutExcel(response?.data?.servicePlanResponse[0].layoutExcel)
+        setAnyotherDoc(response?.data?.servicePlanResponse[0].anyOtherdoc)
 
       } catch (error) {
         console.log(error)
@@ -691,7 +703,6 @@ const ServicePlanService = () => {
               </tr>
               </tbody>
               { (purpose === "DDJAY_APHP" || purpose === "RPL" || purpose === "NILP"|| purpose === "NILPC"|| purpose === "IPA" || purpose === "CPRS" || purpose === "CICS") && (
-              //  && "NILP" && "NILPC" && "IPA" && "CPRS" && "CICS" &&
               <tbody>
               <tr>
                 <td>
@@ -724,10 +735,10 @@ const ServicePlanService = () => {
                   : "" }
                   {applicationId && (!fileStoreId?.layoutPlan) &&
                   <div className="btn btn-sm col-md-4">
-                    <IconButton onClick={()=>downloadDocument(selfCertifiedDrawing)}>
+                    <IconButton onClick={()=>downloadDocument(layoutPlan)}>
                         <FileDownload color="primary" className="mx-1" />
                     </IconButton>
-                      <IconButton onClick={()=>viewDocument(selfCertifiedDrawing)}>
+                      <IconButton onClick={()=>viewDocument(layoutPlan)}>
                         <VisibilityIcon color="info" className="icon" />
                       </IconButton>
                   </div> 
@@ -765,10 +776,10 @@ const ServicePlanService = () => {
                   : ""}
                    {applicationId && (!fileStoreId?.revisedLayout) && 
                   <div className="btn btn-sm col-md-4">
-                    <IconButton onClick={()=>downloadDocument(environmental)}>
+                    <IconButton onClick={()=>downloadDocument(revisedLayout)}>
                         <FileDownload color="primary" className="mx-1" />
                     </IconButton>
-                      <IconButton onClick={()=>viewDocument(environmental)}>
+                      <IconButton onClick={()=>viewDocument(revisedLayout)}>
                         <VisibilityIcon color="info" className="icon" />
                       </IconButton>
                   </div> 
@@ -807,10 +818,10 @@ const ServicePlanService = () => {
                     : ""}
                    {applicationId && (!fileStoreId?.demarcation) && 
                   <div className="btn btn-sm col-md-4">
-                    <IconButton onClick={()=>downloadDocument(gisFormat)}>
+                    <IconButton onClick={()=>downloadDocument(demarcation)}>
                         <FileDownload color="primary" className="mx-1" />
                     </IconButton>
-                      <IconButton onClick={()=>viewDocument(gisFormat)}>
+                      <IconButton onClick={()=>viewDocument(demarcation)}>
                         <VisibilityIcon color="info" className="icon" />
                       </IconButton>
                   </div> 
@@ -848,10 +859,10 @@ const ServicePlanService = () => {
                   : "" }
                    {applicationId && (!fileStoreId?.demarcationgis) &&
                   <div className="btn btn-sm col-md-4">
-                    <IconButton onClick={()=>downloadDocument(autocad)}>
+                    <IconButton onClick={()=>downloadDocument(demarcationgis)}>
                         <FileDownload color="primary" className="mx-1" />
                     </IconButton>
-                      <IconButton onClick={()=>viewDocument(autocad)}>
+                      <IconButton onClick={()=>viewDocument(demarcationgis)}>
                         <VisibilityIcon color="info" className="icon" />
                       </IconButton>
                   </div> 
@@ -890,10 +901,10 @@ const ServicePlanService = () => {
                   : "" }
                    {applicationId && (!fileStoreId?.layoutExcel) &&
                   <div className="btn btn-sm col-md-4">
-                    <IconButton onClick={()=>downloadDocument(certifiedCopy)}>
+                    <IconButton onClick={()=>downloadDocument(layoutExcel)}>
                         <FileDownload color="primary" className="mx-1" />
                     </IconButton>
-                      <IconButton onClick={()=>viewDocument(certifiedCopy)}>
+                      <IconButton onClick={()=>viewDocument(layoutExcel)}>
                         <VisibilityIcon color="info" className="icon" />
                       </IconButton>
                   </div> 
@@ -912,7 +923,7 @@ const ServicePlanService = () => {
 
                 </td>
                 <td component="th" scope="row">
-                <label for='file-input-10'>
+                <label for='file-input-11'>
                     <FileUploadIcon 
                     color="primary"
                     />
@@ -921,7 +932,7 @@ const ServicePlanService = () => {
                     type="file"
                     className="form-control"
                     // {...register("certifieadCopyOfThePlan")}
-                    id="file-input-10"
+                    id="file-input-11"
                     onChange={(e) => getDocumentData(e?.target?.files[0], "anyOtherdoc")}
                     style={{display: "none"}}
                   />
@@ -932,10 +943,10 @@ const ServicePlanService = () => {
                   : "" }
                    {applicationId && (!fileStoreId?.anyOtherdoc) &&
                   <div className="btn btn-sm col-md-4">
-                    <IconButton onClick={()=>downloadDocument(certifiedCopy)}>
+                    <IconButton onClick={()=>downloadDocument(anyOtherdoc)}>
                         <FileDownload color="primary" className="mx-1" />
                     </IconButton>
-                      <IconButton onClick={()=>viewDocument(certifiedCopy)}>
+                      <IconButton onClick={()=>viewDocument(anyOtherdoc)}>
                         <VisibilityIcon color="info" className="icon" />
                       </IconButton>
                   </div> 
@@ -944,7 +955,6 @@ const ServicePlanService = () => {
               </tr>
               </tbody>
               )}
-           
           </div>
 
           <div class="row">
