@@ -41,6 +41,7 @@ const ServicePlanService = () => {
     'demarcation': false,
     'demarcationgis': false,
     'layoutExcel': false,
+    'anyOtherdoc': false
   })
   const [servicePlanRes, setServicePlanRes] = useState('')
   const [submitDataLabel, setSubmitDataLabel] = useState([]);
@@ -888,6 +889,48 @@ const ServicePlanService = () => {
                   </VisibilityIcon>
                   : "" }
                    {applicationId && (!fileStoreId?.layoutExcel) &&
+                  <div className="btn btn-sm col-md-4">
+                    <IconButton onClick={()=>downloadDocument(certifiedCopy)}>
+                        <FileDownload color="primary" className="mx-1" />
+                    </IconButton>
+                      <IconButton onClick={()=>viewDocument(certifiedCopy)}>
+                        <VisibilityIcon color="info" className="icon" />
+                      </IconButton>
+                  </div> 
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div className="px-2">
+                    <p className="mb-2">11.</p>
+                  </div>
+                </td>
+                <td component="th" scope="row">
+                  <h2>Any other relevant document</h2>
+                  {drawingErr.anyOtherdoc ? <p style={{color: 'red'}}>Please upload anyother relevant document*</p> : " "}
+
+                </td>
+                <td component="th" scope="row">
+                <label for='file-input-10'>
+                    <FileUploadIcon 
+                    color="primary"
+                    />
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    // {...register("certifieadCopyOfThePlan")}
+                    id="file-input-10"
+                    onChange={(e) => getDocumentData(e?.target?.files[0], "anyOtherdoc")}
+                    style={{display: "none"}}
+                  />
+                  {fileStoreId?.anyOtherdoc ? 
+                  <VisibilityIcon color="primary" onClick={() => viewDocument(fileStoreId?.anyOtherdoc)}>
+                    {" "}
+                  </VisibilityIcon>
+                  : "" }
+                   {applicationId && (!fileStoreId?.anyOtherdoc) &&
                   <div className="btn btn-sm col-md-4">
                     <IconButton onClick={()=>downloadDocument(certifiedCopy)}>
                         <FileDownload color="primary" className="mx-1" />
