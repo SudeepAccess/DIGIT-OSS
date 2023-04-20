@@ -4,50 +4,30 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-function AddPost({modal=false,state , setState}) {
+function Edit() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [convertedContent, setConvertedContent] = useState(null);
-  
+
   useEffect(() => {
     let html = convertToHTML(editorState.getCurrentContent());
-    if (modal) {
-      setState(html);
-      
-    }
-    else{
-      setConvertedContent(html); 
-    }
-  
+    setConvertedContent(html);
   }, [editorState]);
- console.log("DATAEDITOR",editorState);
- console.log("DATAEDITOR",setState);
-//  console.log();
-//  console.log();
 
   return (
-    <div className="text-editorEmp"  style={{border: 1,
-      width:"100%",
-      margin:5,
-      padding:3}}>
-      {/* <header className="App-header">Rich Text Editor Example</header> */}
+    <div className="App">
+      <header className="App-header">Rich Text Editor Example</header>
       <Editor
         editorState={editorState}
         onEditorStateChange={setEditorState}
-        // wrapperClassName="wrapper-class"
+        wrapperClassName="wrapper-class"
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"
-        
       />
-      {
-        !modal && 
-        <button onClick={() => console.log(convertedContent)}>Submit</button>
-      }
+      <button onClick={() => console.log(convertedContent)}>Hit me</button>
     </div>
-    
   );
-  
 }
 
-export default AddPost;
+export default Edit;

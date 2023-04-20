@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import { size } from "lodash";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { Card, Row, Col } from "react-bootstrap";
 import { Button, Form } from "react-bootstrap";
@@ -10,8 +10,7 @@ import { useQueryClient } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import ApplicationDetailsActionBar from "../../../../../../templates/ApplicationDetails/components/ApplicationDetailsActionBar";
 import ActionModal from "../../../../../../templates/ApplicationDetails/Modal";
-import { ScrutinyRemarksContext } from "../../../../../context/remarks-data-context/index";
-
+// import ScrutitnyForms from "../ScrutinyBasic/ScutinyBasic";
 import ServiceBase from "./ServiceBase";
 
 const ServiceScrutiny = (props) => {
@@ -34,7 +33,7 @@ const ServiceScrutiny = (props) => {
   const [isEnableLoader, setIsEnableLoader] = useState(false);
   const [isWarningPop, setWarningPopUp] = useState(false);
   const [showhide19, setShowhide19] = useState("true");
-  const [businessService, setBusinessServices] = useState("SERVICE_PLAN");
+  const [businessService, setBusinessService] = useState("SERVICE_PLAN");
   const [moduleCode, setModuleCode] = useState("TL")
   const [scrutinyDetails, setScrutinyDetails] = useState();
   // const [applicationNumber,setApplicationNumber] = useState("");
@@ -46,8 +45,6 @@ const ServiceScrutiny = (props) => {
   const [loiNumberSet, setLOINumberSet] = useState("");
   const [edcDataTreade ,setEdcDataTreade] = useState("");
   const [idwDataTreade ,setIdwDataTreade] = useState("");
-  const [status , setStatus] = useState();
-  const { setBusinessService } = useContext(ScrutinyRemarksContext)
 
   //   const authToken = Digit.UserService.getUser()?.access_token || null;
 
@@ -83,7 +80,7 @@ const ServiceScrutiny = (props) => {
       });
       //   console.log("Response From API1", Resp, Resp?.Licenses[0]?.applicationNumber,Resp);
       setScrutinyDetails(Resp?.servicePlanResponse?.[0]);
-      setStatus(Resp?.servicePlanResponse?.[0]?.status);
+      
       
       console.log("devDel1234", Resp?.servicePlanResponse?.[0]?.loiNumber);
       const loiNumber =  Resp?.servicePlanResponse?.[0]?.loiNumber
@@ -91,10 +88,8 @@ const ServiceScrutiny = (props) => {
       setApplicationDetails({
         applicationData: Resp?.servicePlanResponse?.[0],
         workflowCode: Resp?.servicePlanResponse?.[0].businessService
-        
       })
-      
-      console.log("Loi12347874545", Resp?.servicePlanResponse?.[0]?.status);
+      // console.log("Loi1234787", userInfo );
       // console.log("Loi1234", loiNumber );
       const loiRequest = {
         requestInfo: {
@@ -247,7 +242,7 @@ const ServiceScrutiny = (props) => {
     // console.log("logService...wrkflw12",id,workflowDetailsTemp,scrutinyDetails,applicationDetails,processInstances)
     if (workflowDetailsTemp?.data?.applicationBusinessService) {
       setWorkflowDetails(workflowDetailsTemp);
-      setBusinessServices(workflowDetailsTemp?.data?.applicationBusinessService);
+      setBusinessService(workflowDetailsTemp?.data?.applicationBusinessService);
       console.log("Datapoint1", workflowDetailsTemp?.data?.processInstances)
       // setDataHistory("Datapoint" , workflowDetailsTemp?.data?.processInstances.map((array) => array.map((object))))
       //  = (e) => {
@@ -272,7 +267,7 @@ const ServiceScrutiny = (props) => {
   console.log("loggerexternalAgency", externalAgency)
   return (
     <Card>
-      {/* <Card.Header class="fw-normal" style={{ top: 5, padding: 5, fontSize: 14, height: 90, lineHeight: 2 }}>
+      <Card.Header class="fw-normal" style={{ top: 5, padding: 5, fontSize: 14, height: 90, lineHeight: 2 }}>
         <div className="row">
           <div className="col-md-3">
             {loiNumberSet}
@@ -296,38 +291,6 @@ const ServiceScrutiny = (props) => {
             <p class="fw-normal">{applicationData?.tcpDairyNumber}</p>
           </div>
         </div>
-      </Card.Header> */}
-       <Card.Header className="head-application" >
-        <div className="row fw-normal">
-          <div className="col-sm-2">
-            <b><p className="head-font">Application Number:</p></b>
-            <b><p className="head-font">{id}</p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">Service Id: </p></b>
-            <b><p className="head-font">
-              {applicationData?.businessService}
-              {/* Licence */}
-            </p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">TCP Application Number:</p></b>
-            {/* {item.name.substring(0, 4)} */}
-            <b><p className="head-font">{applicationData?.tcpApplicationNumber}</p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">TCP Case Number:</p></b>
-            <b><p className="head-font">{applicationData?.tcpCaseNumber}</p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">TCP Dairy Number: </p></b>
-            <b><p className="head-font">{applicationData?.tcpDairyNumber}</p></b>
-
-          </div>
-          {/* <div className="col-sm-2">
-            <Button style={{ textAlign: "right" }} value="Submit" id="Submit" onChange1={handleChange} name="Submit" onClick={handleshow19}>Views PDF</Button>
-          </div> */}
-        </div>
       </Card.Header>
       <Row style={{ top: 10, padding: 10 }}>
         {/* <ScrutitnyForms
@@ -345,7 +308,6 @@ const ServiceScrutiny = (props) => {
           setExternalAgencies={setExternalAgencies}
           edcDataTreade={idwDataTreade}
           idwDataTreade={edcDataTreade}
-          applicationStatus={status}
         ></ServiceBase>
       </Row>
       {/* <Row style={{ top: 10, padding: "10px 22px" }}> */}

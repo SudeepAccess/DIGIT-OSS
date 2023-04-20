@@ -55,7 +55,6 @@ import ExtensionCom from "./NewLicense/AllService/Module/ExtensionCommunity/Exte
 import LowMedium from "./NewLicense/AllService/Module/BuildingPlanApproval/LowMedium";
 import AdditionalDocument from "./NewLicense/AllService/Module/AdditionalDocument/AdditionalDocument";
 import Payment from "./NewLicense/AllService/Module/Payment/Payment";
-import ExtensionClu from "./NewLicense/AllService/Module/ExtensionClu/ExtensionClu";
 
 const App = ({ path }) => {
   const location = useLocation();
@@ -133,13 +132,12 @@ const App = ({ path }) => {
         <PrivateRoute path={`${path}/BPALowMedium`} component={LowMedium} />
         <PrivateRoute path={`${path}/additionalDoc`} component={AdditionalDocument} />
         <PrivateRoute path={`${path}/payment`} component={Payment} />
-        <PrivateRoute path={`${path}/LayoutPlanClu`} component={LayoutPlanClu} />
-        <PrivateRoute path={`${path}/ExtensionClu`} component={ExtensionClu} />
         {/* .............................................................................. */}
 
         {/* <PrivateRoute path={`${path}/Beneficialscrutiny`} component={Beneficialscrutiny} />
         <PrivateRoute path={`${path}/Completionscrutiny`} component={Completionscrutiny} />
         <PrivateRoute path={`${path}/CompositionClu`} component={CompositionClu} />
+        <PrivateRoute path={`${path}/ExtensionClu`} component={ExtensionClu} />
         <PrivateRoute path={`${path}/ExtensionCom`} component={ExtensionCom} />
         <PrivateRoute path={`${path}/LayoutPlanClu`} component={LayoutPlanClu} />
         <PrivateRoute path={`${path}/Standard`} component={Standard} />

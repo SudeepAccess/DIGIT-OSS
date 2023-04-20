@@ -252,7 +252,7 @@ const Home = () => {
         value: "twelve",
         links: [
           {
-            link: `/digit-ui/citizen/obps/ExtensionClu`,
+            link: ``,
             i18nKey: t("Extension of CLU permission"),
           },
         ],

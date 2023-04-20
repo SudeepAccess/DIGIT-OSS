@@ -41,24 +41,12 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import CusToaster from "../components/Toaster";
-import Checkbox from "@mui/material/Checkbox";
 
 const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) => {
   const { pathname: url } = useLocation();
   let validation = {};
   const userInfo = Digit.UserService.getUser();
-  const labels = { inputProps: { "aria-label": "Checkbox demo" } };
-
-  const [isUndertakenDR, setIsUndertaken] = useState(formData?.isUndertakenDR || formData?.formData?.isUndertakenDR || false);
-
-  const selectCheckedDR = (e) => {
-    if (isUndertakenDR == false) {
-      setIsUndertaken(true);
-    } else {
-      setIsUndertaken(false);
-    }
-  };
-  // console.log("USERNAME", userInfo?.info?.name);
+  console.log("USERNAME", userInfo?.info?.name);
   const devRegId = localStorage.getItem("devRegId");
   let isOpenLinkFlow = window.location.href.includes("openlink");
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -82,6 +70,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
     });
 
   const { setValue, getValues, watch } = useForm();
+
   // -----Shareholding Pageination
   const [rowsPerPageStack, setRowsPerPageStack] = React.useState(10);
   const handleChangePageStack = (event, newPageStack) => {
@@ -95,7 +84,6 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
   //-------------------//
 
   const [rowsPerPageMca, setRowsPerPageMca] = React.useState(10);
-
   const handleChangePageMca = (event, newPageMca) => {
     setPageMca(newPageMca);
   };
@@ -127,7 +115,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
   }));
 
   const DevelopersAllData = getValues();
-  // console.log("DEVEDATAGEGT", DevelopersAllData);
+  console.log("DEVEDATAGEGT", DevelopersAllData);
   // const [Documents,getValues] = useState([]);
 
   const onSkip = () => onSelect();
@@ -211,7 +199,6 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
       });
       setDocumentsData(developerDataGet?.devDetail[0]?.capacityDevelopAColony?.documents);
       setTradeType(developerDataGet?.devDetail[0]?.applicantType?.licenceType);
-      setIsUndertaken(developerDataGet?.devDetail[0]?.capacityDevelopAColony?.isUndertakenDR);
       // console.log("TRADETYPE", developerDataGet?.devDetail[0]?.applicantType?.licenceType);
     } catch (error) {
       console.log(error);
@@ -324,7 +311,22 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
   const [showhide6, setShowhide6] = useState("no");
   let isopenlink = window.location.href.includes("/openlink/");
   const isCitizenUrl = Digit.Utils.browser.isMobile() ? true : false;
-
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [urlGetForFile, setFIleUrl] = useState("");
+  const [urlGetValidateLicFile, setValidateLicUrl] = useState("");
+  const [urlGetStatusDevFile, setStatusDevUrl] = useState("");
+  const [urlGetOutstandingFile, setOutStandingUrl] = useState("");
+  const [urlGetCompanyBalanceSheet, setCompanyBalanceSheetUrl] = useState("");
+  const [urlGetPaidUpCapital, setPaidUpCapitalUrl] = useState("");
+  const [urlGetIndividualCertificateCA, setIndividualCertificatCAUrl] = useState("");
+  const [urlGetEngineerSignUrl, setEngineerSignUrl] = useState("");
+  const [urlGetArchitectSignUrl, setArchitectSignUrl] = useState("");
+  const [urlGetTownPlannerSignUrl, setTownPlannerSignUrl] = useState("");
+  const [urlGetAgreementDocUrl, setAgreementDocUrl] = useState("");
+  const [urlGetBoardDocUrl, setBoardDocUrl] = useState("");
+  const [urlGetRegisteredDocUrl, setRegisteredDocUrl] = useState("");
+  const [urlGetBoardDocYUrl, setBoardDocYUrl] = useState("");
+  const [urlGetEarlierDocYUrl, setEarlierDocYUrl] = useState("");
   const [hrduModalData, setHrduModalData] = useState({
     licNo: "",
     dateOfGrantingLic: "",
@@ -780,14 +782,13 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
           technicalCapacityOutsideHaryana: technicalCapacityOutsideHaryana,
           technicalCapacityOutsideHaryanaDetails: technicalCapacityOutsideHaryanaDetails,
           documents: Documents,
-          isUndertakenDR: isUndertakenDR,
         },
       },
     };
 
     Digit.OBPSService.CREATEDeveloper(developerRegisterData, tenantId)
       .then((result, err) => {
-        // console.log("DATA", result?.id);
+        console.log("DATA", result?.id);
         // localStorage.setItem('devRegId',JSON.stringify(result?.id));
         setIsDisableForNext(false);
         let data = {
@@ -861,7 +862,6 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                 data?.devDetail[0]?.addInfo?.showDevTypeFields === "Partnership Firm"
               ? !Documents?.networthPartners || !Documents?.networthFirm || !Documents?.fullyConvertibleDebenture
               : false) ||
-            !isUndertakenDR ||
             ((permissionGrantedHRDU === "Y" && capacityDevelopColonyHdruAct?.length) ||
             (permissionGrantedHRDU === "N" && technicalCapacityOutsideHaryana === "N")
               ? false
@@ -918,8 +918,8 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                   1
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_NETWORTH_INCASE_INDIVIDUAL_CERTIFIED")}`}{" "}
-                                  <span className="text-danger font-weight-bold">*</span>
+                                  Net Worth in case of individual certified by CA/ Or Income tax return in case of an individual (for the last three
+                                  years) <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                   <div className="row">
@@ -952,7 +952,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                               <StyledTableRow>
                                 <StyledTableCell> 2 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_BANK_STATEMENT_LAST_THREE_YEARS")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Bank statement for the last 3 years <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
 
                                 <StyledTableCell align="center" size="large">
@@ -1021,7 +1021,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                   1
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_BALANCE_SHEET_LAST_THREE_YEARS")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Balance sheet of last 3 years <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                   <div className="row">
@@ -1055,7 +1055,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                               <StyledTableRow>
                                 <StyledTableCell> 2 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_REPRESENTING_PAIDUP_CAPITAL")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Ps-3(Representing Paid-UP capital) <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
 
                                 <StyledTableCell align="center" size="large">
@@ -1091,7 +1091,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                               <StyledTableRow>
                                 <StyledTableCell> 3 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_RSERVE_AND_SURPLUSES")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Reserves and surpluses <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
                                 <StyledTableCell align="center" size="large">
                                   <div className="row">
@@ -1108,6 +1108,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                     )}
                                     <div className="btn btn-sm col-md-6">
                                       <label for="reservesAndSurplus" title="Upload Document">
+                                        {" "}
                                         <FileUpload color="primary" />
                                       </label>
                                       <input
@@ -1123,7 +1124,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                               </StyledTableRow>
                               <StyledTableRow>
                                 <StyledTableCell> 4 </StyledTableCell>
-                                <StyledTableCell>{`${t("BPA_DEV_CAPACITY_FULLY_CONVERTIBLE_DEBENTURE")}`}</StyledTableCell>
+                                <StyledTableCell>Fully Convertible Debenture </StyledTableCell>
                                 <StyledTableCell align="center" size="large">
                                   <div className="row">
                                     {Documents?.fullyConvertibleDebenture ? (
@@ -1155,7 +1156,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                               </StyledTableRow>
                               <StyledTableRow>
                                 <StyledTableCell> 5 </StyledTableCell>
-                                <StyledTableCell>{`${t("BPA_DEV_CAPACITY_ANY_OTHER_DOCUMENTS")}`}</StyledTableCell>
+                                <StyledTableCell>Any other documents</StyledTableCell>
                                 <StyledTableCell align="center" size="large">
                                   <div className="row">
                                     {Documents?.anyOtherDoc ? (
@@ -1207,7 +1208,122 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                 data?.devDetail[0]?.addInfo?.showDevTypeFields === "Partnership Firm") && (
                 <div className="card-body">
                   <div className="form-group row">
+                    {/* <label className="col-sm-3 col-form-label">LLP</label> */}
                     <div className="col-sm-12">
+                      {/* <input type="text" className="employee-card-input" id="llp" placeholder="Enter Email" /> */}
+                      {/* <table className="table table-bordered" size="sm">
+                        <thead>
+                          <tr>
+                            <th>S.No.</th>
+                            <th>Particulars of document</th>
+                            <th>Annexure </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td> 1 </td>
+                            <td>
+                              Networth of partners <span className="text-danger font-weight-bold">*</span>
+                            </td>
+                            <td align="center" size="large">
+                              <div className="row">
+                                {Documents?.networthPartners ? (
+                                  <a
+                                    onClick={() => getDocShareholding(Documents?.networthPartners)}
+                                    title="View Document"
+                                    className="btn btn-sm col-md-6"
+                                  >
+                                    <VisibilityIcon color="info" className="icon" />
+                                  </a>
+                                ) : (
+                                  <p></p>
+                                )}
+                                <div className="btn btn-sm col-md-6">
+                                  <label for="netWorthOfPartnersId" title="Upload Document">
+                                    {" "}
+                                    <FileUpload color="primary" />
+                                  </label>
+                                  <input
+                                    id="netWorthOfPartnersId"
+                                    type="file"
+                                    accept="application/pdf"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => getDocumentData(e?.target?.files[0], "networthPartners", "devTypeDocument")}
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td> 2 </td>
+                            <td>
+                              Net worth of firm <span className="text-danger font-weight-bold">*</span>
+                            </td>
+                            <td align="center" size="large">
+                              <div className="row">
+                                {Documents?.networthFirm ? (
+                                  <a
+                                    onClick={() => getDocShareholding(Documents?.networthFirm)}
+                                    title="View Document"
+                                    className="btn btn-sm col-md-6"
+                                  >
+                                    <VisibilityIcon color="info" className="icon" />
+                                  </a>
+                                ) : (
+                                  <p></p>
+                                )}
+                                <div className="btn btn-sm col-md-6">
+                                  <label for="netWorthOfFirmId" title="Upload Document">
+                                    {" "}
+                                    <FileUpload color="primary" />
+                                  </label>
+                                  <input
+                                    id="netWorthOfFirmId"
+                                    type="file"
+                                    accept="application/pdf"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => getDocumentData(e?.target?.files[0], "networthFirm", "devTypeDocument")}
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td> 3 </td>
+                            <td>
+                              Upload Fully Convertible Debenture <span className="text-danger font-weight-bold">*</span>
+                            </td>
+                            <td align="center" size="large">
+                              <div className="row">
+                                {Documents?.fullyConvertibleDebenture ? (
+                                  <a
+                                    onClick={() => getDocShareholding(Documents?.fullyConvertibleDebenture)}
+                                    title="View Document"
+                                    className="btn btn-sm col-md-6"
+                                  >
+                                    <VisibilityIcon color="info" className="icon" />
+                                  </a>
+                                ) : (
+                                  <p></p>
+                                )}
+                                <div className="btn btn-sm col-md-6">
+                                  <label for="fullyConvertibleDebentureId" title="Upload Document">
+                                    {" "}
+                                    <FileUpload color="primary" />
+                                  </label>
+                                  <input
+                                    id="fullyConvertibleDebentureId"
+                                    type="file"
+                                    accept="application/pdf"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => getDocumentData(e?.target?.files[0], "fullyConvertibleDebenture", "devTypeDocument")}
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table> */}
                       <Paper sx={{ width: "100%", overflow: "hidden" }}>
                         <TableContainer sx={{ maxHeight: 440 }}>
                           <Table stickyHeader aria-label="sticky table">
@@ -1224,7 +1340,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                   1
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_NETWORTH_PARTNERS")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Networth of partners <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                   <div className="row">
@@ -1260,7 +1376,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                   2
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_NETWORTH_FIRM")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Net worth of firm <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                   <div className="row">
@@ -1296,7 +1412,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                   3
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                  {`${t("BPA_DEV_CAPACITY_FULLY_CONVERTIBLE_DEBENTURE")}`} <span className="text-danger font-weight-bold">*</span>
+                                  Upload Fully Convertible Debenture <span className="text-danger font-weight-bold">*</span>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                   <div className="row">
@@ -1313,6 +1429,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                     )}
                                     <div className="btn btn-sm col-md-6">
                                       <label for="fullyConvertibleDebentureId" title="Upload Document">
+                                        {" "}
                                         <FileUpload color="primary" />
                                       </label>
                                       <input
@@ -1350,13 +1467,13 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                     </h5>
                 </div> */}
               <div className="card-body">
-                {/* <p>1. I/ We hereby submit the following information/ enclose the relevant documents:-</p> */}
+                <p>1. I/ We hereby submit the following information/ enclose the relevant documents:-</p>
                 {data?.devDetail[0]?.addInfo?.showDevTypeFields === "Individual" ||
                 data?.devDetail[0]?.addInfo?.showDevTypeFields === "Limited Liability Partnership" ||
                 data?.devDetail[0]?.addInfo?.showDevTypeFields === "Proprietorship Firm" ||
                 data?.devDetail[0]?.addInfo?.showDevTypeFields === "Hindu Undivided Family" ? (
                   <p className="ml-1">
-                    (i) {`${t("BPA_DEV_CAPACITY_EARLIER_GRANTED_COLONY_UNDER_HRDU_ACT")}`}
+                    (i) Whether the Developer has earlier been granted permission to set up a colony under HDRU Act, 1975:{" "}
                     <span className="text-danger font-weight-bold">*</span>
                   </p>
                 ) : (
@@ -1365,7 +1482,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                 {data?.devDetail[0]?.addInfo?.showDevTypeFields === "Company" ||
                 data?.devDetail[0]?.addInfo?.showDevTypeFields === "Partnership Firm" ? (
                   <p className="ml-1">
-                    (i) {`${t("BPA_DEV_CAPACITY_EARLIER_GRANTED_COLONY_UNDER_HRDU_ACT")}`}
+                    (i) Whether the Developer has earlier been granted permission to set up a colony under HDRU Act, 1975:{" "}
                     <span className="text-danger font-weight-bold">*</span>
                   </p>
                 ) : (
@@ -1469,7 +1586,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                 <Row>
                                   <Col md={4} xxl lg="4">
                                     <label htmlFor="name" className="text">
-                                      {`${t("BPA_LICENSE_DETAILS_TEXT")}`} <span className="text-danger font-weight-bold">*</span>
+                                      Licence No. <span className="text-danger font-weight-bold">*</span>
                                     </label>
                                     <input
                                       type="text"
@@ -1486,13 +1603,13 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                         <CardLabelError
                                           style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}
                                         >
-                                          {t("BPA_LICENSE_INVALID")}
+                                          {t("Invalid Licence No.")}
                                         </CardLabelError>
                                       )}
                                   </Col>
                                   <Col md={4} xxl lg="4">
                                     <label htmlFor="name" className="text">
-                                      {t("BPA_GRANT_LICENSE_DATE")} <span className="text-danger font-weight-bold">*</span>
+                                      Date of grant of a license <span className="text-danger font-weight-bold">*</span>
                                     </label>
                                     <input
                                       type="date"
@@ -1510,7 +1627,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                   </Col>
                                   <Col md={3} xxl lg="4">
                                     <label htmlFor="name" className="text">
-                                      {`${t("BPA_DEVELOPER_CAPACITY_PURPOSE_COLONY")}`}
+                                      {`${t("Purpose of colony")}`}
                                       <span class="text-danger font-weight-bold mx-2">*</span>
                                     </label>
 
@@ -1529,7 +1646,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                 <Row>
                                   <Col md={4} xxl lg="4">
                                     <label htmlFor="name" className="text">
-                                      {`${t("BPA_DEVELOPER_CAPACITY_LICENSE_VALIDITY")}`} <span className="text-danger font-weight-bold">*</span>
+                                      Validity of licence <span className="text-danger font-weight-bold">*</span>
                                     </label>
                                     <input
                                       type="date"
@@ -1543,6 +1660,72 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                                     />
                                   </Col>
                                 </Row>
+
+                                {/* <p>(iii) Whether any technical expert(s) engaged</p> */}
+
+                                {/* <div className="form-group">
+                                                            <input
+                                                                type="radio"
+                                                                value="Y"
+                                                                id="technicalExpert"
+                                                                className="mx-2 mt-1"
+                                                                onChange={(e) => setHrduModalData({ ...hrduModalData, technicalExpertEngaged: e.target.value })}
+                                                                name="technicalExpert"
+                                                            />
+                                                            <label for="Yes">Yes</label>
+
+                                                            <input
+                                                                type="radio"
+                                                                value="N"
+                                                                id="technicalExpertN"
+                                                                className="mx-2 mt-1"
+                                                                onChange={(e) => setHrduModalData({ ...hrduModalData, technicalExpertEngaged: e.target.value })}
+                                                                name="technicalExpert"
+                                                            />
+                                                            <label for="No">No</label>
+                                                        </div> */}
+
+                                {/* {
+                                                            hrduModalData.technicalExpertEngaged === "Y" &&
+                                                            <Row>
+                                                                <Col md={4} xxl lg="4">
+                                                                    <label htmlFor="name" className="text"> Copy of degree of engineer <span className="text-danger font-weight-bold">*</span></label>
+                                                                    <input
+                                                                        type="file"
+                                                                        accept="application/pdf"
+                                                                        name="validatingLicence"
+                                                                        onChange={(e) => getDocumentData(e?.target?.files[0], "engineerDegree","hrduModalActFile")}
+                                                                        placeholder=""
+                                                                        class="employee-card-input"
+                                                                    />
+
+                                                                </Col>
+                                                                <Col md={4} xxl lg="4">
+                                                                    <label htmlFor="name" className="text"> Copy of degree of architect <span className="text-danger font-weight-bold">*</span></label>
+                                                                    <input
+                                                                        type="file"
+                                                                        accept="application/pdf"
+                                                                        name="validatingLicence"
+                                                                        onChange={(e) => getDocumentData(e?.target?.files[0], "architectDegree","hrduModalActFile")}
+                                                                        placeholder=""
+                                                                        class="employee-card-input"
+                                                                    />
+
+                                                                </Col>
+                                                                <Col md={4} xxl lg="4">
+                                                                    <label htmlFor="name" className="text"> Copy of degree of Town planer <span className="text-danger font-weight-bold">*</span></label>
+                                                                    <input
+                                                                        type="file"
+                                                                        accept="application/pdf"
+                                                                        name="validatingLicence"
+                                                                        onChange={(e) => getDocumentData(e?.target?.files[0], "townPlannerDegree","hrduModalActFile")}
+                                                                        placeholder=""
+                                                                        class="employee-card-input"
+                                                                    />
+
+                                                                </Col>
+                                                            </Row>
+                                                        } */}
                               </form>
                             </Modal.Body>
                             <Modal.Footer>
@@ -1580,12 +1763,11 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                     {data?.devDetail[0]?.addInfo?.showDevTypeFields === "Individual" ||
                     data?.devDetail[0]?.addInfo?.showDevTypeFields === "Proprietorship Firm" ? (
                       <p>
-                        (ii) {`${t("BPA_DEVELOPER_DEVELOPED_PROJECT_OUTSIDE_HARYANA")}`} <span className="text-danger font-weight-bold">*</span>
+                        (ii) Have you developed projects outside Haryana:- <span className="text-danger font-weight-bold">*</span>
                       </p>
                     ) : (
                       <p>
-                        (ii) {`${t("BPA_DEVELOPER_COMPANY_FIRM_DEVELOPED_PROJECT_OUTSIDE_HARYANA")}`}{" "}
-                        <span className="text-danger font-weight-bold">*</span>
+                        (ii) Have your company/firm developed projects outside Haryana:- <span className="text-danger font-weight-bold">*</span>
                       </p>
                     )}
 
@@ -1615,7 +1797,8 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                         <Row>
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="project" className="">
-                              {`${t("BPA_DEVELOPER_NAME_OF_PROJECT")}`} <span className="text-danger font-weight-bold">*</span>
+                              {" "}
+                              Name of Project <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1638,7 +1821,8 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
 
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="authority" className="">
-                              {`${t("BPA_DEVELOPER_NAME_OF_AUTHORITY")}`} <span className="text-danger font-weight-bold">*</span>
+                              {" "}
+                              Name of Authority <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1661,7 +1845,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
 
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="statusOfDevelopment" className="">
-                              {`${t("BPA_DEVELOPER_STATUS_OF_DEVELOPMENT")}`} <span className="text-danger font-weight-bold">*</span>
+                              Status of Development <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1686,7 +1870,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                           </Col>
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="permissionLetterDoc" className="">
-                              {`${t("BPA_DEVELOPER_PERMISSION_LETTER")}`} <span className="text-danger font-weight-bold">*</span>
+                              Permission letter <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <div className="d-flex">
                               <input
@@ -1710,7 +1894,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                           </Col>
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="projectArea" className="">
-                              {`${t("BPA_DEVELOPER_AREA_OF_PROJECT_ACRES")}`} <span className="text-danger font-weight-bold">*</span>
+                              Area of the project in acres <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="number"
@@ -1725,7 +1909,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                           </Col>
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="location" className="">
-                              {`${t("BPA_DEVELOPER_LOCATION")}`} <span className="text-danger font-weight-bold">*</span>
+                              Location <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1740,7 +1924,7 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                           </Col>
                           <Col md={3} xxl lg="3" className="mb-2">
                             <label htmlFor="hrDetailAnyDoc" className="">
-                              {`${t("BPA_DEV_CAPACITY_ANY_OTHER_DOCUMENTS")}`}
+                              Any other document/ Photo
                             </label>
                             <div className="d-flex">
                               <input
@@ -2343,26 +2527,6 @@ const DeveloperCapacity = ({ t, config, onSelect, value, userType, formData }) =
                   )}
                 </div>
               </div>
-              <Col md={12}>
-                <Checkbox
-                  {...labels}
-                  onClick={(e) => setIsUndertaken(e.target.checked)}
-                  value={isUndertakenDR}
-                  checked={isUndertakenDR}
-                  name={isUndertakenDR}
-                />
-                {/* <input
-                  type="checkbox"
-                  {...labels}
-                  onChange={(e) => selectCheckedDR(e.target.checked)}
-                  value={isUndertakenDR}
-                  checked={isUndertakenDR}
-                  name={isUndertakenDR}
-                /> */}
-                <label>
-                  {`${t("BPA_UNDERTAKEN_CHECKBOX_TEXT")}`} <span className="text-danger font-weight-bold">*</span>
-                </label>
-              </Col>
             </div>
           </div>
         </FormStep>

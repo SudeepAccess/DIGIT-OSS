@@ -24,11 +24,6 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 function ProformaPatwari() {
-
-  const userRoles = Digit.UserService.getUser()?.info?.roles.map((item) => item.code)  || [];
-  const showActionButton = userRoles.includes("Patwari")
-
-
   const [selects, setSelects] = useState();
   const [showhide, setShowhide] = useState("");
   const { register, handleSubmit } = useForm();
@@ -61,14 +56,14 @@ function ProformaPatwari() {
         }}
       >
         <span style={{ color: "#817f7f" }} className="">
-        PROFORMA FOR SCRUTINY (BY OFFICE PATWARI)
+        PERFORMA FOR SCRUTINY (BY OFFICE PATWARI)
         </span>
         {open2 ? <RemoveIcon></RemoveIcon> : <AddIcon></AddIcon>}
       </div>
       <Collapse in={open2}>
         <div id="example-collapse-text">
       <Card style={{ width: "126%", marginLeft: "-2px", paddingRight: "10px", marginTop: "20px", marginBottom: "52px" }}>
-        <h4 style={{ fontSize: "20px", marginLeft: "5px" }}>PROFORMA FOR SCRUTINY (BY OFFICE PATWARI)</h4>
+        <h4 style={{ fontSize: "20px", marginLeft: "5px" }}>PERFORMA FOR SCRUTINY (BY OFFICE PATWARI)</h4>
         <div className="card">
           <Form> 
             <TableContainer >
@@ -113,11 +108,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           
                           <label htmlFor="approachFromProposedSector">
-                          <input {...register("approachFromProposedSector")} type="radio"  disabled={!showActionButton} value="Y" id="approachFromProposedSector" />
+                          <input {...register("approachFromProposedSector")} type="radio" value="Y" id="approachFromProposedSector" />
                           &nbsp;&nbsp; &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="approachFromProposedSector">
-                          <input {...register("approachFromProposedSector")} type="radio"  disabled={!showActionButton} value="N" id="approachFromProposedSector" />
+                          <input {...register("approachFromProposedSector")} type="radio" value="N" id="approachFromProposedSector" />
                           &nbsp;&nbsp; &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div>
@@ -136,7 +131,6 @@ function ProformaPatwari() {
         //     setDeveloperRemarks({ data: e.target.value });
         //     setRemarksEntered(e.target.value);
         //   }}
-        disabled={!showActionButton}
           rows="3"
         //   value={RemarksDeveloper.data}
         />
@@ -166,11 +160,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                          
                           <label htmlFor="licencefeedeposited">
-                          <input {...register("licencefeedeposited")} type="radio" value="Y"   disabled={!showActionButton} id="licencefeedeposited" />
+                          <input {...register("licencefeedeposited")} type="radio" value="Y" id="licencefeedeposited" />
                           &nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="licencefeedeposited">
-                          <input {...register("licencefeedeposited")} type="radio" value="N"   disabled={!showActionButton} id="licencefeedeposited" />
+                          <input {...register("licencefeedeposited")} type="radio" value="N" id="licencefeedeposited" />
                           &nbsp;&nbsp;&nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -185,7 +179,6 @@ function ProformaPatwari() {
           id="exampleFormControlTextarea2"
           placeholder="Enter your Remarks"
           autoFocus
-          disabled={!showActionButton}
         //   onChange={(e) => {
         //     setDeveloperRemarks({ data: e.target.value });
         //     setRemarksEntered(e.target.value);
@@ -221,11 +214,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="applicantdeveloper">
-                          <input {...register("applicantdeveloper")} type="radio"  disabled={!showActionButton} value="Y" id="applicantdeveloper" />
+                          <input {...register("applicantdeveloper")} type="radio" value="Y" id="applicantdeveloper" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="applicantdeveloper">
-                          <input {...register("applicantdeveloper")} type="radio"   disabled={!showActionButton} value="N" id="applicantdeveloper" />
+                          <input {...register("applicantdeveloper")} type="radio" value="N" id="applicantdeveloper" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -272,11 +265,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="renewedreuisite">
-                          <input {...register("renewedreuisite")} type="radio"  disabled={!showActionButton} value="Y" id="renewedreuisite" />
+                          <input {...register("renewedreuisite")} type="radio" value="Y" id="renewedreuisite" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="renewedreuisite">
-                          <input {...register("renewedreuisite")} type="radio"  disabled={!showActionButton} value="N" id="renewedreuisite" />
+                          <input {...register("renewedreuisite")} type="radio" value="N" id="renewedreuisite" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -322,11 +315,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="additionalLicense">
-                          <input {...register("additionalLicense")} type="radio"  disabled={!showActionButton} value="Y" id="additionalLicense" />
+                          <input {...register("additionalLicense")} type="radio" value="Y" id="additionalLicense" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="additionalLicense">
-                          <input {...register("additionalLicense")} type="radio"   disabled={!showActionButton}value="N" id="additionalLicense" />
+                          <input {...register("additionalLicense")} type="radio" value="N" id="additionalLicense" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -372,11 +365,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="loigeneration">
-                          <input {...register("loigeneration")} type="radio"  disabled={!showActionButton} value="Y" id="loigeneration" />
+                          <input {...register("loigeneration")} type="radio" value="Y" id="loigeneration" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="loigeneration">
-                          <input {...register("loigeneration")} type="radio" value="N"  disabled={!showActionButton} id="loigeneration" />
+                          <input {...register("loigeneration")} type="radio" value="N" id="loigeneration" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -423,11 +416,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="loigeneration">
-                          <input {...register("outstandingdues")} type="radio" value="Y"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="Y" id="outstandingdues" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="outstandingdues">
-                          <input {...register("outstandingdues")} type="radio" value="N"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="N" id="outstandingdues" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -473,11 +466,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="loigeneration">
-                          <input {...register("outstandingdues")} type="radio" value="Y"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="Y" id="outstandingdues" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="outstandingdues">
-                          <input {...register("outstandingdues")} type="radio" value="N"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="N" id="outstandingdues" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -522,11 +515,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="loigeneration">
-                          <input {...register("outstandingdues")} type="radio" value="Y"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="Y" id="outstandingdues" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="outstandingdues">
-                          <input {...register("outstandingdues")} type="radio" value="N"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="N" id="outstandingdues" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -580,11 +573,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="loigeneration">
-                          <input {...register("outstandingdues")} type="radio" value="Y"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="Y" id="outstandingdues" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="outstandingdues">
-                          <input {...register("outstandingdues")} type="radio" value="N"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="N" id="outstandingdues" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>
@@ -630,11 +623,11 @@ function ProformaPatwari() {
                         <div className="d-flex flex-row align-items-center my-1">
                           &nbsp;&nbsp;
                           <label htmlFor="loigeneration">
-                          <input {...register("outstandingdues")} type="radio" value="Y"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="Y" id="outstandingdues" />
                           &nbsp; Yes &nbsp;&nbsp;
                         </label>
                         <label htmlFor="outstandingdues">
-                          <input {...register("outstandingdues")} type="radio" value="N"  disabled={!showActionButton} id="outstandingdues" />
+                          <input {...register("outstandingdues")} type="radio" value="N" id="outstandingdues" />
                           &nbsp; No &nbsp;&nbsp;
                         </label>
                         </div></div>

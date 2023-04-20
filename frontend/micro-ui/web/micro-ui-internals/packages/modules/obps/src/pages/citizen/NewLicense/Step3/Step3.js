@@ -353,11 +353,9 @@ const LandScheduleForm = (props) => {
   const getApplicantUserData = async (id) => {
     const token = window?.localStorage?.getItem("token");
     const payload = {
-      RequestInfo: {
-        apiId: "Rainmaker",
-        msgId: "1669293303096|en_IN",
-        authToken: token,
-      },
+      apiId: "Rainmaker",
+      msgId: "1669293303096|en_IN",
+      authToken: token,
     };
     try {
       const Resp = await axios.post(`/tl-services/new/licenses/object/_getByApplicationNumber?applicationNumber=${id}`, payload);

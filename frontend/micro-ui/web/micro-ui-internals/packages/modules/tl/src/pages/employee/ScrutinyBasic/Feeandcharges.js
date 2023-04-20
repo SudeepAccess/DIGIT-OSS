@@ -15,8 +15,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Collapse from "react-bootstrap/Collapse";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 const style = {
   position: "absolute",
   top: "50%",
@@ -30,13 +28,6 @@ const style = {
 };
 
 const Feeandcharges = (props) => {
-
-  // useTranslation
-
-  const {t} = useTranslation();
-  const { pathname: url } = useLocation();
-
-
 const feeandcharges = props.feeandchargesData
 
 
@@ -362,7 +353,6 @@ const feeandcharges = props.feeandchargesData
                         
                       
                       ))} */}
-                     
                      <Row>
 
                      {/* {feeandcharges?.data?.totalFee}  */}
@@ -464,41 +454,8 @@ const feeandcharges = props.feeandchargesData
                       <Tree data={feeandcharges?.feesTypeCalculationDto} />
                     </div>
                   )}
-                 
-                  {/* <div>
-                        {feeandcharges?.totalScruitnyFee}
-                      </div> */}
-</Row>
-<Row>
-                  
-                            <Col className="col col-4" >
-                            <h4 >
-                            {/* Total Fee */}
-                            {`${t("NWL_APPLICANT_FEE_TOTAL_FEE")}`}
-                            </h4>
-                              <input type="text" className="form-control" placeholder={feeandcharges?.totalFee} disabled />
-                            </Col>
-                          
-                          
 
-                            <Col className="col col-4" >
-                            <h4 >
-                            {/* Total Licence Fee */}
-                            {`${t("NWL_APPLICANT_FEE_TOTAL_LICENCE_FEE")}`}
-                            </h4>
-                              <input type="text" className="form-control" placeholder={feeandcharges?.totalLicenceFee} disabled />
-                            </Col>
-                         
-                          
-                            <Col className="col col-4" >
-                            <h4 >
-                          {/* Total Scruitny Fee */}
-                          {`${t("NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE")}`}
-                          </h4>
-                              <input type="text" className="form-control" placeholder={feeandcharges?.totalScruitnyFee} disabled />
-                            </Col>
-                          
-                          </Row>
+</Row>
 
               </Form.Group>
             </Card>

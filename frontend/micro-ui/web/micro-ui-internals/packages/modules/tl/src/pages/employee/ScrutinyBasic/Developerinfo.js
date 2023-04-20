@@ -26,70 +26,20 @@ import CyberPark from "./PuropseStep3/CyberPark";
 import RetirementHousing from "./PuropseStep3/RetirementHousing";
 import InfoIcon from "@mui/icons-material/Info";
 import Tooltip from "@mui/material/Tooltip";
-import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 // import CommercialPlottedForm from "./Puropse/CommercialPlottedForm";
 
 const Developerinfo = (props) => {
-
-  useTranslation
-
-  const {t} = useTranslation();
-  const { pathname: url } = useLocation();
 
   const dataIcons = props.dataForIcons;
   const landScheduleData = props.ApiResponseData;
   const Purpose = props.purpose;
 
   const applicationStatus = props.applicationStatus;
-  // let user = Digit.UserService.getUser();
-  // const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  // const hideRemarks = userRoles.some((item) => item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
-  // const hideRemarksPatwari = userRoles.some((item) => item === "Patwari_HQ")
-  // const hideRemarksJE = userRoles.some((item) => item === "JE_HQ" || item === "JE_HR")
-
-  // const applicationStatus = props.applicationStatus ;
   let user = Digit.UserService.getUser();
-  const userInfo = Digit.UserService.getUser()?.info || {};
-  const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
-  const filterDataRole = userRolesArray?.[0]?.code;
   const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  
-  console.log("rolelogintime" , userRoles );
-  console.log("afterfilter12" , filterDataRole)
-
-  const mDMSData = props.mDMSData;
-  const mDMSDataRole = mDMSData?.map((e) => e.role) || [];
-  const hideRemarks = mDMSDataRole.includes(filterDataRole);
-  const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [] ;
-  const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
-  const [fileddataName, setFiledDataName] = useState ();
-
- useEffect(() =>{
-    if(mDMSData&&mDMSData?.length){
-      console.log("filedDataMdms" , mDMSData,mDMSData?.[0]?.field , mDMSData?.[0]?.field.map((item , index) => item.fields ));
-      setFiledDataName(mDMSData?.[0]?.field.map((item , index) => item.fields ))
-       
-    }
-    
- },[mDMSData]
- )
- const showReportProblemIcon=(filedName)=>{
-   if (fileddataName&&fileddataName.length) {
-      let show = fileddataName.includes(filedName)
-      return show ;
-    } else {
-      return false ;
-    }
- }
- 
-  // mDMSData?.map((e) => e.role)||[]
-  console.log("happyRole" , userRoles);
-  console.log("happyDate" , mDMSData);
-  console.log("happyROLE" , mDMSDataRole);
-  console.log("happyapplicationStatusMdms" , applicationStatusMdms);
-  console.log("happyDateHIDE345" , hideRemarksPatwari,showReportProblemIcon("Purpose of colony"),hideRemarks);
-
+  const hideRemarks = userRoles.some((item) => item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
+  const hideRemarksPatwari = userRoles.some((item) => item === "Patwari_HQ")
+  const hideRemarksJE = userRoles.some((item) => item === "JE_HQ" || item === "JE_HR")
 
 
   const [vacant, setVacant] = useState("");
@@ -531,22 +481,11 @@ const Developerinfo = (props) => {
           >
             <Row className={classes.formLabel}>
               <Col md={4} xxl lg="12">
-                 {/* {JSON.stringify(userRoles)}
+                <Form.Label >
+                  {/* {JSON.stringify(userRoles)}
                     {JSON.stringify(hideRemarks)} */}
-                {/* <Form.Label >
-                 
                   (i)Whether licence applied for additional area ?
-                </Form.Label> */}
-                {/* <label  className="card-title fw-bold" style={{ margin: 10 }} htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_WHETHER_LICENCE_APPLIED_FOR_ADDITIONAL_AREA")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label> */}
-
-                <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_WHETHER_LICENCE_APPLIED_FOR_ADDITIONAL_AREA")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-
+                </Form.Label>
                 <div className="d-flex flex-row">
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.licenseApplied === "Y" ? true : false} />
                   <label className="m-0  mx-2" for="Yes">Yes</label>
@@ -554,7 +493,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Additional application with Migration") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.licenceApplied
                     }}
                     onClick={() => {
@@ -575,14 +514,9 @@ const Developerinfo = (props) => {
                 <div>
                   <Row className={classes.formLabel} style={{ marginBottom: 15 }} >
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <label>
+                      <label>
                         <h5>Licence No. of Parent Licence &nbsp;</h5>
-                      </label> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_LICENCE_NUMBER_OF_PARENT_LICENCE")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-
+                      </label>
                       <div className="d-flex flex-row align-items-center my-1 ">
                         <Form.Control
                           placeholder={landScheduleData !== null ? landScheduleData?.licenseNumber : null}
@@ -590,7 +524,7 @@ const Developerinfo = (props) => {
                         ></Form.Control>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Licence No. of Parent Licence") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
 
                             color: fieldIconColors.licenseNumber
                           }}
@@ -607,13 +541,10 @@ const Developerinfo = (props) => {
                     </Col>
                     <Col className="ms-auto" md={4} xxl lg="4">
                       <label htmlFor="potential">
-                       
-                          {/* <h5>Development Plan &nbsp;</h5> */}
-                          <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_DEVELOMENT_PLAN_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-                        
+                        <h6>
+                          {/* Potential Zone: */}
+                          <h5>Development Plan &nbsp;</h5>
+                        </h6>
                       </label>
 
                       <div className="d-flex flex-row  align-items-center">
@@ -624,7 +555,7 @@ const Developerinfo = (props) => {
                         ></Form.Control>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Development Plan") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             // display: hideRemarksPatwari?"none":"block",
                             color: fieldIconColors.potential
                           }}
@@ -639,21 +570,15 @@ const Developerinfo = (props) => {
                       </div>
                     </Col>
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <label>
+                      <label>
 
                         <h5>Type of colony  &nbsp;</h5>
-                        
-                      </label> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_TYPE_OF_COLONY_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-
+                      </label>
                       <div className="d-flex flex-row  align-items-center">
                         <Form.Control placeholder={landScheduleData !== null ? landScheduleData?.siteLoc : null} disabled></Form.Control>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Type of colony") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             // display: hideRemarksPatwari?"none":"block",
                             color: fieldIconColors.siteLoc
                           }}
@@ -710,20 +635,15 @@ const Developerinfo = (props) => {
                   </Row >
                   <Row className={classes.formLabel} style={{ marginBottom: 15 }}>
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <label>
+                      <label>
                         <h6>Area of parent licence in acres </h6>{" "}
 
-                      </label> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_AREA_OF_PARENT_LICENCE_IN_ACRES_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-                      
+                      </label>
                       <div className="d-flex flex-row  align-items-center">
                         <Form.Control placeholder={landScheduleData !== null ? landScheduleData?.areaOfParentLicence : null} disabled></Form.Control>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Area of parent licence in acres") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             // display: hideRemarksPatwari?"none":"block",
                             color: fieldIconColors.areaOfParentLicence
                           }}
@@ -738,96 +658,30 @@ const Developerinfo = (props) => {
                       </div>
                     </Col>
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <label>
-                        <h6>Validity of parent licences</h6>
-                      </label> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_VALIDITY_OF_PARENT_LICENCES_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-                          <div className="d-flex flex-row align-items-center my-1 ">
-                        <input type="radio" disabled value="Yes" checked={landScheduleData?.thirdParty === "Y" ? true : false} />
-                        &nbsp;&nbsp;
-                        <label className="m-0 mx-2" for="Yes">
-                          Yes
-                        </label>
-                        &nbsp;&nbsp;
-                        <input type="radio" disabled value="No" checked={landScheduleData?.thirdParty === "N" ? true : false} />
-                        &nbsp;&nbsp;
-                        <label className="m-0 mx-2" for="No">
-                          No
-                        </label>
+                      <label>
+                        <h6>Specify Others</h6>
+                      </label>
+                      <div className="d-flex flex-row  align-items-center">
+                        <Form.Control placeholder={landScheduleData !== null ? landScheduleData?.specify : null} disabled></Form.Control>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Third-party right created in parent license") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             // display: hideRemarksPatwari?"none":"block",
-                            color: fieldIconColors.thirdPartyRightCreated
+                            color: fieldIconColors.specifyOthers
                           }}
                           onClick={() => {
-                            setLabelValue("Third-party right created"),
-                              setOpennedModal("thirdPartyRightCreated")
+                            setLabelValue("Specify Others"),
+                              setOpennedModal("specifyOthers")
                             setSmShow(true),
                               console.log("modal open"),
-                              setFieldValue(landScheduleData?.thirdParty === "Y" ? "Yes" : "No");
+                              setFieldValue(landScheduleData !== null ? landScheduleData?.specify : null);
                           }}
                         ></ReportProblemIcon>
-
                       </div>
-                      {landScheduleData?.thirdParty === "N" && (
-                        <div>
-                           <label  htmlFor="Developer Details">
-                           {/* Whether renewal licence fee submitted  */}
-                            {`${t("NWL_APPLICANT_WHETHER_RENEWAL_LICENCES_FEE_SUBMITTED_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-                      <div className="d-flex flex-row align-items-center my-1 ">
-                        <input type="radio" disabled value="Yes" checked={landScheduleData?.thirdParty === "Y" ? true : false} />
-                        &nbsp;&nbsp;
-                        <label className="m-0 mx-2" for="Yes">
-                          Yes
-                        </label>
-                        &nbsp;&nbsp;
-                        <input type="radio" disabled value="No" checked={landScheduleData?.thirdParty === "N" ? true : false} />
-                        &nbsp;&nbsp;
-                        <label className="m-0 mx-2" for="No">
-                          No
-                        </label>
-                        <ReportProblemIcon
-                          style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Third-party right created in parent license") ? "block" : "none",
-                            // display: hideRemarksPatwari?"none":"block",
-                            color: fieldIconColors.thirdPartyRightCreated
-                          }}
-                          onClick={() => {
-                            setLabelValue("Third-party right created"),
-                              setOpennedModal("thirdPartyRightCreated")
-                            setSmShow(true),
-                              console.log("modal open"),
-                              setFieldValue(landScheduleData?.thirdParty === "Y" ? "Yes" : "No");
-                          }}
-                        ></ReportProblemIcon>
-                        </div>
-                        </div>
-)}
-                   
                     </Col>
                     <Col className="ms-auto" md={4} xxl lg="4">
-                    <label  htmlFor="Developer Details">
-                           {/* Any Other Remark  */}
-                            {`${t("NWL_APPLICANT_WHETHER_ANY_OTHER_REMARKS_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
-                          <input type="text" className="form-control"
-                                    placeholder=" "
-                                    disabled />
-                    </Col>
-                    <Col className="ms-auto" md={4} xxl lg="4">
-                    <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_THIRD_PARTY_RIGHT_CREATED_ADDICATION_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
 
-                      {/* <h6>Third-party right created&nbsp; </h6> */}
+                      <h6>Third-party right created&nbsp; </h6>
 
                       <div className="d-flex flex-row align-items-center my-1 ">
                         <input type="radio" disabled value="Yes" checked={landScheduleData?.thirdParty === "Y" ? true : false} />
@@ -843,7 +697,7 @@ const Developerinfo = (props) => {
                         </label>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Third-party right created in parent license") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             // display: hideRemarksPatwari?"none":"block",
                             color: fieldIconColors.thirdPartyRightCreated
                           }}
@@ -888,7 +742,7 @@ const Developerinfo = (props) => {
                                 disabled></Form.Control>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Remark") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   // display: hideRemarksPatwari?"none":"block",
                                   color: fieldIconColors.thirdPartyRemark
                                 }}
@@ -913,7 +767,7 @@ const Developerinfo = (props) => {
                               </IconButton>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   // display: hideRemarksPatwari?"none":"block",
                                   color: fieldIconColors.thirdPartyDoc
                                 }}
@@ -937,11 +791,7 @@ const Developerinfo = (props) => {
 
             <Row className={classes.formLabel}>
               <Col className="ms-auto" md={4} xxl lg="12">
-                {/* <Form.Label> (ii)Whether licence applied under Migration Policy ?</Form.Label> */}
-                <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_WHETHER_LICENCE_APPLIED_UNDER_MIGRATION_POLICY")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                <Form.Label> (ii)Whether licence applied under Migration Policy ?</Form.Label>
                 &nbsp;&nbsp;
                 <div className="d-flex flex-row align-items-center my-1 ">
 
@@ -951,7 +801,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
 
                       color: fieldIconColors.migrationPolicy
                     }}
@@ -970,7 +820,7 @@ const Developerinfo = (props) => {
             <Row className={classes.formLabel}>
               <Col md={4} xxl lg="12">
                 {
-                  landScheduleData?.migrationLic === "N" &&
+                  landScheduleData?.migrationLic === "Y" &&
 
                   <div>
                     <div style={{ overflow: "scroll" }}>
@@ -979,40 +829,31 @@ const Developerinfo = (props) => {
 
                           <tr className="border-bottom-0">
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Previous Licence Number */}
-                              {`${t("NWL_APPLICANT_PREVIOUS_LICENCE_MGINATIONLIC")}`}
+                              Previous Licence Number
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Area of parent licence */}
-                              {`${t("NWL_APPLICANT_AREA_OF_PARENT_LICENCE_MGINATIONLIC")}`}
+                              Area of parent licence
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Purpose of parent licence */}
-                              {`${t("NWL_APPLICANT_PURPOSE_OF_PAREMENT_LICENCE_MGINATIONLIC")}`}
+                              Purpose of parent licence
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Validity of parent licence */}
-                              {`${t("NWL_APPLICANT_VALIDITY_OF_PARENT_LICENCE_MGINATIONLIC")}`}
+                              Validity of parent licence
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Date */}
-                              {`${t("NWL_APPLICANT_DATE_MGINATIONLIC")}`}
+                              Date
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Area applied under migration in acres */}
-                              {`${t("NWL_APPLICANT_AREA_APPLIED_UNDER_MGINATIONLIC")}`}
+                              Area applied under migration in acres
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Applied Khasra number */}
-                              {`${t("NWL_APPLICANT_APPLIED_KHASRS_NUMBER_GINATIONLIC")}`}
+                              Applied Khasra number
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Area */}
-                              {`${t("NWL_APPLICANT_AREA_LICENCE_MGINATIONLIC")}`}
+                              Area
                             </th>
                             <th class="fw-normal pb-0 border-bottom-0 align-top">
-                              {/* Balance of Parent Licence */}
-                              {`${t("NWL_APPLICANT_BALANCE_OF_PARENT_LICENCE_MGINATIONLIC")}`}
+                              Balance of Parent Licence
                             </th>
 
                           </tr>
@@ -1020,7 +861,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.licenceNo
                                 }}
                                 onClick={() => {
@@ -1035,7 +876,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.areaOfParentLicence
                                 }}
                                 onClick={() => {
@@ -1050,7 +891,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.purposeOfParentLicence
                                 }}
                                 onClick={() => {
@@ -1065,7 +906,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.validityOfParentLicence
                                 }}
                                 onClick={() => {
@@ -1080,7 +921,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.dateMigration
                                 }}
                                 onClick={() => {
@@ -1095,7 +936,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.areaAppliedUnderMigration
                                 }}
                                 onClick={() => {
@@ -1110,7 +951,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.khasraNumber
                                 }}
                                 onClick={() => {
@@ -1125,7 +966,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.areaMigration
                                 }}
                                 onClick={() => {
@@ -1140,7 +981,7 @@ const Developerinfo = (props) => {
                             <th class="fw-normal py-0 border-top-0">
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.balanceOfParentLicence
                                 }}
                                 onClick={() => {
@@ -1513,44 +1354,32 @@ const Developerinfo = (props) => {
 
             <hr className="mb-3"></hr>
             <Row className={classes.formLabel}>
-            
-
-              {/* <h5>
+              <h5>
                 2. Any encumbrance with respect to following :&nbsp;&nbsp;
-              </h5> */}
-              <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_ANY_ENCUMBRANCE_WITH_RESPECT_TO_FOLLOWING")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+              </h5>
               <div className="d-flex mt-2 align-items-center">
                 <input type="radio" disabled value="rehan" name="rehan" checked={landScheduleData?.encumburance === "rehan" ? true : false} />
-                <label className="m-0 mx-2" htmlFor="rehan"> {`${t("NWL_APPLICANT_REHAN_MORTGAGE_ENCUMBRANCE")}`}</label>
+                <label className="m-0 mx-2" htmlFor="rehan">Rehan / Mortgage</label>
                 &nbsp;&nbsp;
-                {/* Rehan / Mortgage */}
                 <input type="radio" disabled value="patta" name="patta" checked={landScheduleData?.encumburance === "patta" ? true : false} />
-                <label className="m-0 mx-2" htmlFor="patta">{`${t("NWL_APPLICANT_PATTA_LEASE_ENCUMBRANCE")}`}</label>
+                <label className="m-0 mx-2" htmlFor="patta">Patta/Lease</label>
                 &nbsp;&nbsp;
-                {/* Patta/Lease  */}
                 <input type="radio" disabled value="gair" name="gair" checked={landScheduleData?.encumburance === "gair" ? true : false} />
-                <label className="m-0 mx-2" htmlFor="gair">{`${t("NWL_APPLICANT_GAIR_MARUSI_ENCUMBRANCE")}`}</label>
+                <label className="m-0 mx-2" htmlFor="gair">Gair/Marusi</label>
                 &nbsp;&nbsp;
-                {/* Gair/Marusi */}
                 <input type="radio" disabled value="anyOther" name="anyOther" checked={landScheduleData?.encumburance === "anyOther" ? true : false} />
-                <label className="m-0 mx-2" htmlFor="anyOther"> {`${t("NWL_APPLICANT_ANY_OTHER_ENCUMBRANCE")}`}</label>
+                <label className="m-0 mx-2" htmlFor="anyOther">Any Other</label>
                 &nbsp;&nbsp;
-                {/* Any Other */}
                 <input type="radio" disabled value="loan" name="loan" checked={landScheduleData?.encumburance === "loan" ? true : false} />
-                <label className="m-0 mx-2" htmlFor="loan">{`${t("NWL_APPLICANT_LOND_ENCUMBRANCE")}`}</label>
+                <label className="m-0 mx-2" htmlFor="loan">Loan</label>
                 &nbsp;&nbsp;
-                {/* Loan  */}
                 <input type="radio" disabled value="none" name="none" checked={landScheduleData?.encumburance === "none" ? true : false} />
-                <label className="m-0 mx-2" htmlFor="none">{`${t("NWL_APPLICANT_NONE_ENCUMBRANCE")}`}</label>
+                <label className="m-0 mx-2" htmlFor="none">none</label>
                 &nbsp;&nbsp;
-                {/* none */}
                 <ReportProblemIcon
                   className="m-0 mx-2"
                   style={{
-                   display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Rehan / Mortgage") ? "block" : "none",
+                    display: hideRemarks ? "none" : "block",
                     color: fieldIconColors.encumbrance
                   }}
                   onClick={() => {
@@ -1567,13 +1396,9 @@ const Developerinfo = (props) => {
               {landScheduleData?.encumburance === "rehan/mortgage" && "patta/lease" && "anyOther" && "gair/marusi" && (
                 <div className="row ml-3 mb-3">
                   <div className="col col-4 m-0 p-0">
-                    {/* <label htmlFor="npnl">
+                    <label htmlFor="npnl">
                       <h6>Rehan/Mortgage Remarks</h6>
-                    </label> */}
-                    <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_REHAN_MORTGAGE_REMARKS")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                    </label>
                     <Form.Control placeholder={landScheduleData !== null ? landScheduleData?.anyOtherRemark : null}
                       // height={30} style={{ maxWidth: 200, marginRight: 5 }}
                       className={classes.formLabel}
@@ -1624,13 +1449,9 @@ const Developerinfo = (props) => {
             } */}
             <hr className="mb-3" />
             <Row className={classes.formLabel}>
-              {/* <h6 >
+              <h6 >
                 (ii) Existing litigation, if any, concerning applied land including co-sharers and collaborator.
-              </h6> */}
-              <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_EXISTING_LITIGATION_IF_ANY_CONCERNING_APPLIED_LAND")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+              </h6>
               <div className="d-flex mt-2">
                 <input type="radio" disabled value="Yes" checked={landScheduleData?.litigation === "Y" ? true : false} />
                 <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -1638,7 +1459,7 @@ const Developerinfo = (props) => {
                 <label className="m-0 mx-2" for="No">No</label>
                 <ReportProblemIcon
                   style={{
-                   display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Existing litigation, if any, concerning applied land including co-sharers and collaborator.") ? "block" : "none",
+                    display: hideRemarks ? "none" : "block",
                     color: fieldIconColors.existinglitigation
                   }}
                   onClick={() => {
@@ -1661,11 +1482,7 @@ const Developerinfo = (props) => {
 
                     <div >
                       <hr className="mb-3" />
-                      {/* <h6 > Court orders, if any, affecting applied land   </h6> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_COURT_ORDERS_IF_ANY_AFFECTING_APPLIED_LAND")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                      <h6 > Court orders, if any, affecting applied land   </h6>
 
                       <input type="radio" disabled value="Yes" checked={landScheduleData?.court === "Y" ? true : false} />
                       <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -1673,7 +1490,7 @@ const Developerinfo = (props) => {
                       <label className="m-0 mx-2" for="No">No</label>
                       <ReportProblemIcon
                         style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Court orders, if any, affecting applied land.") ? "block" : "none",
+                          display: hideRemarks ? "none" : "block",
                           color: fieldIconColors.courtOrders
                         }}
                         onClick={() => {
@@ -1696,14 +1513,10 @@ const Developerinfo = (props) => {
                 landScheduleData?.court === "Y" && (
                   <div className="row" >
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <label>
+                      <label>
 
                         <h5>Remark/Case No.</h5>
-                      </label> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_COURT_ORDERS_IF_ANY_Y_REMARKS_CASE_NO")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                      </label>
                       <Form.Control
                         placeholder={landScheduleData !== null ? landScheduleData?.courtyCaseNo : null}
 
@@ -1712,11 +1525,7 @@ const Developerinfo = (props) => {
                       </Form.Control>
                     </Col>
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <h6>Download Document</h6> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_DOWNLOAD_DOCUMENT_APPLIED_LAND")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                      <h6>Download Document</h6>
                       <IconButton onClick={() => getDocShareholding(landScheduleData?.courtDoc)}>
                         <DownloadForOfflineIcon color="primary" className="mx-1" />
                       </IconButton>
@@ -1736,13 +1545,9 @@ const Developerinfo = (props) => {
 
             <Row className={classes.formLabel}>
               <Col md={4} xxl lg="12">
-                {/* <h6 >
+                <h6 >
                   (iii) Any insolvency/liquidation proceedings against the Land Owing Company/Develping Company :
-                </h6> */}
-                <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_ANY_INSOLVENCY_LIQUIDATION_PROCEESSDING_AGAINST_THE_LAND_OWING")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                </h6>
                 <div className="d-flex mt-2">
 
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.insolvency === "Y" ? true : false} />
@@ -1751,7 +1556,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Any insolvency/liquidation proceedings against the Land Owing Company/Developer Company") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.anyInsolvency
                     }}
                     onClick={() => {
@@ -1771,14 +1576,10 @@ const Developerinfo = (props) => {
                 landScheduleData?.insolvency === "Y" && (
                   <div className="row" >
                     <Col className="ms-auto" md={4} xxl lg="4">
-                      {/* <label>
+                      <label>
 
                         <h5>Remark</h5>
-                      </label> */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_ANY_INSOLVENCY_Y_REMARKS_LAND_OWING")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                      </label>
                       <Form.Control
                         placeholder={landScheduleData !== null ? landScheduleData?.insolvencyRemark : null}
 
@@ -1788,12 +1589,8 @@ const Developerinfo = (props) => {
                     </Col>
                     <Col className="ms-auto" md={4} xxl lg="4">
 
-                      {/* <h6>Download Document</h6> */}
+                      <h6>Download Document</h6>
                       {/* &nbsp;&nbsp; */}
-                      <label  htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_ANY_INSOLVENCY_Y_DOWNLOAD_DOCUMENT_LAND_OWING")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
 
                       <IconButton onClick={() => getDocShareholding(landScheduleData?.insolvencyDoc)}>
                         <DownloadForOfflineIcon color="primary" className="mx-1" />
@@ -1810,16 +1607,11 @@ const Developerinfo = (props) => {
 
             <hr className="mb-3" />
             {/* <Row className={classes.formLabel}></Row> */}
-            {/* <h5 className="text-black ml-2 mb-2">3.Shajra Plan</h5> */}
-            <label htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_SHAJRA_PLAN")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+            <h5 className="text-black ml-2 mb-2">3.Shajra Plan</h5>
             <div className="row mx-1">
               <div className="col col-4 p-1">
                 <h6>
-                  {/* (a) As per applied land */}
-                  {`${t("NWL_APPLICANT_AS_PER_APPLIED_LAND_SHAJRA_PLAN")}`}
+                  (a) As per applied land
 
                   <div className="d-flex flex-row align-items-center my-1 ">
                     &nbsp;
@@ -1829,7 +1621,7 @@ const Developerinfo = (props) => {
                     <label className="m-0 mx-2" for="No">No</label>
                     <ReportProblemIcon
                       style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("As per site situation(Yes/No)") ? "block" : "none",
+                        display: hideRemarks ? "none" : "block",
                         color: fieldIconColors.asPerAppliedLand
                       }}
                       onClick={() => {
@@ -1847,8 +1639,7 @@ const Developerinfo = (props) => {
                   landScheduleData?.appliedLand === "N" &&
                   <div className="row ml-1 mr-2">
                     <div className="col  p-1" >
-                      {/* <h6>Download Document</h6> */}
-                      {`${t("NWL_APPLICANT_AS_PER_APPLIED_LAND_N_DOWNLOAD_DOCUMENT_SHAJRA_PLAN")}`}
+                      <h6>Download Document</h6>
 
                       <div className="d-flex flex-row align-items-center my-1 ">
                         <IconButton onClick={() => getDocShareholding(landScheduleData?.appliedLand)}>
@@ -1864,8 +1655,7 @@ const Developerinfo = (props) => {
 
               <div className="col col-4 p-1">
                 <h6 >
-                  {/* (b) Revenue rasta */}
-                  {`${t("NWL_APPLICANT_REVENUE_RASTA_SHAJRA_PLAN")}`}
+                  (b) Revenue rasta
                   <Tooltip title="If any revenue rasta abuts to the applied site ?">
                     <InfoIcon style={{ cursor: "pointer" }} color="primary"></InfoIcon>
                   </Tooltip>
@@ -1877,7 +1667,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Revenue rasta, if any.") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.revenueRasta
                     }}
                     onClick={() => {
@@ -1892,9 +1682,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.revenueRasta === "Y" && (
                   <div className="row ml-1 mr-2">
                     <div className="col col p-1">
-                      {/* <label> Width of revenue rasta </label> */}
-                      {/* Unconsolidated */}
-                      {`${t("NWL_APPLICANT_REVENUE_RASTA_Y_UNCONSOLIDATED_SHAJRA_PLAN")}`}
+                      <label> Width of revenue rasta </label>
                       <Form.Control placeholder={landScheduleData?.revenueRastaWidth}
                         //  height={30} style={{ maxWidth: 200, marginRight: 5 }}
                         className={classes.formLabel}
@@ -1907,8 +1695,7 @@ const Developerinfo = (props) => {
 
               <div className="col col-4 p-1">
                 <h6 >
-                {`${t("NWL_APPLICANT_WATERCOURSE_SHAJRA_PLAN")}`}
-                  {/* (c) Watercourse */}
+                  (c) Watercourse
                   <Tooltip title="Watercourse running along boundary through the applied site ?">
                     <InfoIcon style={{ cursor: "pointer" }} color="primary"></InfoIcon>
                   </Tooltip>
@@ -1922,7 +1709,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Watercourse/Nallah") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.waterCourseRunning
                     }}
                     onClick={() => {
@@ -1939,19 +1726,16 @@ const Developerinfo = (props) => {
                 {landScheduleData?.waterCourse === "Y" && (
                   <div className="row ml-1 mr-2">
                     <div className="col col p-1">
-                      {/* <label> Remark </label> */}
-                      {`${t("NWL_APPLICANT_WATERCOURSE_Y_REMARKS_SHAJRA_PLAN")}`}
+                      <label> Remark </label>
                       <input type="number" className="form-control" disabled placeholder={landScheduleData?.waterCourseRemark} />
                     </div>
                   </div>
                 )}
               </div>
               <div className="col col-4 p-1">
-                {/* <h6>
+                <h6>
                   (d)&nbsp;Whether in Compact Block
-                </h6> */}
-                {`${t("NWL_APPLICANT_WHETHER_IN_COMPACT_BLOCK_SHAJRA_PLAN")}`}
-
+                </h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
 
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.compactBlock === "Y" ? true : false} />
@@ -1960,7 +1744,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Whether in Compact Block.") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.whetherInCompactBlock
                     }}
                     onClick={() => {
@@ -1977,8 +1761,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.compactBlock === "Y" && (
                   <div className="row ml-1 mr-2">
                     <div className="col col p-1">
-                    {`${t("NWL_APPLICANT_WHETHER_IN_COMPACT_BLOCK_Y_REMARK_SHAJRA_PLAN")}`}
-                      {/* <label> Remark </label> */}
+                      <label> Remark </label>
 
                       <Form.Control placeholder={landScheduleData?.compactBlockRemark}
                         // height={30} style={{ maxWidth: 200, marginRight: 5 }} 
@@ -1995,14 +1778,11 @@ const Developerinfo = (props) => {
 
               <div className="col col-4 p-1">
                 <h6 >
-                  {/* (e) Whether Others Land fall */}
-                  {`${t("NWL_APPLICANT_WHETHER_OTHERS_LAND_FALL_SHAJRA_PLAN")}`}
-
+                  (e) Whether Others Land fall
                   <Tooltip title="Whether Others Land fall within Applied Land">
                     <InfoIcon style={{ cursor: "pointer" }} color="primary"></InfoIcon>
                   </Tooltip>
                 </h6>
-
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.landSandwiched === "Y" ? true : false} />
                   <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -2010,7 +1790,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Others land fallng within applied land") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.landSandwiche
                     }}
                     onClick={() => {
@@ -2026,8 +1806,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.landSandwiched === "Y" && (
                   <div className="row ml-1 mr-2">
                     <div className="col col p-1">
-                      {/* <label> Enter Kharsa No. </label> */}
-                      {`${t("NWL_APPLICANT_WHETHER_OTHERS_LAND_Y_ENTER_KHARSA_NUMBER_SHAJRA_PLAN")}`}
+                      <label> Remark </label>
 
                       <Form.Control placeholder={landScheduleData?.landSandwichedRemark}
                         // height={30} style={{ maxWidth: 200, marginRight: 5 }} 
@@ -2039,11 +1818,9 @@ const Developerinfo = (props) => {
 
               </div>
               <div className="col col-4 p-1">
-                {/* <h6>
+                <h6>
                   (f) Acquisition status
-                </h6> */}
-                {`${t("NWL_APPLICANT_ACQUISITION_STATUS_SHAJRA_PLAN")}`}
-
+                </h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.acquistion === "Y" ? true : false} />
                   <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -2051,7 +1828,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.acquisitionStatus
                     }}
                     onClick={() => {
@@ -2068,8 +1845,7 @@ const Developerinfo = (props) => {
                     <div className="row mx-1">
                       <div className="col col-12">
                         <div>
-                        {`${t("NWL_APPLICANT_ACQUISITION_STATUS_Y_DATE_SECTION4_SHAJRA_PLAN")}`}
-                          {/* <label className="m-0">Date of section 4 notification </label> */}
+                          <label className="m-0">Date of section 4 notification </label>
                           <div className="d-flex flex-row align-items-center my-1 ">
                             <Form.Control
                               // height={30} style={{ maxWidth: 200, marginRight: 5 }}
@@ -2077,7 +1853,7 @@ const Developerinfo = (props) => {
                               disabled placeholder={landScheduleData?.sectionFour} ></Form.Control>
                             <ReportProblemIcon
                               style={{
-                               display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of section 4 notification") ? "block" : "none",
+                                display: hideRemarks ? "none" : "block",
                                 color: fieldIconColors.dateOfSection4Notification
                               }}
                               onClick={() => {
@@ -2096,8 +1872,7 @@ const Developerinfo = (props) => {
                     <div className="row mx-1">
                       <div className="col col-12">
                         <div>
-                        {`${t("NWL_APPLICANT_ACQUISITION_STATUS_Y_DATE_SECTION6_SHAJRA_PLAN")}`}
-                          {/* <label className="m-0">Date of section 6 notification</label> */}
+                          <label className="m-0">Date of section 6 notification</label>
                           <div className="d-flex flex-row align-items-center my-1 ">
                             <Form.Control
 
@@ -2105,7 +1880,7 @@ const Developerinfo = (props) => {
                               disabled placeholder={landScheduleData?.sectionSix} ></Form.Control>
                             <ReportProblemIcon
                               style={{
-                               display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of section 6 notification") ? "block" : "none",
+                                display: hideRemarks ? "none" : "block",
                                 color: fieldIconColors.dateOfSection6Notification
                               }}
                               onClick={() => {
@@ -2123,10 +1898,9 @@ const Developerinfo = (props) => {
                     </div>
                     <div className="row mx-1">
                       <div className="col col-12">
-                        {/* <label>
+                        <label>
                           <h2>Date of Award</h2>
-                        </label> */}
-                        {`${t("NWL_APPLICANT_ACQUISITION_STATUS_Y_DATE_AWAED_SHAJRA_PLAN")}`}
+                        </label>
                         <div className="d-flex flex-row align-items-center my-1 ">
                           <Form.Control
 
@@ -2134,7 +1908,7 @@ const Developerinfo = (props) => {
                             disabled placeholder={landScheduleData?.rewardDate} ></Form.Control>
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of Award") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.dateOfSection6Notification
                             }}
                             onClick={() => {
@@ -2162,8 +1936,7 @@ const Developerinfo = (props) => {
                   <div className="col col-12 p-1">
 
                     <h6>
-                      {/* (g)  Whether Land Released/Excluded from aqusition proceeding. */}
-                      {`${t("NWL_APPLICANT_WHETER_LAND_RELEASED_EXCLUDED_FROM_AQUSITION_DATE_AWAED_SHAJRA_PLAN")}`}
+                      (g)  Whether Land Released/Excluded from aqusition proceeding.
                     </h6>
 
                     <div className="d-flex flex-row align-items-center my-1 ">
@@ -2174,7 +1947,7 @@ const Developerinfo = (props) => {
                       <label className="m-0 mx-2" for="No">No</label>
                       <ReportProblemIcon
                         style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Whether Land Released/Excluded from aqusition proceeding") ? "block" : "none",
+                          display: hideRemarks ? "none" : "block",
                           color: fieldIconColors.ordersUpload
                         }}
                         onClick={() => {
@@ -2193,9 +1966,7 @@ const Developerinfo = (props) => {
                       <div className="row m-0 mt-2">
                         <div className="col col-4 p-1">
                           <h6 data-toggle="tooltip" data-placement="top" title="Whether details/orders of release/exclusion of land uploaded.">
-                            {/* Whether land compensation */}
-                            {/* {`${t("NWL_APPLICANT_ACQUISITION_STATUS_Y_DATE_AWAED_SHAJRA_PLAN")}`} */}
-                            {`${t("NWL_APPLICANT_AQUSITION_Y_WHETER_LAND_COMPENSATION_SHAJRA_PLAN")}`}
+                            Whether land compensation
                           </h6>
                           {/* <InfoIcon style={{color:"blue"}}/>  */}
                           <div className="d-flex flex-row align-items-center my-1 ">
@@ -2207,7 +1978,7 @@ const Developerinfo = (props) => {
 
                             <ReportProblemIcon
                               style={{
-                               display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Whether land compensation received") ? "block" : "none",
+                                display: hideRemarks ? "none" : "block",
                                 color: fieldIconColors.landCompensationReceived
                               }}
                               onClick={() => {
@@ -2225,10 +1996,7 @@ const Developerinfo = (props) => {
                         <div className="col col-4 p-1">
                           <div className="form-group">
                             <label htmlFor="releasestatus">
-                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Status of release" >
-                                {/* Status of release */}
-                                {`${t("NWL_APPLICANT_AQUSITION_Y_STATUS_OF_RELEASE_SHAJRA_PLAN")}`}
-                                </h6>
+                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Status of release" >Status of release</h6>
                             </label>
 
                             <div className="d-flex flex-row align-items-center my-1 ">
@@ -2240,7 +2008,7 @@ const Developerinfo = (props) => {
 
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of Release of land") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.statusOfRelease
                                 }}
                                 onClick={() => {
@@ -2255,14 +2023,37 @@ const Developerinfo = (props) => {
                             </div>
                           </div>
                         </div>
-                       
+                        <div className="col col-4 p-1">
+                          <div className="form-group ">
+                            <label htmlFor="awarddate">
+                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Date of Award">Date of Award</h6>
+                            </label>
+                            <div className="d-flex flex-row align-items-center my-1 ">
+                              <Form.Control
+
+                                className={classes.formLabel}
+                                disabled placeholder={landScheduleData?.awardDate}></Form.Control>
+                              <ReportProblemIcon
+                                style={{
+                                  display: hideRemarks ? "none" : "block",
+                                  color: fieldIconColors.dateOfAward
+                                }}
+                                onClick={() => {
+                                  setLabelValue("Date of Award"),
+                                    setOpennedModal("dateOfAward")
+                                  setSmShow(true),
+                                    console.log("modal open"),
+                                    setFieldValue(landScheduleData?.dateOfAward);
+                                }}
+                              ></ReportProblemIcon>
+                            </div>
+                            {/* comment by me */}
+                          </div>
+                        </div>
                         <div className="col col-4 p-1">
                           <div className="form-group ">
                             <label htmlFor="releasedate">
-                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Date of Release">
-                                {/* Date of Release */}
-                                {`${t("NWL_APPLICANT_AQUSITION_Y_DATE_OF_RELEASE_SHAJRA_PLAN")}`}
-                                </h6>{" "}
+                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Date of Release">Date of Release</h6>{" "}
                             </label>
 
                             <div className="d-flex flex-row align-items-center my-1 ">
@@ -2272,7 +2063,7 @@ const Developerinfo = (props) => {
                                 disabled placeholder={landScheduleData?.releaseDate}></Form.Control>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of Release of land") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.dateOfRelease
                                 }}
                                 onClick={() => {
@@ -2286,61 +2077,10 @@ const Developerinfo = (props) => {
                             </div>
                           </div>
                         </div>
-                         <div className="col col-4 p-1">
-                          <div className="form-group ">
-                            <label htmlFor="awarddate">
-                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Date of Award">
-                              {/* Copy of release order */}
-                                {`${t("NWL_APPLICANT_AQUSITION_Y_COPY_OF_RELEASE_ORDER_SHAJRA_PLAN")}`}
-                                </h6>
-                            </label>
-                            <div className="d-flex flex-row align-items-center my-1 ">
-                              {/* <Form.Control
-
-                                className={classes.formLabel}
-                                disabled placeholder={landScheduleData?.awardDate}></Form.Control> */}
-                                <div className="d-flex flex-row align-items-center my-1 ">
-                  <IconButton onClick={() => getDocShareholding(landScheduleData?.mutation)}>
-                    <DownloadForOfflineIcon color="primary" className="mx-1" />
-                  </IconButton>
-                  <ReportProblemIcon
-                    style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Land schedule") ? "block" : "none",
-                      color: fieldIconColors.copyOfMutation
-                    }}
-                    onClick={() => {
-                      setLabelValue("Copy of Mutation"),
-                        setOpennedModal("copyOfMutation")
-                      setSmShow(true),
-                        console.log("modal open"),
-                        setFieldValue(landScheduleData !== null ? landScheduleData?.mutation : null);
-                    }}
-                  ></ReportProblemIcon>
-                </div>
-                              {/* <ReportProblemIcon
-                                style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of Award") ? "block" : "none",
-                                  color: fieldIconColors.dateOfAward
-                                }}
-                                onClick={() => {
-                                  setLabelValue("Date of Award"),
-                                    setOpennedModal("dateOfAward")
-                                  setSmShow(true),
-                                    console.log("modal open"),
-                                    setFieldValue(landScheduleData?.dateOfAward);
-                                }}
-                              ></ReportProblemIcon> */}
-                            </div>
-                          
-                          </div>
-                        </div>
                         <div className="col col-4 p-1">
                           <div className="form-group ">
                             <label htmlFor="sitedetails">
-                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Site Details">
-                                {/* Site Details */}
-                                {`${t("NWL_APPLICANT_AQUSITION_Y_SITE_DETAILS_SHAJRA_PLAN")}`}
-                                </h6>
+                              <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Site Details">Site Details</h6>
                             </label>
                             <div className="d-flex flex-row align-items-center my-1 ">
                               <Form.Control
@@ -2349,7 +2089,7 @@ const Developerinfo = (props) => {
                                 disabled placeholder={landScheduleData?.siteDetail}></Form.Control>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.siteDetails
                                 }}
                                 onClick={() => {
@@ -2366,74 +2106,6 @@ const Developerinfo = (props) => {
                             {/* comment by me */}
                           </div>
                         </div>
-                        <div className="col col-4 p-1">
-                          <h6 data-toggle="tooltip" data-placement="top" title="Whether details/orders of release/exclusion of land uploaded.">
-                          {/* whether litigation regarding release of Land */}
-                            {`${t("NWL_APPLICANT_WHETHER_Y_WHETER_LITIGATION_REGARDING_RELEASE_OF_LAND_SHAJRA_PLAN")}`}
-                          </h6>
-                          {/* <InfoIcon style={{color:"blue"}}/>  */}
-                          <div className="d-flex flex-row align-items-center my-1 ">
-                            {/* <Form.Control height={30} style={{ maxWidth: 200, marginRight: 5 }} disabled></Form.Control> */}
-                            <input type="radio" disabled value="Yes" checked={landScheduleData?.landCompensation === "Y" ? true : false} />
-                            <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
-                            <input type="radio" disabled value="No" checked={landScheduleData?.landCompensation === "N" ? true : false} />
-                            <label className="m-0 mx-2" for="No">No</label>
-
-                            <ReportProblemIcon
-                              style={{
-                               display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Whether land compensation received") ? "block" : "none",
-                                color: fieldIconColors.landCompensationReceived
-                              }}
-                              onClick={() => {
-                                setLabelValue("Whether land compensation received"),
-                                  setOpennedModal("landCompensationReceived")
-                                setSmShow(true),
-                                  console.log("modal open"),
-                                  setFieldValue(landScheduleData?.compensationReceived === "Y" ? "Yes" : landScheduleData?.compensationReceived === "N" ? "No" : null);
-                              }}
-                            ></ReportProblemIcon>
-
-                          </div>
-
-                        </div>
-                        {landScheduleData?.orderUpload === "Y" && (
-
-<div className="col col-4 p-1">
-<div className="form-group">
-  <label htmlFor="releasestatus">
-    <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Status of release" >
-      {/* CWP/SLP NUMBER */}
-      {`${t("NWL_APPLICANT_AQUSITION_Y_CWP_SLP_NUMBER_SHAJRA_PLAN")}`}
-      </h6>
-  </label>
-
-  <div className="d-flex flex-row align-items-center my-1 ">
-    <Form.Control
-      className={classes.formLabel}
-      disabled
-      placeholder={landScheduleData?.releaseStatus}
-    ></Form.Control>
-
-    <ReportProblemIcon
-      style={{
-       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Date of Release of land") ? "block" : "none",
-        color: fieldIconColors.statusOfRelease
-      }}
-      onClick={() => {
-        setLabelValue("Status of release"),
-          setOpennedModal("statusOfRelease")
-        setSmShow(true),
-          console.log("modal open"),
-          setFieldValue(landScheduleData?.statusOfRelease);
-      }}
-    ></ReportProblemIcon>
-
-  </div>
-</div>
-</div>
-                        )
-
-                        }
                       </div>
                     )}
                   </div>
@@ -2444,9 +2116,7 @@ const Developerinfo = (props) => {
             <div className="row mx-1">
               <div className="col col-12 p-1">
                 <h6>
-                  {/* (h)  Details of existing approach as per policy dated 20-10-20. */}
-
-                  {`${t("NWL_APPLICANT_DETAILS_OF_EXISTING_APPROACH_AS_PER_POLICY_SHAJRA_PLAN")}`}
+                  (h)  Details of existing approach as per policy dated 20-10-20.
                 </h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.siteApproachable === "Y" ? true : false} />
@@ -2455,7 +2125,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">Category-II approach</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.siteApproachable
                     }}
                     onClick={() => {
@@ -2471,11 +2141,7 @@ const Developerinfo = (props) => {
                   <div className="my-2 mx-2">
                     <div className="row">
                       <div class="col-sm-7 text-left">
-                        <h6>
-                          {/* (a)  Approach available from minimum 4 karam (22 ft) wide revenue rasta */}
-                          {`${t("NWL_APPLICANT_APPROACH_AVAILABLE_FROM_MINIMUN_KARAM_SHAJRA_PLAN")}`}
-                        </h6>
-
+                        <h6>(a)  Approach available from minimum 4 karam (22 ft) wide revenue rasta</h6>
                       </div>
                       <div class="col-sm-1 text-right">
                       </div>
@@ -2491,7 +2157,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(a) Approach available from minimum 4 karam (22 ft) wide revenue rasta.") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -2507,10 +2173,7 @@ const Developerinfo = (props) => {
                     <br></br>
                     <div className="row">
                       <div class="col-sm-7 text-left">
-                        <h6>
-                          {/* (b)  Approach available from minimum 11 feet wide revenue rasta and applied site abuts acquired alignment of the sector road and there is no stay regarding construction on the land falling under the abutting sector road */}
-                        {`${t("NWL_APPLICANT_APPROACH_AVAILABLE_FROM_MINIMUN_FEET_WIDE_REVENUE_SHAJRA_PLAN")}`}
-                        </h6>
+                        <h6>(b)  Approach available from minimum 11 feet wide revenue rasta and applied site abuts acquired alignment of the sector road and there is no stay regarding construction on the land falling under the abutting sector road</h6>
                       </div>
                       <div class="col-sm-1 text-right">
                       </div>
@@ -2526,7 +2189,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Approach available from minimum 11 feet wide revenue rasta and applied site abuts acquired alignment of the sector road and there is no stay regarding construction on the land falling under the abutting") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.minimumApproachEleven
                           }}
                           onClick={() => {
@@ -2542,10 +2205,7 @@ const Developerinfo = (props) => {
                     <br></br>
                     <div className="row">
                       <div class="col-sm-7 text-left">
-                        <h6>
-                          {/* (c)  Applied site abouts already constructed sector road or internal circulation road of approved sectoral plan (of min. 18m/24m width as the case may be) provided its entire stretch required for approach is licenced and is further leading upto atleast 4 karam wide revenue rasta. */}
-                        {`${t("NWL_APPLICANT_APPLIED_SITE__ABOUTS_ALREADY_CONSTRUCTED_SECTOR_ROAD_SHAJRA_PLAN")}`}
-                        </h6>
+                        <h6>(c)  Applied site abouts already constructed sector road or internal circulation road of approved sectoral plan (of min. 18m/24m width as the case may be) provided its entire stretch required for approach is licenced and is further leading upto atleast 4 karam wide revenue rasta.</h6>
                       </div>
                       <div class="col-sm-1 text-right">
                       </div>
@@ -2561,7 +2221,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(ii) Applied site abouts already constructed sector road or internal circulation road of approved sectoral plan (of min. 18m/24m width as the case may be) provided its entire stretch required for approach is licenced and is further leading upto atleast 4 karam wide revenue rasta") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.alreadyConstructedSector
                           }}
                           onClick={() => {
@@ -2577,10 +2237,7 @@ const Developerinfo = (props) => {
                     <br></br>
                     <div className="row">
                       <div class="col-sm-7 text-left">
-                        <h6>
-                          {/* (d)  Applied land is accessible from a minimum 4 karam wide rasta through adjoining own land of the applicant (but not applied for licence). */}
-                          {`${t("NWL_APPLICANT_APPLIED_LAND_IS_ACCESSIBLE_FROM_A_MINIMUN_THROUGH_ADJOINING_SHAJRA_PLAN")}`}
-                          </h6>
+                        <h6>(d)  Applied land is accessible from a minimum 4 karam wide rasta through adjoining own land of the applicant (but not applied for licence).</h6>
                       </div>
                       <div class="col-sm-1 text-right">
                       </div>
@@ -2597,7 +2254,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(iii)(a) Applied land is accessible from a minimum 4 karam wide rasta through adjoining own land of the applicant (but not applied for licence).") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.joiningOwnLand
                           }}
                           onClick={() => {
@@ -2615,11 +2272,7 @@ const Developerinfo = (props) => {
                     {landScheduleData?.adjoiningOwnLand === "Y" && (
                       <div className="row">
                         <div class="col-sm-7 text-left">
-                          <h6>
-                            {/* (d1)  If applicable, whether the applicant has donated at least 4 karam wide strip from its adjoining own land in favour of the Gram Panchayat/Municipality, in order to connect the applied site to existing 4 karam rasta? */}
-                            {`${t("NWL_APPLICANT_D_D1_IF_APPLICABLE_WHETHER_THE_APPLICATION_HAS_DONATED_SHAJRA_PLAN")}`}
-                            </h6>
-                            
+                          <h6>(d1)  If applicable, whether the applicant has donated at least 4 karam wide strip from its adjoining own land in favour of the Gram Panchayat/Municipality, in order to connect the applied site to existing 4 karam rasta?</h6>
                         </div>
                         <div class="col-sm-1 text-right">
                         </div>
@@ -2630,9 +2283,9 @@ const Developerinfo = (props) => {
                             <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
                             <input type="radio" disabled value="No" checked={landScheduleData?.applicantHasDonated === "N" ? true : false} />
                             <label className="m-0 mx-2" for="No">NO</label>
-                            {/* <ReportProblemIcon
+                            <ReportProblemIcon
                               style={{
-                               display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                                display: hideRemarks ? "none" : "block",
                                 color: fieldIconColors.applicantHasDonated
                               }}
                               onClick={() => {
@@ -2642,13 +2295,13 @@ const Developerinfo = (props) => {
                                   console.log("modal open"),
                                   setFieldValue(landScheduleData?.applicantHasDonated === "Y" ? "Yes" : landScheduleData?.applicantHasDonated === "N" ? "No" : null);
                               }}
-                            ></ReportProblemIcon> */}
+                            ></ReportProblemIcon>
                           </div>
                         </div>
                         <div class="col-sm-1 text-right">
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(iv)(b) If applicable, whether the applicant has donated at least 4 karam wide strip from its adjoining others land in favour of the Gram Panchayat/Municipality, in order to connect the applied site to existing 4 karam rasta?") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.joiningOwnLand
                             }}
                             onClick={() => {
@@ -2668,11 +2321,7 @@ const Developerinfo = (props) => {
                      
                       <div className="col col-3 p-1">
 
-                        <h6>
-                          {/* Upload copy of Gift Deed/ Hibbanama */}
-                          {`${t("NWL_APPLICANT_D_D1_IF_Y_COPY_OF_GIFT_DEED_SHAJRA_PLAN")}`}
-                        </h6>
-
+                        <h6>Upload copy of Gift Deed/ Hibbanama</h6>
                         <div className="d-flex flex-row align-items-center my-1 ">
                           &nbsp;&nbsp;
                           <IconButton onClick={() => getDocShareholding(landScheduleData?.giftDeedHibbanama)}>
@@ -2680,7 +2329,7 @@ const Developerinfo = (props) => {
                           </IconButton>
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(iii) Upload irrevocable consent") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.giftDeedHibbanama
                             }}
                             onClick={() => {
@@ -2697,10 +2346,7 @@ const Developerinfo = (props) => {
                     )}
                       <div className="row">
                         <div class="col-sm-7 text-left">
-                    <h6>
-                      {/* (e)  Applied land is accessible from a minimum 4 karam wide rasta through adjoining other’s land */}
-                      {`${t("NWL_APPLICANT_E_APPLIED_LAND_IS_ACCESSIBLE_FROM_MINIMUN_KARAM_SHAJRA_PLAN")}`}
-                    </h6>
+                    <h6>(e)  Applied land is accessible from a minimum 4 karam wide rasta through adjoining other’s land</h6>
                     </div>
                     <div class="col-sm-1 text-right">
                         </div>
@@ -2716,7 +2362,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                       <ReportProblemIcon
                         style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                          display: hideRemarks ? "none" : "block",
                           color: fieldIconColors.ordersUpload
                         }}
                         onClick={() => {
@@ -2733,10 +2379,7 @@ const Developerinfo = (props) => {
                     {landScheduleData?.adjoiningOthersLand === "Y" && (
                      <div className="row">
                         <div class="col-sm-7 text-left">
-                        <h6>
-                          {/* (e1)  whether the land-owner of the adjoining land has donated at least 4 karam wide strip of land to the Gram Panchayat/Municipality, in a manner that the applied site gets connected to existing public rasta of atleast 4 karam width? */}
-                          {`${t("NWL_APPLICANT_E_Y_E1_WHETHER_THE_LAND-OWNER_OF_THE_ADJOINING_DONATED_KARAM_SHAJRA_PLAN")}`}
-                          </h6>
+                        <h6>(e1)  whether the land-owner of the adjoining land has donated at least 4 karam wide strip of land to the Gram Panchayat/Municipality, in a manner that the applied site gets connected to existing public rasta of atleast 4 karam width?</h6>
                         </div>
                         <div class="col-sm-1 text-right">
                         </div>
@@ -2752,7 +2395,7 @@ const Developerinfo = (props) => {
                           <div class="col-sm-1 text-right">
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.landOwnerDonated
                             }}
                             onClick={() => {
@@ -2770,10 +2413,7 @@ const Developerinfo = (props) => {
                     {landScheduleData?.landOwnerDonated === "Y" && (
                       <div className="col col-3 p-1">
 
-                        <h6>
-                          {/* Upload copy of Gift Deed/ Hibbanama */}
-                          {`${t("NWL_APPLICANT_E_E1_IF_Y_COPY_OF_GIFT_DEED_SHAJRA_PLAN")}`}
-                        </h6>
+                        <h6>Upload copy of Gift Deed/ Hibbanama</h6>
                         <div className="d-flex flex-row align-items-center my-1 ">
 
                           <IconButton onClick={() => getDocShareholding(landScheduleData?.giftDeedHibbanama)}>
@@ -2781,7 +2421,7 @@ const Developerinfo = (props) => {
                           </IconButton>
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.copyOfShajraPlan
                             }}
                             onClick={() => {
@@ -2807,8 +2447,7 @@ const Developerinfo = (props) => {
                     <div className="row">
                       <div class="col-sm-8 text-left">
                         <label>
-                          {/* <h2>(a)&nbsp;&nbsp;Enter Width in Meters</h2>{" "} */}
-                          {`${t("NWL_APPLICANT_N_A_ENTER_WIDTH_IN_METERS_SHAJRA_PLAN")}`}
+                          <h2>(a)&nbsp;&nbsp;Enter Width in Meters</h2>{" "}
                         </label>
                       </div>
                       <div class="col-sm-3 text-right">
@@ -2819,7 +2458,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -2841,7 +2480,7 @@ const Developerinfo = (props) => {
                       disabled></Form.Control>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -2859,10 +2498,7 @@ const Developerinfo = (props) => {
                     <br></br>
                     <div className="row">
                       <div class="col-sm-7 text-left">
-                        <h6>
-                          {/* (b)  Whether irrevocable consent from such developer/ colonizer for uninterrupted usage of such internal road for the purpose of development of the colony by the applicant or by its agencies and for usage by its allottees submitted */}
-                          {`${t("NWL_APPLICANT_N_B_WHETHER_IRREVOCABLE_CONSENT_FROM_SUCH_DEVELOPER_COLONIZER_SHAJRA_PLAN")}`}
-                          </h6>
+                        <h6>(b)  Whether irrevocable consent from such developer/ colonizer for uninterrupted usage of such internal road for the purpose of development of the colony by the applicant or by its agencies and for usage by its allottees submitted</h6>
                       </div>
 
                       <div class="col-sm-1 text-right">
@@ -2879,7 +2515,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -2895,10 +2531,7 @@ const Developerinfo = (props) => {
                     </div>
                     <div className="row">
                       <div class="col-sm-7 text-left">
-                        <h2>
-                          {/* (c)&nbsp;&nbsp;Access from NH/SR */}
-                          {`${t("NWL_APPLICANT_N_C_ACCESS_FROM_NH_SR_SHAJRA_PLAN")}`}
-                        </h2>
+                        <h2>(c)&nbsp;&nbsp;Access from NH/SR</h2>
                       </div>
                       <div class="col-sm-1 text-right">
                       </div>
@@ -2914,7 +2547,7 @@ const Developerinfo = (props) => {
                       <div class="col-sm-1 text-right">
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(I) Category-I approach") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -2947,16 +2580,10 @@ const Developerinfo = (props) => {
                           )} */}
                     </div>
                     <br></br>
-                    <h5 className="text-black  mb-2">
-                      {/* (i)  Details of proposed approach. */}
-                      {`${t("NWL_APPLICANT_N_I_DETAILS_OF_PROPOSE_APPROACH_SHAJRA_PLAN")}`}
-                      </h5>
+                    <h5 className="text-black  mb-2">(i)  Details of proposed approach.</h5>
                     <div className="my-2 mx-2">
                       <div className="d-flex flex-row align-items-center my-2 ">
-                        <h6>
-                          {/* (1)   Site approachable from proposed sector road/ Development Plan Road */}
-                          {`${t("NWL_APPLICANT_N_I_SITE_APPROACHABLE_FROM_PROPOSED_SECTOR_ROAD_SHAJRA_PLAN")}`}
-                          </h6>
+                        <h6>(1)   Site approachable from proposed sector road/ Development Plan Road</h6>
                         &nbsp;&nbsp;
                         <input type="radio" disabled value="Yes" checked={landScheduleData?.approachFromProposedSector === "Y" ? true : false} />
                         <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -2964,7 +2591,7 @@ const Developerinfo = (props) => {
                         <label className="m-0 mx-2" for="No">No</label>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(B) Details of proposed approach.") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -2980,10 +2607,7 @@ const Developerinfo = (props) => {
                       {landScheduleData?.approachFromProposedSector === "Y" && (
 
                         <div >
-                          <h6>
-                            {/* (a) Enter Width in Meters */}
-                            {`${t("NWL_APPLICANT_N_ENTER_WIDTH_IN_METERS_SHAJRA_PLAN")}`}
-                            </h6>
+                          <h6>(a) Width of Constructed ROW of plotted licenced colony (In meters)</h6>
                           <div className="my-2 mx-2">
                             <div className="col col-6 p-1 d-flex align-items-center my-1 " >
                               <Form.Control
@@ -2994,7 +2618,7 @@ const Developerinfo = (props) => {
                               ></Form.Control>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3019,7 +2643,7 @@ const Developerinfo = (props) => {
                         
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.ordersUpload
                             }}
                             onClick={() => {
@@ -3033,10 +2657,7 @@ const Developerinfo = (props) => {
                         </div> */}
 
                             <div className="d-flex flex-row align-items-center my-3 ">
-                              <h6>
-                                {/* (b)  Whether acquired?   */}
-                              {`${t("NWL_APPLICANT_N_B_WHETHER_ACQUIRED_SHAJRA_PLAN")}`}
-                              </h6>
+                              <h6>(b)  Whether acquired?  </h6>
                               &nbsp;&nbsp;
                               <input type="radio" disabled value="Yes" checked={landScheduleData?.whetherAcquired === "Y" ? true : false} />
                               <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -3044,7 +2665,7 @@ const Developerinfo = (props) => {
                               <label className="m-0 mx-2" for="No">No</label>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3058,10 +2679,7 @@ const Developerinfo = (props) => {
                             </div>
 
                             <div className="d-flex flex-row align-items-center my-3 ">
-                              <h6>
-                                {/* (c)  Whether constructed?   */}
-                                {`${t("NWL_APPLICANT_N_C_WHETHER_CONSTRUCTED_SHAJRA_PLAN")}`}
-                                </h6>
+                              <h6>(c)  Whether constructed?  </h6>
                               &nbsp;&nbsp;
                               <input type="radio" disabled value="Yes" checked={landScheduleData?.whetherConstructed === "Y" ? true : false} />
                               <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -3069,7 +2687,7 @@ const Developerinfo = (props) => {
                               <label className="m-0 mx-2" for="No">No</label>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3083,10 +2701,7 @@ const Developerinfo = (props) => {
                             </div>
 
                             <div className="d-flex flex-row align-items-center my-3 ">
-                              <h6> 
-                                {/* (d)  Whether Service road along sector road acquired? */}
-                                {`${t("NWL_APPLICANT_N_D_WHETHER_SERVICE_ROAD_ALONG_SECTOR_ROAD_ACQURIED_SHAJRA_PLAN")}`}
-                                </h6>
+                              <h6>(d)  Whether Service road along sector road acquired?</h6>
                               &nbsp;&nbsp;
                               <input type="radio" disabled value="Yes" checked={landScheduleData?.serviceSectorRoadAcquired === "Y" ? true : false} />
                               <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -3094,7 +2709,7 @@ const Developerinfo = (props) => {
                               <label className="m-0 mx-2" for="No">No</label>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3108,10 +2723,7 @@ const Developerinfo = (props) => {
                             </div>
 
                             <div className="d-flex flex-row align-items-center my-3 ">
-                              <h6>
-                                {/* (e)  Whether Service road along sector road constructed?  */}
-                                {`${t("NWL_APPLICANT_N_D_WHETHER_SERVICE_ROAD_ALONG_E_SECTOR_ROAD_CONSTRUCTED_SHAJRA_PLAN")}`}
-                                 </h6>
+                              <h6>(e)  Whether Service road along sector road constructed?  </h6>
                               &nbsp;&nbsp;
                               <input type="radio" disabled value="Yes" checked={landScheduleData?.serviceSectorRoadConstructed === "Y" ? true : false} />
                               <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -3119,7 +2731,7 @@ const Developerinfo = (props) => {
                               <label className="m-0 mx-2" for="No">No</label>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3136,10 +2748,7 @@ const Developerinfo = (props) => {
                         </div>
 
                       )}
-                      <h6>
-                        {/* (2)  Site approachable from internal circulation / sectoral plan road. */}
-                        {`${t("NWL_APPLICANT_N_2_SITE_APPROACHABLE_FROM_INTERNAL_CIRCULATION_SECTORAL_ROAD_SHAJRA_PLAN")}`}
-                        </h6>
+                      <h6>(2)  Site approachable from internal circulation / sectoral plan road.</h6>
                       <div className="d-flex flex-row align-items-center my-2 ">
                         &nbsp;&nbsp;
                         <input type="radio" disabled value="Yes" checked={landScheduleData?.approachFromInternalCirculation === "Y" ? true : false} />
@@ -3148,7 +2757,7 @@ const Developerinfo = (props) => {
                         <label className="m-0 mx-2" for="No">No</label>
                         <ReportProblemIcon
                           style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                            display: hideRemarks ? "none" : "block",
                             color: fieldIconColors.ordersUpload
                           }}
                           onClick={() => {
@@ -3163,10 +2772,7 @@ const Developerinfo = (props) => {
                       {landScheduleData?.approachFromInternalCirculation === "Y" && (
 
                         <div>
-                          <h6>
-                            {/* (a)  Width of internal circulation / sectoral plan road (In meters) */}
-                            {`${t("NWL_APPLICANT_N_2_SITE_APPROACHABLE_A_ENTER_WIDTH_IN_METERS_SHAJRA_PLAN")}`}
-                            </h6>
+                          <h6>(a)  Width of internal circulation / sectoral plan road (In meters)</h6>
                           <div className="my-2 mx-2">
                             <div className="col col-6 p-1 d-flex align-items-center my-1 " >
                               <Form.Control
@@ -3177,7 +2783,7 @@ const Developerinfo = (props) => {
                               ></Form.Control>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3189,10 +2795,7 @@ const Developerinfo = (props) => {
                                 }}
                               ></ReportProblemIcon>
                             </div>
-                            <h6>
-                              {/* (b)  Whether acquired?  */}
-                              {`${t("NWL_APPLICANT_N_2_B_WHETHER_ACQUIRED_SHAJRA_PLAN")}`}
-                              </h6>
+                            <h6>(b)  Whether acquired? </h6>
                             <div className="d-flex flex-row align-items-center my-1 ">
                               <input type="radio" disabled value="Yes" checked={landScheduleData?.sectorAndDevelopmentWidth === "Y" ? true : false} />
                               <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -3200,7 +2803,7 @@ const Developerinfo = (props) => {
                               <label className="m-0 mx-2" for="No">No</label>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3212,10 +2815,7 @@ const Developerinfo = (props) => {
                                 }}
                               ></ReportProblemIcon>
                             </div>
-                            <h6>
-                              {/* (c)  Whether constructed?   */}
-                              {`${t("NWL_APPLICANT_N_2_C_WHETHER_CONSTRUCTED_SHAJRA_PLAN")}`}
-                              </h6>
+                            <h6>(c)  Whether constructed?  </h6>
                             <div className="d-flex flex-row align-items-center my-1 ">
                               <input type="radio" disabled value="Yes" checked={landScheduleData?.sectorAndDevelopmentWidth === "Y" ? true : false} />
                               <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
@@ -3223,7 +2823,7 @@ const Developerinfo = (props) => {
                               <label className="m-0 mx-2" for="No">No</label>
                               <ReportProblemIcon
                                 style={{
-                                 display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                                  display: hideRemarks ? "none" : "block",
                                   color: fieldIconColors.ordersUpload
                                 }}
                                 onClick={() => {
@@ -3245,12 +2845,11 @@ const Developerinfo = (props) => {
 
                 )}
 
-                {landScheduleData?.licenseApplied === "Y" && (
+                {landScheduleData?.orderUpload === "Y" && (
                   <div className="row m-0 mt-2">
                     <div className="col col-4 p-1">
                       <h6 data-toggle="tooltip" data-placement="top" title="Whether details/orders of release/exclusion of land uploaded.">
-                        {/* (J) Whether approach from parent licence */}
-                        {`${t("NWL_APPLICANT_N_2_J_WHETHER_APPROACH_FROM_PARENT_LICENCE_SHAJRA_PLAN")}`}
+                        (h) Whether land compensation received
                         {/* <InfoIcon style={{color:"blue"}}/>  */}
                         <div className="d-flex flex-row align-items-center my-1 ">
                           {/* <Form.Control height={30} style={{ maxWidth: 200, marginRight: 5 }} disabled></Form.Control> */}
@@ -3261,7 +2860,7 @@ const Developerinfo = (props) => {
 
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.landCompensationReceived
                             }}
                             onClick={() => {
@@ -3276,23 +2875,21 @@ const Developerinfo = (props) => {
                         </div>
                       </h6>
                     </div>
-                    {/* <div className="col col-4 p-1">
+                    <div className="col col-4 p-1">
                       <div className="form-group">
                         <label htmlFor="releasestatus">
-                          <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Status of release">
-                            Status of release
-                            </h6>
+                          <h6 style={{ fontWeight: "initial" }} data-toggle="tooltip" data-placement="top" title="Status of release">Status of release</h6>
                         </label>
 
                         <div className="d-flex flex-row align-items-center my-1 ">
                           <Form.Control
-                           
+                            //  height={30} style={{ maxWidth: 200, marginRight: 5 }} 
                             className={classes.formLabel}
                             disabled placeholder={landScheduleData?.releaseStatus}></Form.Control>
 
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.statusOfRelease
                             }}
                             onClick={() => {
@@ -3314,12 +2911,12 @@ const Developerinfo = (props) => {
                         </label>
                         <div className="d-flex flex-row align-items-center my-1 ">
                           <Form.Control
-                          
+                            //  height={30} style={{ maxWidth: 200, marginRight: 5 }} 
                             className={classes.formLabel}
                             disabled placeholder={landScheduleData?.awardDate}></Form.Control>
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.dateOfAward
                             }}
                             onClick={() => {
@@ -3331,7 +2928,7 @@ const Developerinfo = (props) => {
                             }}
                           ></ReportProblemIcon>
                         </div>
-                   
+                        {/* comment by me */}
                       </div>
                     </div>
                     <div className="col col-4 p-1">
@@ -3342,12 +2939,12 @@ const Developerinfo = (props) => {
 
                         <div className="d-flex flex-row align-items-center my-1 ">
                           <Form.Control
-                          
+                            //  height={30} style={{ maxWidth: 200, marginRight: 5 }} 
                             className={classes.formLabel}
                             disabled placeholder={landScheduleData?.releaseDate}></Form.Control>
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.dateOfRelease
                             }}
                             onClick={() => {
@@ -3368,12 +2965,12 @@ const Developerinfo = (props) => {
                         </label>
                         <div className="d-flex flex-row align-items-center my-1 ">
                           <Form.Control
-                        
+                            // height={30} style={{ maxWidth: 200, marginRight: 5 }} 
                             className={classes.formLabel}
                             disabled placeholder={landScheduleData?.siteDetail}></Form.Control>
                           <ReportProblemIcon
                             style={{
-                             display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("(i)(b) Enter Width in Meters") ? "block" : "none",
+                              display: hideRemarks ? "none" : "block",
                               color: fieldIconColors.siteDetails
                             }}
                             onClick={() => {
@@ -3387,9 +2984,9 @@ const Developerinfo = (props) => {
                         </div>
 
 
-                     
+                        {/* comment by me */}
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 )}
               </div>
@@ -3398,9 +2995,7 @@ const Developerinfo = (props) => {
             <div className="row mx-1">
               <div className="col col-12 p-1">
                 <h6 style={{ fontWeight: "initial" }} >
-                  {/* whether the applied site is approachable from the proposed 18/24 m internal sectoral plan road/sector dividing road. */}
-                  {/* (k)  Any other type of existing approach available. */}
-                  {`${t("NWL_APPLICANT_N_2_K_ANY_OTHER_TYPE_OF_EXISITING_APPROACH_AVAILABLE_SHAJRA_PLAN")}`}
+                  whether the applied site is approachable from the proposed 18/24 m internal sectoral plan road/sector dividing road.
                   <div className="d-flex flex-row align-items-center my-1 ">
 
                     <input type="radio" disabled value="Yes" checked={landScheduleData?.siteApproachable === "Y" ? true : false} />
@@ -3409,7 +3004,7 @@ const Developerinfo = (props) => {
                     <label className="m-0 mx-2" for="No">No</label>
                     <ReportProblemIcon
                       style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                        display: hideRemarks ? "none" : "block",
                         color: fieldIconColors.internalSectoralPlan
                       }}
                       onClick={() => {
@@ -3426,16 +3021,11 @@ const Developerinfo = (props) => {
               </div>
             </div>
             <hr className="my-3" />
-            <h5 className="text-black ml-2 mb-2">
-              {/* 4. Site condition */}
-              {`${t("NWL_APPLICANT_4_SITE_CONDITION_SHAJRA_PLAN")}`}
-            </h5>
+            <h5 className="text-black ml-2 mb-2">4. Site condition</h5>
             <div className="row mx-1">
               <div className="col col-4 p-1">
                 <h6>
-                {`${t("NWL_APPLICANT_4_A_VACANT_SHAJRA_PLAN")}`}
-                  {/* (a) vacant: (Yes/No){" "} */}
-                  </h6>
+                  (a) vacant: (Yes/No){" "}</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   {/* <Form.Control height={30} style={{ maxWidth: 200, marginRight: 5 }} disabled></Form.Control> */}
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.vacant === "Y" ? true : false} />
@@ -3444,7 +3034,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Site condition") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.vacant
                     }}
                     onClick={() => {
@@ -3460,10 +3050,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.vacant === "Y" && (
                   <div className="row ml-1 mr-2">
                     <div className="col col p-1">
-                      <label>
-                      {`${t("NWL_APPLICANT_4_A_VACANT_REMARK_SHAJRA_PLAN")}`} 
-                      {/* Vacant Remark  */}
-                      </label>
+                      <label> Vacant Remark </label>
                       {/* <input type="number" className="form-control" disabled placeholder={landScheduleData?.vacantRemark} /> */}
                       <Form.Control placeholder={landScheduleData?.vacantRemark}
                         className={classes.formLabel}
@@ -3474,10 +3061,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.vacant === "N" && (
                   <div className="row ml-1 mr-2">
                     <div className="col col p-1">
-                      <label> 
-                        {/* Construction Remark */}
-                        {`${t("NWL_APPLICANT_4_A_N_CONSTRUCTION_REMARK_SHAJRA_PLAN")}`} 
-                         </label>
+                      <label> Construction Remark </label>
                       {/* <input type="number" className="form-control" disabled placeholder={landScheduleData?.vacantRemark} /> */}
                       <Form.Control
                         placeholder={landScheduleData?.vacantRemark}
@@ -3540,8 +3124,7 @@ const Developerinfo = (props) => {
 
               <div className="col col-4 p-1">
                 <h6 >
-                  {/* (b) HT line */}
-                  {`${t("NWL_APPLICANT_4_B_HT_LINE_SHAJRA_PLAN")}`} 
+                  (b) HT line
                 </h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
 
@@ -3551,7 +3134,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Site condition") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.htLine
                     }}
                     onClick={() => {
@@ -3567,10 +3150,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.ht === "Y" && (
                   <div className="row ">
                     <div className="col col">
-                      <label>
-                        {/* HT Remarks */}
-                        {`${t("NWL_APPLICANT_4_B_HT_REMARKS_SHAJRA_PLAN")}`} 
-                        </label>
+                      <label>HT Remarks</label>
 
                       <Form.Control
                         placeholder={landScheduleData?.htRemark}
@@ -3582,9 +3162,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.ht === "N" && (
                   <div className="row ">
                     <div className="col col">
-                      <label>
-                      {`${t("NWL_APPLICANT_4_B_HT_REMARKS_SHAJRA_PLAN")}`} 
-                        </label>
+                      <label>HT Remarks</label>
 
                       <Form.Control
                         placeholder={landScheduleData?.htRemark}
@@ -3596,8 +3174,7 @@ const Developerinfo = (props) => {
               </div>
               <div className="col col-4 p-1">
                 <h6 >
-                  {/* (C) IOC Gas Pipeline */}
-                  {`${t("NWL_APPLICANT_4_C_IOC_GAS_PIPELINE_SHAJRA_PLAN")}`} 
+                  (C) IOC Gas Pipeline
                 </h6>
 
                 <div className="d-flex flex-row align-items-center my-1 ">
@@ -3607,7 +3184,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Site condition") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.iocGasPipeline
                     }}
                     onClick={() => {
@@ -3623,10 +3200,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.gas === "Y" && (
                   <div className="row ">
                     <div className="col col">
-                      <label>
-                        {/* IOC Remark */}
-                      {`${t("NWL_APPLICANT_4_Y_IOC_REMARKS_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>IOC Remark</label>
 
                       <Form.Control
                         placeholder={landScheduleData?.gasRemark}
@@ -3638,10 +3212,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.gas === "N" && (
                   <div className="row ">
                     <div className={classes.formLabel} >
-                      <label>
-                        {/* IOC Remark */}
-                        {`${t("NWL_APPLICANT_4_Y_IOC_REMARKS_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>IOC Remark</label>
                       <input type="text" className="form-control" disabled placeholder={landScheduleData?.gasRemark} />
                       {/* <Form.Control
                        placeholder={landScheduleData?.gasRemark}
@@ -3658,8 +3229,7 @@ const Developerinfo = (props) => {
             <div className="row mx-1">
               <div className="col col-4 p-1">
                 <h6 >
-                  {/* (d) Nallah{" "} */}
-                  {`${t("NWL_APPLICANT_4_D_NALLAH_SHAJRA_PLAN")}`}
+                  (d) Nallah{" "}
                 </h6>
 
                 <div className="d-flex flex-row align-items-center my-1 ">
@@ -3669,7 +3239,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Site condition") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.nallah
                     }}
                     onClick={() => {
@@ -3685,10 +3255,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.nallah === "Y" && (
                   <div className="row ">
                     <div className="col col">
-                      <label> 
-                        {/* Nallah Remarks  */}
-                        {`${t("NWL_APPLICANT_4_D_Y_NALLAH_REMARKS_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>Nallah Remarks</label>
                       {/* <input type="text" className="form-control" disabled placeholder={landScheduleData?.nallahRemark} /> */}
                       <Form.Control placeholder={landScheduleData?.nallahRemark}
                         // height={30} style={{ maxWidth: 200, marginRight: 5 }}
@@ -3700,10 +3267,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.nallah === "N" && (
                   <div className="row ">
                     <div className="col col">
-                      <label> 
-                        {/* Nallah Remarks */}
-                        {`${t("NWL_APPLICANT_4_D_N_NALLAH_REMARKS_SHAJRA_PLAN")}`}
-                        </label>
+                      <label>Nallah Remarks</label>
                       {/* <input type="text" className="form-control" disabled placeholder={landScheduleData?.nallahRemark} /> */}
                       <Form.Control placeholder={landScheduleData?.nallahRemark}
                         // height={30} style={{ maxWidth: 200, marginRight: 5 }} 
@@ -3715,8 +3279,7 @@ const Developerinfo = (props) => {
               </div>
               <div className="col col-4 p-1">
                 <h6>
-                  {/* (e)  Any revenue rasta/road passing through proposed site */}
-                  {`${t("NWL_APPLICANT_4_E_ANY_REVENUE_REVENUE_RASTA_ROAD_PASSING_THROUGH_PROPOSED_SITE_SHAJRA_PLAN")}`}
+                  (e)  Any revenue rasta/road passing through proposed site
                 </h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.road === "Y" ? true : false} />
@@ -3725,7 +3288,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Site condition") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.anyRevenueRasta
                     }}
                     onClick={() => {
@@ -3740,10 +3303,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.road === "Y" && (
                   <div className="row ">
                     <div className="col col-12">
-                      <label>
-                        {/* Width of Revenue rasta/road (in ft.) */}
-                        {`${t("NWL_APPLICANT_4_WIDTH_OF_REVENUE_RASTA_ROAD_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>Width of Revenue rasta/road (in ft.)</label>
                       {/* <input type="text" className="form-control" disabled placeholder={landScheduleData?.roadWidth} /> */}
                       <Form.Control
                         placeholder={landScheduleData?.roadWidth}
@@ -3751,10 +3311,7 @@ const Developerinfo = (props) => {
                         disabled></Form.Control>
                     </div>
                     <div className="col col-12">
-                      <label>
-                      {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`}
-                        {/* Remark */}
-                        </label>
+                      <label>Remark</label>
                       <Form.Control
                         placeholder={landScheduleData?.roadRemark}
                         className={classes.formLabel}
@@ -3766,10 +3323,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.road === "N" && (
                   <div className="row ">
                     <div className="col col-12">
-                      <label>
-                        {/* Remark */}
-                        {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`}
-                        </label>
+                      <label>Remark</label>
                       {/* <input type="text" className="form-control" disabled placeholder={landScheduleData?.roadRemark} /> */}
                       <Form.Control
                         placeholder={landScheduleData?.roadRemark}
@@ -3781,8 +3335,7 @@ const Developerinfo = (props) => {
               </div>
               <div className="col col-4 p-1">
                 <h6 onChange={(e) => setLand(e.target.value)} value={land}>
-                  {/* (f) Utility/Permit Line */}
-                  {`${t("NWL_APPLICANT_F_UTILITY_PERMIT_LINE_SHAJRA_PLAN")}`}
+                  (f) Utility/Permit Line
                 </h6>{" "}
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <input type="radio" disabled value="Yes" checked={landScheduleData?.utilityLine === "Y" ? true : false} />
@@ -3791,7 +3344,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Site condition") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.utilityLine
                     }}
                     onClick={() => {
@@ -3806,10 +3359,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.utilityLine === "Y" && (
                   <div className="row ">
                     <div className="col col">
-                      <label>
-                        {/* Width of ROW (in ft.)  */}
-                      {`${t("NWL_APPLICANT_F_Y_WIDTH_OF_ROW_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>Width of ROW (in ft.) </label>
                       {/* <input type="text" className="form-control" disabled placeholder={landScheduleData?.marginalLandRemark} /> */}
                       <Form.Control
                         placeholder={landScheduleData?.utilityWidth}
@@ -3821,10 +3371,7 @@ const Developerinfo = (props) => {
                 {landScheduleData?.utilityLine === "N" && (
                   <div className="row ">
                     <div className="col col">
-                      <label>
-                        {/* Remark  */}
-                      {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>Remark </label>
                       {/* <input type="text" className="form-control" disabled placeholder={landScheduleData?.marginalLandRemark} /> */}
                       <Form.Control
                         placeholder={landScheduleData?.utilityWidth}
@@ -3834,14 +3381,13 @@ const Developerinfo = (props) => {
                   </div>
                 )}
               </div>
-              <div className="col col-4 p-1">
+              {/* <div className="col col-4 p-1">
                 <h6
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Whether any utility line passing through the site is incorporated/adjusted in the layout plan (Yes/No)"
                 >
-                  {/* (G)&nbsp;Utility Line &nbsp; */}
-                  {`${t("NWL_APPLICANT_G_COMPACT_BLOCK_SHAJRA_PLAN")}`}
+                  (h)&nbsp;Utility Line &nbsp;
                 </h6>
 
                 <div className="d-flex flex-row align-items-center my-1 ">
@@ -3851,7 +3397,7 @@ const Developerinfo = (props) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.utilityLine
                     }}
                     onClick={() => {
@@ -3867,34 +3413,26 @@ const Developerinfo = (props) => {
                 {landScheduleData?.utilityLine === "Y" && (
                   <div className="row ">
                    <div className="col col-12">
-                      <label>
-                      {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`}
-                      </label>
+                      <label>Width of row</label>
              
                       <Form.Control placeholder={landScheduleData?.utilityWidth}
                     
                         className={classes.formLabel}
                         disabled></Form.Control>
                     </div>
-                    {/* <div className="col col-12">
-                      <label>
-                      {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`}
-
-                      </label>
+                    <div className="col col-12">
+                      <label>Remark </label>
                    
                       <Form.Control placeholder={landScheduleData?.utilityRemark}
                       
                         className={classes.formLabel}
                         disabled></Form.Control>
-                    </div> */}
+                    </div>
                   </div>
                 )}
                 {landScheduleData?.utilityLine === "N" && (
                   <div className="col col">
-                    <label>
-                    {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`} 
-
-                    </label>
+                    <label>Remark </label>
             
                     <Form.Control placeholder={landScheduleData?.utilityRemark}
                 
@@ -3903,186 +3441,16 @@ const Developerinfo = (props) => {
                   </div>
 
                 )}
-              </div>
-              <div className="col col-4 p-1">
-                <h6
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Whether any utility line passing through the site is incorporated/adjusted in the layout plan (Yes/No)"
-                >
-                  {/* (G)&nbsp;Utility Line &nbsp; */}
-                  {`${t("NWL_APPLICANT_H_WHETHER_OTHERS_LAND_FALL_SHAJRA_PLAN")}`}
-                </h6>
-
-                <div className="d-flex flex-row align-items-center my-1 ">
-                  <input type="radio" disabled value="Yes" checked={landScheduleData?.utilityLine === "Y" ? true : false} />
-                  <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
-                  <input type="radio" disabled value="No" checked={landScheduleData?.utilityLine === "N" ? true : false} />
-                  <label className="m-0 mx-2" for="No">No</label>
-                  <ReportProblemIcon
-                    style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
-                      color: fieldIconColors.utilityLine
-                    }}
-                    onClick={() => {
-                      setLabelValue("Utility Line"),
-                        setOpennedModal("utilityLine")
-                      setSmShow(true),
-                        console.log("modal open"),
-                        setFieldValue(landScheduleData?.utilityLine === "Y" ? "Yes" : landScheduleData?.utilityLine === "N" ? "No" : null);
-                    }}
-                  ></ReportProblemIcon>
-                </div>
-
-                {landScheduleData?.utilityLine === "Y" && (
-                  <div className="row ">
-                   <div className="col col-12">
-                      <label>
-                      {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`}
-                      </label>
-             
-                      <Form.Control placeholder={landScheduleData?.utilityWidth}
-                    
-                        className={classes.formLabel}
-                        disabled></Form.Control>
-                    </div>
-                   
-                  </div>
-                )}
-                {landScheduleData?.utilityLine === "N" && (
-                  <div className="col col">
-                    <label>
-                    {`${t("NWL_APPLICANT_REMARKS_SHAJRA_PLAN")}`} 
-
-                    </label>
-            
-                    <Form.Control placeholder={landScheduleData?.utilityRemark}
-                
-                      className={classes.formLabel}
-                      disabled></Form.Control>
-                  </div>
-
-                )}
-              </div>
-
-              &nbsp;&nbsp;
-              {`${t("NWL_APPLICANT_SURROUNDINGS_SHAJRA_PLAN")}`}
-              &nbsp;&nbsp;
-              <br></br>
-              <div className="row">
-              
-              <div className="col col-2">
-                      <label>
-                      {`${t("NWL_APPLICANT_SURROUNDINGS_NORTH_SHAJRA_PLAN")}`}
-                      </label>
-             
-                      <Form.Control placeholder={landScheduleData?.utilityWidth}
-                    
-                        className={classes.formLabel}
-                        disabled></Form.Control>
-                    </div>
-                    <div className="col col-2">
-                      <label>
-                      
-                      {`${t("NWL_APPLICANT_SURROUNDINGS_SOUTH_SHAJRA_PLAN")}`}
-                      </label>
-             
-                      <Form.Control placeholder={landScheduleData?.utilityWidth}
-                    
-                        className={classes.formLabel}
-                        disabled></Form.Control>
-                    </div>
-                    <div className="col col-2">
-                      <label>
-                      {`${t("NWL_APPLICANT_SURROUNDINGS_EAST_SHAJRA_PLAN")}`}
-                      </label>
-             
-                      <Form.Control placeholder={landScheduleData?.utilityWidth}
-                    
-                        className={classes.formLabel}
-                        disabled></Form.Control>
-                    </div>
-                    <div className="col col-2">
-                      <label>
-                      {`${t("NWL_APPLICANT_SURROUNDINGS_WEST_SHAJRA_PLAN")}`}
-                      </label>
-             
-                      <Form.Control placeholder={landScheduleData?.utilityWidth}
-                    
-                        className={classes.formLabel}
-                        disabled></Form.Control>
-                    </div>
-                    <div className="col col-4 p-1">
-                <h6
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Whether any utility line passing through the site is incorporated/adjusted in the layout plan (Yes/No)"
-                >
-                  {/* (G)&nbsp;Utility Line &nbsp; */}
-                  {`${t("NWL_APPLICANT_J_ANY_OTHERS_PASSING_THROUGH_SITE_SHAJRA_PLAN")}`}
-                </h6>
-
-                <div className="d-flex flex-row align-items-center my-1 ">
-                  <input type="radio" disabled value="Yes" checked={landScheduleData?.utilityLine === "Y" ? true : false} />
-                  <label className="m-0  mx-2" for="Yes">Yes</label>&nbsp;&nbsp;
-                  <input type="radio" disabled value="No" checked={landScheduleData?.utilityLine === "N" ? true : false} />
-                  <label className="m-0 mx-2" for="No">No</label>
-                  <ReportProblemIcon
-                    style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
-                      color: fieldIconColors.utilityLine
-                    }}
-                    onClick={() => {
-                      setLabelValue("Utility Line"),
-                        setOpennedModal("utilityLine")
-                      setSmShow(true),
-                        console.log("modal open"),
-                        setFieldValue(landScheduleData?.utilityLine === "Y" ? "Yes" : landScheduleData?.utilityLine === "N" ? "No" : null);
-                    }}
-                  ></ReportProblemIcon>
-                </div>
-
-                {landScheduleData?.utilityLine === "Y" && (
-                  <div className="row ">
-                   <div className="col col-12">
-                      <label>
-                      {`${t("NWL_APPLICANT_DETAILS_THEREOF_SHAJRA_PLAN")}`}
-                      </label>
-             
-                      <Form.Control placeholder={landScheduleData?.utilityWidth}
-                    
-                        className={classes.formLabel}
-                        disabled></Form.Control>
-                    </div>
-                   
-                  </div>
-                )}
-                {landScheduleData?.utilityLine === "N" && (
-                  <div className="col col">
-                    <label>
-                    {`${t("NWL_APPLICANT_DETAILS_THEREOF_SHAJRA_PLAN")}`} 
-
-                    </label>
-            
-                    <Form.Control placeholder={landScheduleData?.utilityRemark}
-                
-                      className={classes.formLabel}
-                      disabled></Form.Control>
-                  </div>
-
-                )}
-              </div>
-                    </div>
+              </div> */}
             </div>
             <hr className="my-3" />
             <h5 className={`text-black ml-2 mb-2 ${classes.formLabel}`}>
-            {`${t("NWL_APPLICANT_5_ENCLOSE_THE_FOLLOWING_DOCUMENTS_AS_ANNEXURES")}`}
-              {/* 5. Enclose the following documents as Annexures&nbsp;&nbsp; */}
+              5. Enclose the following documents as Annexures&nbsp;&nbsp;
               <div className="d-flex flex-row align-items-center my-1 ">
                 {/* <Form.Control height={30} style={{ maxWidth: 200, marginRight: 5 }} disabled placeholder={landScheduleData?.documentsAsAnnexures}></Form.Control> */}
                 <ReportProblemIcon
                   style={{
-                   display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Land schedule") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                     color: fieldIconColors.documentsAsAnnexures
                   }}
                   onClick={() => {
@@ -4097,17 +3465,14 @@ const Developerinfo = (props) => {
             </h5>
             <div className="row mx-1">
               <div className="col col-3 p-1">
-                <h6>
-                  {/* Land schedule */}
-                  {`${t("NWL_APPLICANT_LAND_SCHEDULE")}`}
-                </h6>
+                <h6>Land schedule</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.landSchedule)}>
                     <DownloadForOfflineIcon color="primary" className="mx-1" />
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Land schedule") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.landSchedule
                     }}
                     onClick={() => {
@@ -4121,17 +3486,14 @@ const Developerinfo = (props) => {
                 </div>
               </div>
               <div className="col col-3 p-1">
-                <h6>
-                  {/* Copy of Mutation */}
-                  {`${t("NWL_APPLICANT_COPY_OF_MUTATIION")}`}
-                </h6>
+                <h6>Copy of Mutation</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.mutation)}>
                     <DownloadForOfflineIcon color="primary" className="mx-1" />
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Land schedule") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.copyOfMutation
                     }}
                     onClick={() => {
@@ -4145,17 +3507,14 @@ const Developerinfo = (props) => {
                 </div>
               </div>
               <div className="col col-3 p-1">
-                <h6>
-                  {/* Copy of Jamabandi */}
-                  {`${t("NWL_APPLICANT_COPY_OF_JAMABANDI")}`}
-                  </h6>
+                <h6>Copy of Jamabandi</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.jambandhi)}>
                     <DownloadForOfflineIcon color="primary" className="mx-1" />
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Copy of Jamabandi duly attested by Halqa Patwari") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.copyOfJamabandi
                     }}
                     onClick={() => {
@@ -4169,18 +3528,14 @@ const Developerinfo = (props) => {
                 </div>
               </div>
               <div className="col col-3 p-1">
-                <h6>
-                  {/* Details of lease / patta, if any */}
-
-                {`${t("NWL_APPLICANT_DETAILS_OF_LEASE_PATTA")}`}
-                </h6>
+                <h6>Details of lease / patta, if any</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.detailsOfLease)}>
                     <DownloadForOfflineIcon color="primary" className="mx-1" />
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Details of lease / patta") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.detailsOfLease
                     }}
                     onClick={() => {
@@ -4198,10 +3553,7 @@ const Developerinfo = (props) => {
             <div className="row mx-1">
               <div className="col col-3 p-1">
                 {/* &nbsp;&nbsp; */}
-                <h6>
-                  {/* Add Sales/deed/exchange */}
-                {`${t("NWL_APPLICANT_SALES_DEED_EXCHANGE_DEED")}`}
-                </h6>
+                <h6>Add Sales/deed/exchange</h6>
                 {/* &nbsp;&nbsp; */}
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.addSalesDeed)}>
@@ -4210,7 +3562,7 @@ const Developerinfo = (props) => {
 
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Details of lease / patta") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.addSalesDeed
                     }}
                     onClick={() => {
@@ -4224,17 +3576,14 @@ const Developerinfo = (props) => {
                 </div>
               </div>
               <div className="col col-3 p-1">
-                <h6>
-                  {/* Copy of spa/GPA/board resolution */}
-                  {`${t("NWL_APPLICANT_COPY_OF_SPA_GPA_BOARD")}`}
-                </h6>
+                <h6>Copy of spa/GPA/board resolution</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.copyofSpaBoard)}>
                     <DownloadForOfflineIcon color="primary" className="mx-1" />
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.copyofSpaBoard
                     }}
                     onClick={() => {
@@ -4247,16 +3596,18 @@ const Developerinfo = (props) => {
                   ></ReportProblemIcon>
                 </div>
               </div>
-              {/* <div className="col col-3 p-1">
+              <div className="col col-3 p-1">
                 <h6>Revised Land Schedule</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
-                  
+                  {/* propose<IconButton onClick={()=>getDocShareholding(landScheduleData?.thirdPartyDoc)}>
+                          <DownloadForOfflineIcon color="primary" className="mx-1"  />
+                        </IconButton>dColony */}
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.revisedLansSchedule)}>
                     <DownloadForOfflineIcon color="primary" className="mx-1" />
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.revisedLansSchedule
                     }}
                     onClick={() => {
@@ -4268,13 +3619,10 @@ const Developerinfo = (props) => {
                     }}
                   ></ReportProblemIcon>
                 </div>
-              </div> */}
+              </div>
 
               <div className="col col-3 p-1">
-                <h6>
-                  {/* Copy of Shajra Plan */}
-                  {`${t("NWL_APPLICANT_SHAJRA_PLAN_DOCUMENT")}`}
-                </h6>
+                <h6>Copy of Shajra Plan</h6>
                 <div className="d-flex flex-row align-items-center my-1 ">
 
                   <IconButton onClick={() => getDocShareholding(landScheduleData?.copyOfShajraPlan)}>
@@ -4282,7 +3630,7 @@ const Developerinfo = (props) => {
                   </IconButton>
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Address") ? "block" : "none",
+                      display: hideRemarks ? "none" : "block",
                       color: fieldIconColors.copyOfShajraPlan
                     }}
                     onClick={() => {

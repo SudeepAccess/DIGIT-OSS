@@ -42,7 +42,6 @@ const Personalinfo = (props) => {
   const iconStates = props.dataForIcons
   const applicantInfoPersonal = props.ApiResponseData;
   const applicationStatus = props.applicationStatus ;
-  const mDMSData = props.mDMSData;
   console.log("personal info applicant data", applicantInfoPersonal);
 
   const handlemodaldData = (data) => {
@@ -166,7 +165,6 @@ const Personalinfo = (props) => {
                 personalinfo={applicantInfoPersonal !== null ? applicantInfoPersonal : null}
                 displayPersonal={open2 ? "block" : "none"}
                 applicationStatus={applicationStatus}
-                mDMSData={mDMSData}
               />
             </div>
           </Collapse>
@@ -183,7 +181,6 @@ const Personalinfo = (props) => {
             addInfo={applicantInfoPersonal?.devDetail?.addInfo ? applicantInfoPersonal?.devDetail?.addInfo : null}
             displayPersonal={open2 ? "block" : "none"}
             applicationStatus={applicationStatus}
-            mDMSData={mDMSData}
           />
           {/* <DocumentScrutiny 
           /> */}
@@ -193,7 +190,6 @@ const Personalinfo = (props) => {
             devDetail={applicantInfoPersonal?.devDetail ?  applicantInfoPersonal?.devDetail : null}
             displayPersonal={open2 ? "block" : "none"}
             applicationStatus={applicationStatus}
-            mDMSData={mDMSData}
           />
         </div>
       </Collapse>

@@ -31,69 +31,17 @@ import LayoutPlanForm from "./Puropse/LayoutPlanForm";
 import MixedLandUseForm from "./Puropse/MixedLandUse";
 import ITCyberCityForm from "./Puropse/ITCyberCityForm";
 import { array } from "yup";
-import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 
 const AppliedLandinfo = (props) => {
-
-
-  // useTranslation
-
-  const {t} = useTranslation();
-  const { pathname: url } = useLocation();
-
 
   const dataIcons = props.dataForIcons;
   const DetailsofAppliedLand = props.ApiResponseData;
   const applicationStatus = props.applicationStatus;
-  // console.log("personal info applicant data4", DetailsofAppliedLand);
-  // let user = Digit.UserService.getUser();
-  // const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  // const hideRemarks = userRoles.some((item) => item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
-  // const hideRemarksPatwari = userRoles.some((item) => item === "Patwari_HQ")
-
-  // const applicationStatus = props.applicationStatus ;
+  console.log("personal info applicant data4", DetailsofAppliedLand);
   let user = Digit.UserService.getUser();
-  const userInfo = Digit.UserService.getUser()?.info || {};
-  const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
-  const filterDataRole = userRolesArray?.[0]?.code;
   const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  
-  console.log("rolelogintime" , userRoles );
-  console.log("afterfilter12" , filterDataRole)
-
-  const mDMSData = props.mDMSData;
-  const mDMSDataRole = mDMSData?.map((e) => e.role) || [];
-  const hideRemarks = mDMSDataRole.includes(filterDataRole);
-  const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [] ;
-  const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
-  const [fileddataName, setFiledDataName] = useState ();
-
- useEffect(() =>{
-    if(mDMSData&&mDMSData?.length){
-      console.log("filedDataMdms" , mDMSData,mDMSData?.[0]?.field , mDMSData?.[0]?.field.map((item , index) => item.fields ));
-      setFiledDataName(mDMSData?.[0]?.field.map((item , index) => item.fields ))
-       
-    }
-    
- },[mDMSData]
- )
- const showReportProblemIcon=(filedName)=>{
-   if (fileddataName&&fileddataName.length) {
-      let show = fileddataName.includes(filedName)
-      return show ;
-    } else {
-      return false ;
-    }
- }
- 
-  // mDMSData?.map((e) => e.role)||[]
-  console.log("happyRole" , userRoles);
-  console.log("happyDate" , mDMSData);
-  console.log("happyROLE" , mDMSDataRole);
-  console.log("happyapplicationStatusMdms" , applicationStatusMdms);
-  console.log("happyDateHIDE" , hideRemarksPatwari,showReportProblemIcon("Purpose of colony"),hideRemarks);
-
+  const hideRemarks = userRoles.some((item) => item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
+  const hideRemarksPatwari = userRoles.some((item) => item === "Patwari_HQ")
 
   const [uncheckedValue, setUncheckedVlue] = useState([]);
   console.log("abcd1", uncheckedValue);
@@ -571,13 +519,12 @@ let Tree = ({ data }) => {
               <Col col-10>
                 <div style={{ display: "flex" }}>
 
-                {`${t("NWL_APPLICANT_DGPS_POINTS_DOCUMENT")}`}
-                  {/* 1. DGPS points */}
+                  1. DGPS points
 
 
                   <ReportProblemIcon
                     style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ? "none" : "block",
                       color: fieldIconColors.detailsOfPlots
                     }}
                     onClick={() => {
@@ -604,16 +551,14 @@ let Tree = ({ data }) => {
 
                         <Col className="col col-4" style={{ marginLeft: 60 }}>
                           <label>
-                            {/* Latitude */}
-                            {`${t("NWL_APPLICANT_DGPS_LATITUDE_DOCUMENT")}`}
+                            Latitude
                           </label>
 
 
                         </Col >
                         <Col className="col col-4">
                           <label>
-                            {/* Longitude */}
-                            {`${t("NWL_APPLICANT_DGPS_LONGITUDE_DOCUMENT")}`}
+                            Longitude
                           </label>
 
 
@@ -677,10 +622,7 @@ let Tree = ({ data }) => {
                   {JSON.stringify(DetailsofAppliedLand?.dgpsDetails?.[0]?.[0]?.latitude)}
                 </div> */}
 
-                <Button style={{ textAlign: "right" }} value="Submit" id="Submit" name="Submit" onClick={handleshow19}>
-                   {/* Map View */}
-                {`${t("NWL_APPLICANT_DGPS_POINTS_MAP_VIEW_DOCUMENT")}`}
-                </Button>
+                <Button style={{ textAlign: "right" }} value="Submit" id="Submit" name="Submit" onClick={handleshow19}> Map View</Button>
 
 
 
@@ -1308,16 +1250,10 @@ let Tree = ({ data }) => {
                 <div>
                   <div className="mt-3 mb-3">
                     <h4>
-                      <b>
-                        {/* Bifurcation Of Purpose */}
-                      {`${t("NWL_APPLICANT_BIFURCATION_OF_PURPOSE_")}`}
-                      </b>
+                      <b>Bifurcation Of Purpose</b>
                     </h4>
                     <h4 className="mt-3">
-                      <b>
-                        {/* Total Applied Area: */}
-                        {`${t("NWL_APPLICANT_DGPS_TOTAL_APPLIED_AREA")}`}
-                         </b>
+                      <b>Total Applied Area: </b>
                       {DetailsofAppliedLand?.DetailsAppliedLandPlot?.totalAreaScheme}
                     </h4>
                     {/* <h4 className="mt-3">
@@ -1333,16 +1269,12 @@ let Tree = ({ data }) => {
 
                         <Row >
                           <h4 className="mt-3">
-                            <b>
-                              {/* Purpose Name: */}
-                              {`${t("NWL_APPLICANT_DGPS_POINTS_PURPOSE_NAME")}`}
-                               </b>
+                            <b>Purpose Name: </b>
                             {item?.name}
                           </h4>
 
                           <h4 className="mt-3">
-                            {/* Area: */}
-                            {`${t("NWL_APPLICANT_DGPS_POINTS_AREA")}`}
+                            Area:
                             <Col className="col col-4" >
                               <input type="text" className="form-control" placeholder={item?.area} disabled />
                             </Col>
@@ -1365,23 +1297,18 @@ let Tree = ({ data }) => {
                             <Row >
 
                               <h4 className="mt-3">
-                                <b>
-                                   {/* SubPurpose Name:  */}
-                                   {`${t("NWL_APPLICANT_DGPS_POINTS_SUBPURPOSE_NAME")}`}
-                                </b>
+                                <b> SubPurpose Name: </b>
                                 {item?.name}
                               </h4>
                               
                               <h4 className="mt-3">
-                                {/* Area: */}
-                                {`${t("NWL_APPLICANT_DGPS_POINTS_AREA")}`}
+                                Area:
                                 <Col className="col col-4" >
                                   <input type="text" className="form-control" placeholder={item?.area} disabled />
                                 </Col>
                               </h4>
                               <h4 className="mt-3">
-                                {/* FAR: */}
-                                {`${t("NWL_APPLICANT_DGPS_POINTS_FAR")}`}
+                                FAR:
                                 <Col className="col col-4" >
                                   <input type="text" className="form-control" placeholder={item?.fars} disabled />
                                 </Col>
@@ -1398,23 +1325,18 @@ let Tree = ({ data }) => {
                                 <Row >
 
                                   <h4 className="mt-3">
-                                    <b> 
-                                      {/* SubPurpose Name: */}
-                                      {`${t("NWL_APPLICANT_DGPS_POINTS_SUBPURPOSE_NAME")}`} 
-                                       </b>
+                                    <b> SubPurpose Name: </b>
                                     {item?.name}
                                   </h4>
 
                                   <h4 className="mt-3">
-                                    {/* Area: */}
-                                    {`${t("NWL_APPLICANT_DGPS_POINTS_AREA")}`}
+                                    Area:
                                     <Col className="col col-4" >
                                       <input type="text" className="form-control" placeholder={item?.area} disabled />
                                     </Col>
                                   </h4>
                                   <h4 className="mt-3">
-                                    {/* FAR: */}
-                                    {`${t("NWL_APPLICANT_DGPS_POINTS_FAR")}`}
+                                    FAR:
                                     <Col className="col col-4" >
                                       <input type="text" className="form-control" placeholder={item?.fars} disabled />
                                     </Col>
@@ -1724,14 +1646,12 @@ let Tree = ({ data }) => {
                 <hr className="mb-4" />
 
                 <h5 className="text-black" style={{ marginBottom: "2%" }}>
-                  {/* Mandatory Documents */}
-                  {`${t("NWL_APPLICANT_DGPS_MANDATORY_DOCUMENTS")}`}
+                  Mandatory Documents
                 </h5>
                 <div className={`${classes.formLabel} row`}>
                   <div className="col col-3">
                     <h5 className="d-flex flex-column mb-2">
-                     {/* Layout Plan DXF */}
-                    {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_LAYOUT_PLAN_DXF")}`}
+                    Upload Layout Plan DXF
                       <div style={{ display: "flex" }}>
                         
                         <IconButton onClick={()=>getDocShareholding(DetailsofAppliedLand?.DetailsAppliedLandPlot?.layoutPlanDxf)}>
@@ -1756,8 +1676,7 @@ let Tree = ({ data }) => {
                   </div>
                   <div className="col col-3">
                   <h5 className="d-flex flex-column mb-2">
-                {/* Layout Plan PDF */}
-                {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_LAYOUT_PLAN_PDF")}`}
+                  Upload Layout Plan PDF
                       <div style={{ display: "flex" }}>
                      
                         <IconButton onClick={()=>getDocShareholding(DetailsofAppliedLand?.DetailsAppliedLandPlot?.layoutPlanPdf)}>
@@ -1781,9 +1700,7 @@ let Tree = ({ data }) => {
                     
                   </div>
                   <div className="col col-3">
-                    <h5 className="d-flex flex-column mb-2" >
-                      {/* Undertaking */}
-                      {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_UNDERTAKING")}`}
+                    <h5 className="d-flex flex-column mb-2" >Undertaking
 
                       <div style={{ display: "flex" }}>
                        
@@ -1813,8 +1730,7 @@ let Tree = ({ data }) => {
                         <h5 className="d-flex flex-column mb-2">
                           
                           
-                          {/* Any other relevant documen */}
-                          {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_DEVELOPMENT_PLAN")}`}
+                          Any other relevant documen
                           <div style={{ display: "flex" }}>
                         
                         <IconButton onClick={()=>getDocShareholding(DetailsofAppliedLand?.DetailsAppliedLandPlot?.layoutPlanPdf)}>
@@ -1839,11 +1755,9 @@ let Tree = ({ data }) => {
                       </div>
                     </div>
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col col-3">
-                      <h5 className="d-flex flex-column mb-2">
-                       {/* Sectoral Plan */}
-                        {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_SECTORAL_PLAN")}`}
+                      <h5 className="d-flex flex-column mb-2">Plans showing cross sections
 
                      
                         <div style={{ display: "flex" }}>
@@ -1869,9 +1783,7 @@ let Tree = ({ data }) => {
                     </div>
 
                     <div className="col col-3">
-                      <h5 className="d-flex flex-column mb-2">
-                       {/* EXPLANATORY NOTE */}
-                        {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_EXPLANATORY_NOTE")}`}
+                      <h5 className="d-flex flex-column mb-2">Plan indicating positions of public health services
 
                         <div style={{ display: "flex" }}>
                         
@@ -1896,11 +1808,7 @@ let Tree = ({ data }) => {
                     </div>
 
                     <div className="col col-3">
-                      <h5 className="d-flex flex-column mb-2">
-                        
-                        {/* GUIDE MAP */}
-                        {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_GUIDE_MAP")}`}
-
+                      <h5 className="d-flex flex-column mb-2">Specifications and designs of road works
                      
                         <div style={{ display: "flex" }}>
                     
@@ -1925,9 +1833,7 @@ let Tree = ({ data }) => {
                     </div>
 
                     <div className="col col-3">
-                      <h5 className="d-flex flex-column mb-2">
-                        {/* INDEMNITY BOND */}
-                        {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_INDEMNITY_BOND")}`}
+                      <h5 className="d-flex flex-column mb-2">Designs and Sewerage, storm and water supply
                    
                         <div style={{ display: "flex" }}>
        
@@ -1955,9 +1861,7 @@ let Tree = ({ data }) => {
 
                   <div className="row">
                     <div className="col col-3">
-                      <h5 className="d-flex flex-column mb-2">
-                        {/* ANY Other Relevant Document */}
-                        {`${t("NWL_APPLICANT_DGPS_DOCUMENTS_ANY_OTHER_RELEVANT_DOCUMENT")}`}
+                      <h5 className="d-flex flex-column mb-2">Designs of disposal and treatment of storm
 
                         <div style={{ display: "flex" }}>
     
@@ -1981,7 +1885,7 @@ let Tree = ({ data }) => {
                       </h5>
                     </div>
 
-                    {/* <div className="col col-3">
+                    <div className="col col-3">
                       <h5 className="d-flex flex-column mb-2">Upload Layout Undertaking that no change
 
                         <div style={{ display: "flex" }}>
@@ -2055,11 +1959,11 @@ let Tree = ({ data }) => {
                           ></ReportProblemIcon>
                         </div>
                       </h5>
-                    </div> */}
+                    </div>
 
                   </div>
 
-                  {/* <div className="row">
+                  <div className="row">
                     <div className="col col-3">
                       <h5 className="d-flex flex-column mb-2">Consent of RERA
 

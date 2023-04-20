@@ -1,7 +1,5 @@
-import { AdvanceTextArea, Dropdown, MultiSelectDropdown, UploadFile } from "@egovernments/digit-ui-react-components";
+import { Dropdown, MultiSelectDropdown, UploadFile } from "@egovernments/digit-ui-react-components";
 import React from "react";
-
-
 
 export const configTLApproverApplication = ({
   t,
@@ -14,8 +12,6 @@ export const configTLApproverApplication = ({
   setUploadedFile,
   assigneeLabel,
   businessService,
-  setComment,
-  comment,
 }) => {
   let checkCondtions = true;
   if (action?.action == "SENDBACKTOCITIZEN" || action?.action == "APPROVE") checkCondtions = false;
@@ -63,16 +59,10 @@ export const configTLApproverApplication = ({
           },
           {
             label: t("WF_COMMON_COMMENTS"),
-            // type: "textarea",
-            populators: (  
-              <AdvanceTextArea
-              modal={true}
-              setState={setComment}
-              ></AdvanceTextArea>
-            )
-            // populators: {
-            //   name: "comments",
-            // },
+            type: "textarea",
+            populators: {
+              name: "comments",
+            },
           },
           {
             label: t("TL_APPROVAL_CHECKLIST_BUTTON_UP_FILE"),

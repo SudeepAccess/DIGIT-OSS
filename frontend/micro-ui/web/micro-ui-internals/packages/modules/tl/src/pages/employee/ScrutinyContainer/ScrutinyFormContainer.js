@@ -41,24 +41,17 @@ const ScrutinyFormcontainer = (props) => {
   const [moduleCode, setModuleCode] = useState("TL")
   const [scrutinyDetails, setScrutinyDetails] = useState();
   const [feeandchargesData, SetFeeandchargesData] = useState();
-  const [status, setStatus] = useState();
+  const [status , setStatus] = useState();
 
   const [applicationDetails, setApplicationDetails] = useState();
   const [lastUpdate, SetLastUpdate] = useState();
   const [workflowDetails, setWorkflowDetails] = useState();
   const [applicationData, setApplicationData] = useState();
-  const [mDMSData, setMDMSData] = useState();
-  const [mDmsUpdate, SetMDmsUpdate] = useState();
   const { setBusinessService } = useContext(ScrutinyRemarksContext)
 
   const authToken = Digit.UserService.getUser()?.access_token || null;
   const userInfo = Digit.UserService.getUser()?.info || {};
-  const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
-  const filterDataRole = userRolesArray?.[0]?.code;
-  let user = Digit.UserService.getUser();
-  const userRoles = user?.info?.roles?.map((e) => e.code);
-  const showRemarksSection = userRoles.includes("DTCP_HR")
- 
+
 
   const handleshow19 = async (e) => {
     const payload = {
@@ -108,9 +101,7 @@ const ScrutinyFormcontainer = (props) => {
         "authToken": authToken
 
       }
-    
     }
-    let requestFiled = {}
     try {
       const Resp = await axios.post(`/tl-services/v1/_search?tenantId=hr&applicationNumber=${id}`, requestInfo).then((response) => {
         return response?.data;
@@ -124,58 +115,55 @@ const ScrutinyFormcontainer = (props) => {
       setBusinessService(Resp?.Licenses[0]?.businessService);
       setStatus(Resp?.Licenses[0]?.status);
       console.log("devStatus", Resp?.Licenses[0]?.status);
-      requestFiled = {
 
-        RequestInfo: {
-          apiId: "Rainmaker",
-          ver: "v1",
-          ts: 0,
-          action: "_search",
-          did: "",
-          key: "",
-          msgId: "090909",
-          requesterId: "",
-          authToken: authToken,
-          // userInfo: userInfo
-  
-        },
-        MdmsCriteria: {
-          tenantId: "hr",
-          moduleDetails: [
-            {
-              moduleName: "ACCESSCONTROL_ROLESACCESS",
-              tenantId: "hr",
-              masterDetails: [
-                {
-                  "name": "rolesaccess",
-                  "filter": `[?(@.role=='${filterDataRole}'|| @.role=='${userRolesArray}')]`
-                },
-                {
-                  "name": "rolesaccess",
-                  "filter": `[?(@.applicationStatus =='${Resp?.Licenses[0]?.status}')]`
-                }
-              ]
-            }
-          ]
-        }
-      }
     } catch (error) {
       console.log(error);
     }
-    
-    console.log("TCPaccess123", requestFiled)
+    let requestFiled = {
 
+      RequestInfo: {
+        apiId: "Rainmaker",
+        ver: "v1",
+        ts: 0,
+        action: "_search",
+        did: "",
+        key: "",
+        msgId: "090909",
+        requesterId: "",
+        authToken: authToken,
+        // userInfo: userInfo
+
+      },
+      MdmsCriteria : {
+        tenantId: "hr",
+        moduleDetails: [
+            {
+                moduleName : "ACCESSCONTROL_ROLESACCESS",
+                tenantId: "hr",
+                masterDetails: [
+                    {
+                        "name": "rolesaccess",
+                        "filter": "[?(@.role=='Patwari')]"
+                    }
+                ]
+            }
+        ]
+    }
+    }
+    console.log("TCPaccess123", requestFiled)
+    // return;
 
     try {
       const Resp = await axios.post(`/egov-mdms-service/v1/_search`, requestFiled).then((response) => {
         return response?.data;
       });
-      setMDMSData(Resp?.MdmsRes?.ACCESSCONTROL_ROLESACCESS?.rolesaccess);
-      console.log("FileddataName", mDMSData);
+      // setApplicationData(Resp?.Licenses[0]);
+      // SetLastUpdate(Resp?.Licenses[0]);
+  console.log("FileddataName" , Resp);
 
     } catch (error) {
       console.log(error);
-
+  
     }
     const applicationNo = id
     console.log("applicationNo", applicationNo);
@@ -210,7 +198,7 @@ const ScrutinyFormcontainer = (props) => {
   });
 
   const applicationDetailsTemp = Digit.Hooks.tl.useApplicationDetail(t, tenantId, id);
-
+ 
 
 
 
@@ -250,7 +238,7 @@ const ScrutinyFormcontainer = (props) => {
     setShowModal(false);
 
     // setTimeout(() => {
-
+     
 
     //   window.location.href = `/digit-ui/employee/tl/inbox`
     // }, 3000);
@@ -262,14 +250,14 @@ const ScrutinyFormcontainer = (props) => {
 
   const [open, setOpen] = useState(false)
 
-  // const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
+    // const handleClickOpen = () => {
+    //     setOpen(true);
+    //   };
 
-
+    
 
   const submitAction = async (data, nocData = false, isOBPS = {}) => {
-
+  
     setIsEnableLoader(true);
     if (typeof data?.customFunctionToExecute === "function") {
       data?.customFunctionToExecute({ ...data });
@@ -295,13 +283,13 @@ const ScrutinyFormcontainer = (props) => {
       }
     }
 
-
+    
 
 
 
     if (mutate) {
       console.log("TCPac234",)
-
+   
       setIsEnableLoader(true);
       mutate(data, {
         onError: (error, variables) => {
@@ -336,7 +324,7 @@ const ScrutinyFormcontainer = (props) => {
           "apiId": "Rainmaker",
           "msgId": "1669293303096|en_IN",
           "authToken": authToken
-
+  
         }
       }
       try {
@@ -344,32 +332,30 @@ const ScrutinyFormcontainer = (props) => {
           return response?.data;
         });
         console.log("AfterLoiUpdate", Resp, Resp?.Licenses);
-
-
+        
+  
       } catch (error) {
         console.log(error);
       }
 
-      if (showRemarksSection==="DTCP_HR"){
-        let requestInfo = {
 
-          RequestInfo: {
-            apiId: "Rainmaker",
-            ver: "v1",
-            ts: 0,
-            action: "_search",
-            did: "",
-            key: "",
-            msgId: "090909",
-            requesterId: "",
-            authToken: authToken,
-            userInfo: userInfo
-  
-          }
+      let requestInfo = {
+
+        RequestInfo: {
+          apiId: "Rainmaker",
+          ver: "v1",
+          ts: 0,
+          action: "_search",
+          did: "",
+          key: "",
+          msgId: "090909",
+          requesterId: "",
+          authToken: authToken,
+          userInfo: userInfo
+
         }
-        console.log("TCPaccess", requestInfo)
-       
-    
+      }
+      console.log("TCPaccess", requestInfo)
       // return;
 
       try {
@@ -378,14 +364,13 @@ const ScrutinyFormcontainer = (props) => {
         });
         // setApplicationData(Resp?.Licenses[0]);
         SetLastUpdate(Resp?.Licenses[0]);
-        console.log("updateLicenses", Resp?.Licenses[0]?.tcpLoiNumber);
+    console.log("updateLicenses" , Resp?.Licenses[0]?.tcpLoiNumber);
 
       } catch (error) {
         console.log(error);
-
+    
       }
-    }
-
+     
       const payload = {
 
         "RequestInfo": {
@@ -428,17 +413,17 @@ const ScrutinyFormcontainer = (props) => {
     setTimeout(() => {
       closeModal()
       window.location.href = `/digit-ui/employee/tl/inbox`
-    }, 3000);
+      }, 3000);
   };
 
   useEffect(() => {
     console.log("log123...applicationDetailsAPI", applicationDetailsTemp)
+   
 
-
-
+  
     if (applicationDetailsTemp?.data) {
       setApplicationDetails(applicationDetailsTemp?.data)
-
+      
     }
   }, [applicationDetailsTemp?.data])
 
@@ -457,7 +442,7 @@ const ScrutinyFormcontainer = (props) => {
     getScrutinyData();
   }, [])
 
-  console.log("meri update34", lastUpdate)
+  console.log("meri update34" , lastUpdate)
   return (
     <Card className="formColorEmp">
       <Card.Header className="head-application" >
@@ -471,7 +456,7 @@ const ScrutinyFormcontainer = (props) => {
             <b><p className="head-font">
               {/* {applicationData?.businessService} ask to renuka */}
               Licence
-            </p></b>
+              </p></b>
           </div>
           <div className="col-sm-2">
             <b><p className="head-font">TCP Application Number:</p></b>
@@ -485,11 +470,11 @@ const ScrutinyFormcontainer = (props) => {
           <div className="col-sm-2">
             <b><p className="head-font">TCP Dairy Number: </p></b>
             <b><p className="head-font">{applicationData?.tcpDairyNumber}</p></b>
-
+           
           </div>
           <div className="col-sm-2">
-            <Button style={{ textAlign: "right" }} value="Submit" id="Submit" onChange1={handleChange} name="Submit" onClick={handleshow19}>Views PDF</Button>
-          </div>
+          <Button style={{ textAlign: "right" }} value="Submit" id="Submit" onChange1={handleChange} name="Submit" onClick={handleshow19}>Views PDF</Button>
+            </div>
         </div>
       </Card.Header>
       <Row >
@@ -501,7 +486,6 @@ const ScrutinyFormcontainer = (props) => {
             applicationNumber={id}
             applicationStatus={status}
             refreshScrutinyData={getScrutinyData}
-            mDMSData={mDMSData}
           ></ScrutitnyForms>
         </div>
 
@@ -542,7 +526,7 @@ const ScrutinyFormcontainer = (props) => {
               closeWarningPopup={closeWarningPopup}
             />
           ) : null}
-
+          
           <ApplicationDetailsActionBar
             workflowDetails={workflowDetails}
             displayMenu={displayMenu}
@@ -568,7 +552,7 @@ const ScrutinyFormcontainer = (props) => {
             <Button style={{ textAlign: "right" }}> <a href="http://localhost:3000/digit-ui/employee/tl/Loi" >Generate LOI</a></Button>
           </div> */}
           {/* )} */}
-
+          
           {/* ////////////////////done////////////////////////////////// */}
           {/* <Dialog
     open={open}

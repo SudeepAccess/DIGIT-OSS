@@ -1010,7 +1010,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                     llp_Number.match(Digit.Utils.getPattern("LLP")) &&
                     incorporationDate &&
                     registeredContactNo?.match(Digit.Utils.getPattern("MobileNo")) &&
-                    emailId &&
+                    email &&
                     companyName &&
                     registeredContactNo &&
                     registeredAddress &&
@@ -1030,7 +1030,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="form-group row">
                         <div className="col-sm-4">
                           <label htmlFor="name">
-                            {`${t("BPA_LICENSE_TYPE_TEXT")}`} <span className="text-danger font-weight-bold">*</span>
+                            {`${t("Select Developer's Type")}`} <span className="text-danger font-weight-bold">*</span>
                           </label>
                           {/* <Dropdown
                             labels="Select Type"
@@ -1069,8 +1069,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="name">
-                            {`${t("BPA_NAME_TEXT")}`}
-                            <span className="text-danger font-weight-bold">*</span>
+                            Name <span className="text-danger font-weight-bold">*</span>
                           </label>
                           <input
                             type="text"
@@ -1086,8 +1085,8 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="email">
-                            {`${t("BPA_EMAIL_TEXT")}`}
-                            <span className="text-danger font-weight-bold">*</span>
+                            {" "}
+                            Email <span className="text-danger font-weight-bold">*</span>
                           </label>
                           <input
                             type="text"
@@ -1100,7 +1099,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                           />
                           {emailId && emailId.length > 0 && !emailId.match(Digit.Utils.getPattern("Email")) && (
                             <CardLabelError style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}>
-                              {t("CORE_COMMON_APPLICANT_EMAIL_INVALID")}
+                              {"Invalid Email Address"}
                             </CardLabelError>
                           )}
                         </div>
@@ -1108,7 +1107,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="name">
-                            {`${t("BPA_MOBILE_NO_TEXT")}`} <span className="text-danger font-weight-bold">*</span>
+                            Mobile No. <span className="text-danger font-weight-bold">*</span>
                           </label>
                           <input
                             value={mobileNumberUser}
@@ -1132,7 +1131,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="dob">
-                            {`${t("BPA_DOB_DATE")}`} <span className="text-danger font-weight-bold">*</span>
+                            Date of Birth <span className="text-danger font-weight-bold">*</span>
                           </label>
                           <input
                             type="date"
@@ -1149,7 +1148,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="dob">
-                            {`${t("BPA_GENDER_SELECT")}`} <span className="text-danger font-weight-bold">*</span>
+                            Select gender <span className="text-danger font-weight-bold">*</span>
                           </label>
                           <Select value={gender || ""} onChange={setGenderName} className="w-100 form-control" variant="standard">
                             {menu?.map((item, index) => (
@@ -1192,7 +1191,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="name">
-                            {t("BPA_REGISTERED_ADDRESS_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                            Registered Address <span className="text-danger font-weight-bold">*</span>
                           </label>
 
                           <input
@@ -1206,7 +1205,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                           />
                           {registeredAddress && registeredAddress.length > 0 && !registeredAddress.match(Digit.Utils.getPattern("Address")) && (
                             <CardLabelError style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}>
-                              {t("BPA_REGISTERED_ADDRESS_INVALID")}
+                              {t("Invalid Address")}
                             </CardLabelError>
                           )}
                         </div>
@@ -1214,7 +1213,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       <div className="col col-4">
                         <div className="form-group">
                           <label htmlFor="name">
-                            {t("BPA_GST_NUMBER")} {showDevTypeFields !== "Trust" && <span className="text-danger font-weight-bold">*</span>}
+                            GST No. {showDevTypeFields !== "Trust" && <span className="text-danger font-weight-bold">*</span>}
                           </label>
                           <input
                             type="text"
@@ -1536,7 +1535,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                   return (
                                     <div className="form-group">
                                       <label htmlFor="name">
-                                        {t("BPA_CSR_NO")} <span className="text-danger font-weight-bold">*</span>
+                                        CSR Number <span className="text-danger font-weight-bold">*</span>
                                       </label>
                                       <input
                                         type="text"
@@ -1563,7 +1562,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                   return (
                                     <div className="form-group">
                                       <label htmlFor="name">
-                                        {t("BPA_LLP_NO")} <span className="text-danger font-weight-bold">*</span>
+                                        LLP Number <span className="text-danger font-weight-bold">*</span>
                                       </label>
                                       <input
                                         type="text"
@@ -1588,7 +1587,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                   return (
                                     <div className="form-group">
                                       <label htmlFor="name">
-                                        {t("BPA_CIN_NO")} <span className="text-danger font-weight-bold">*</span>
+                                        CIN Number <span className="text-danger font-weight-bold">*</span>
                                       </label>
                                       <input
                                         type="text"
@@ -1618,8 +1617,8 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <div className="col col-4">
                           <div className="form-group">
                             <label htmlFor="name">
-                              {showDevTypeFields === "Trust" ? `${t("BPA_DAVELOPER_TRUST_NAME_TEXT")}` : `${t("BPA_DAVELOPER_COMPANY_NAME_TEXT")}`}
-                              <span className="text-danger font-weight-bold">*</span>
+                              {" "}
+                              {showDevTypeFields === "Trust" ? "Trust Name" : "Company Name"} <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1637,7 +1636,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <div className="col col-4">
                           <div className="form-group">
                             <label htmlFor="name">
-                              {t("BPA_DATE_INCORPORATION_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                              Date of Incorporation <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="date"
@@ -1653,7 +1652,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <div className="col col-4">
                           <div className="form-group">
                             <label htmlFor="name">
-                              {t("BPA_REGISTERED_ADDRESS_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                              Registered Address <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1666,7 +1665,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                             />
                             {registeredAddress && registeredAddress.length > 0 && !registeredAddress.match(Digit.Utils.getPattern("Address")) && (
                               <CardLabelError style={{ width: "100%", marginTop: "-15px", fontSize: "16px", marginBottom: "12px", color: "red" }}>
-                                {t("BPA_REGISTERED_ADDRESS_INVALID")}
+                                {t("Invalid Address")}
                               </CardLabelError>
                             )}
                           </div>
@@ -1674,7 +1673,8 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <div className="col col-4">
                           <div className="form-group ">
                             <label htmlFor="emailId">
-                              {t("BPA_EMAIL_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                              {" "}
+                              Email <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1687,7 +1687,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                             />
                             {emailId && emailId.length > 0 && !emailId.match(Digit.Utils.getPattern("Email")) && (
                               <CardLabelError style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}>
-                                {t("CORE_COMMON_APPLICANT_EMAIL_INVALID")}
+                                {"Invalid Email Address"}
                               </CardLabelError>
                             )}
                           </div>
@@ -1695,7 +1695,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <div className="col col-4">
                           <div className="form-group">
                             <label htmlFor="registeredContactNo">
-                              {t("BPA_MOBILE_NO_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                              Mobile No. <span className="text-danger font-weight-bold">*</span>
                             </label>
                             <input
                               type="text"
@@ -1720,7 +1720,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <div className="col col-4">
                           <div className="form-group">
                             <label htmlFor="gst_Number">
-                              {t("BPA_GST_NUMBER")} {showDevTypeFields !== "Trust" && <span className="text-danger font-weight-bold">*</span>}
+                              GST No. {showDevTypeFields !== "Trust" && <span className="text-danger font-weight-bold">*</span>}
                             </label>
                             <input
                               type="text"
@@ -1752,11 +1752,73 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                 showDevTypeFields !== "Limited Liability Partnership" && (
                   <div className="card mb-3">
                     <h5 className="card-title fw-bold">
-                      {t("BPA_SHAREHOLDING_HEADING")} <span className="text-danger font-weight-bold">*</span>
+                      Shareholding Patterns <span className="text-danger font-weight-bold">*</span>
                     </h5>
                     {/* {JSON.stringify(modalValuesArray)} */}
                     <div className="card-body">
                       <div className="table-bd">
+                        {/* <table className="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Sr. No</th>
+                              <th>Name</th>
+                              <th>Designition</th>
+                              <th>Percentage</th>
+                              <th>View Document</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {modalValuesArray?.length > 0 ? (
+                              modalValuesArray.map((elementInArray, input) => {
+                                return (
+                                  <tr>
+                                    <td>{input + 1}</td>
+                                    <td>{elementInArray.name}</td>
+                                    <td>{elementInArray.designition}</td>
+                                    <td>{elementInArray.percentage}</td>
+                                    <td>
+                                      <div className="row">
+                                        {elementInArray.uploadPdf ? (
+                                          <button
+                                            type="button"
+                                            title="View Document"
+                                            onClick={() => getDocShareholding(elementInArray?.uploadPdf)}
+                                            className="btn btn-sm col-md-6"
+                                          >
+                                            <VisibilityIcon color="info" className="icon" />
+                                          </button>
+                                        ) : (
+                                          <p></p>
+                                        )}
+                                        <div className="btn btn-sm col-md-6">
+                                          <label title="Upload Document" for={"uploadshareholdingPattern" + input}>
+                                            {" "}
+                                            <FileUpload color="primary" for={"uploadshareholdingPattern" + input} />
+                                          </label>
+                                          <input
+                                            id={"uploadshareholdingPattern" + input}
+                                            type="file"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => getDocumentData(e?.target?.files[0], "uploadPdf", "shareholdingPattern", input)}
+                                          />
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <a href="javascript:void(0)" title="Delete record" onClick={() => deleteTableRows(-1)}>
+                                        <DeleteIcon color="danger" className="icon" />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                );
+                              })
+                            ) : (
+                              <p className="text-danger text-center d-none">Click on the Add More Button</p>
+                            )}
+                          </tbody>
+                        </table> */}
+
                         <Paper sx={{ width: "100%", overflow: "hidden" }}>
                           <TableContainer sx={{ maxHeight: 440 }}>
                             <Table stickyHeader aria-label="sticky table">
@@ -1834,6 +1896,21 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                           />
                         </Paper>
                       </div>
+                      {/* <div className="form-group col-md2 mt-4">
+                      <button  className="btn btn-success" >Add More
+                        
+                      </button>
+                    </div> */}
+
+                      {/* <button
+                    type="button"
+                    style={{ float: "left" }}
+                    className="btn btn-primary"
+                    onClick={() => setNoOfRows(noofRows + 1)}
+                  >
+                    Add More
+                  </button> */}
+                      {/* <div> {remainingStakeholderPercentage} */}
                       <div>
                         <button
                           type="button"
@@ -1842,6 +1919,8 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                           }}
                           disabled={Number(remainingStakeholderPercentage) === 0}
                           className="btn btn-primary mt-3"
+                          // onClick={() => setNoOfRows(noofRows + 1)}
+                          // onClick={() => setmodal(true)}
                           onClick={handleShowStakeholder}
                         >
                           Add More
@@ -1851,12 +1930,26 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                             <Modal.Title>Add Stakeholders</Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
+                            {/* {JSON.stringify(Documents)}efewfewf */}
                             <form className="text1" id="myForm">
                               <Row>
                                 <Col md={3} xxl lg="4">
                                   <label htmlFor="modalNAme" className="text">
-                                    {t("BPA_NAME_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                                    Name <span className="text-danger font-weight-bold">*</span>
                                   </label>
+                                  {/* <TextInput
+                                  type="text"
+                                  isMandatory={false}
+                                  onChange={(e) => setModalNAme(e.target.value)}
+                                  placeholder=""
+                                  required
+                                  class="employee-card-input"
+                                  {...(validation = {
+                                    isRequired: true,
+                                    pattern: "^[a-zA-Z ]*$",
+                                    type: "text",
+                                  })}
+                                /> */}
                                   <input
                                     type="text"
                                     value={modalNAme}
@@ -1868,15 +1961,28 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                   />
                                   {modalNAme && modalNAme.length > 0 && !modalNAme.match(Digit.Utils.getPattern("Name")) && (
                                     <CardLabelError style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}>
-                                      {t("BPA_NAME_INVALID")}
+                                      {t("Please enter a valid Name")}
                                     </CardLabelError>
                                   )}
                                 </Col>
                                 <Col md={3} xxl lg="4">
                                   <label htmlFor="modaldesignition" className="text">
-                                    {t("BPA_SHAREHOLDING_DEGISNITION")}
-                                    <span className="text-danger font-weight-bold">*</span>
+                                    {" "}
+                                    Designition <span className="text-danger font-weight-bold">*</span>
                                   </label>
+                                  {/* <TextInput
+                                  type="text"
+                                  isMandatory={false}
+                                  onChange={(e) => setModaldesignition(e.target.value)}
+                                  placeholder=""
+                                  class="employee-card-input"
+                                  {...(validation = {
+                                    isRequired: true,
+                                    pattern: "^[a-z A-Z ]*$",
+                                    type: "text",
+                                  })}
+                                /> */}
+
                                   <input
                                     type="text"
                                     value={modaldesignition}
@@ -1890,15 +1996,26 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                     <CardLabelError
                                       style={{ width: "100%", marginTop: "-15px", fontSize: "16px", marginBottom: "12px", color: "red" }}
                                     >
-                                      {t("BPA_SHAREHOLDING_DEGISNITION_INVALID")}
+                                      {t("Please enter a valid Designition")}
                                     </CardLabelError>
                                   )}
                                 </Col>
 
                                 <Col md={3} xxl lg="4">
                                   <label htmlFor="modalPercentage" className="text">
-                                    {t("BPA_SHAREHOLDING_PERCENTAGE_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                                    Percentage "%" <span className="text-danger font-weight-bold">*</span>
                                   </label>
+                                  {/* <TextInput
+                                  type="number"
+                                  isMandatory={false}
+                                  value={modalPercentage}
+                                  onChange={(e) => setModalPercentage(e.target.value)}
+                                  maxlength={4}
+                                  class="employee-card-input"
+                                  {...(validation = {
+                                    isRequired: true,
+                                  })}
+                                /> */}
                                   <input
                                     type="text"
                                     value={modalPercentage}
@@ -1921,7 +2038,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                 </Col>
                                 <Col md={3} xxl lg="4">
                                   <label htmlFor="uploadPdf" className="text">
-                                    {t("BPA_SHAREHOLDING_SUPPORT_DOCUMENT")}
+                                    Any Supportive Document
                                   </label>
                                   <input
                                     type="file"
@@ -1974,7 +2091,35 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                   <div className="card mb-3">
                     <h5 className="card-title fw-bold">Directors Information</h5>
                     <div className="card-body">
+                      {/* {JSON.stringify(DirectorData)}ewewfewf */}
                       <div className="table-bd">
+                        {/* <table className="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Sr. No</th>
+                              <th>DIN Number</th>
+                              <th>Name</th>
+                              <th>Contact Number</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {DirectorDataMCA?.length > 0 ? (
+                              DirectorDataMCA.map((elementInArray, input) => {
+                                return (
+                                  <tr key={input}>
+                                    <td>{input + 1}</td>
+                                    <td>{elementInArray.din}</td>
+                                    <td>{elementInArray.name}</td>
+                                    <td>{elementInArray.contactNumber}</td>
+                                  </tr>
+                                );
+                              })
+                            ) : (
+                              <p></p>
+                            )}
+                          </tbody>
+                        </table> */}
+
                         <Paper sx={{ width: "100%", overflow: "hidden" }}>
                           <TableContainer sx={{ maxHeight: 440 }}>
                             <Table stickyHeader aria-label="sticky table">
@@ -2018,7 +2163,8 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         </Paper>
                       </div>
                       <p className="ml-1 mt-4">
-                        {t("BPA_DIRECTORS_ADDITION_FETCH_MCA_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                        If the directors are in addition/modification to data fetched from the MCA portal, then the complete details of existing
+                        directors may be provided. <span className="text-danger font-weight-bold">*</span>
                       </p>
                       <div className="form-group ml-2">
                         <input
@@ -2064,7 +2210,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                     <Row>
                                       <Col md={3} xxl lg="4">
                                         <label htmlFor="name" className="text">
-                                          {t("BPA_DIN_NO")} <span className="text-danger font-weight-bold">*</span>
+                                          DIN Number <span className="text-danger font-weight-bold">*</span>
                                         </label>
                                         {/* <MobileNumber
                                         value={modalDIN}
@@ -2094,7 +2240,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                       </Col>
                                       <Col md={3} xxl lg="4">
                                         <label htmlFor="name" className="text">
-                                          {t("BPA_NAME_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                                          Name <span className="text-danger font-weight-bold">*</span>
                                         </label>
                                         <input
                                           type="text"
@@ -2110,13 +2256,14 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                             <CardLabelError
                                               style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}
                                             >
-                                              {t("BPA_NAME_INVALID")}
+                                              {t("Please enter valid Name")}
                                             </CardLabelError>
                                           )}
                                       </Col>
                                       <Col md={3} xxl lg="4">
                                         <label htmlFor="name" className="text">
-                                          {t("BPA_CONTACT_NUMBER")} <span className="text-danger font-weight-bold">*</span>
+                                          {" "}
+                                          Contact Number <span className="text-danger font-weight-bold">*</span>
                                         </label>
 
                                         {/* <MobileNumber
@@ -2146,7 +2293,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                       </Col>
                                       <Col md={3} xxl lg="4">
                                         <label htmlFor="name" className="text">
-                                          {t("BPA_UPLOAD_DOCUMENT")}
+                                          Upload document
                                         </label>
                                         <input
                                           type="file"
@@ -2183,6 +2330,67 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                               </Modal>
                             </div>
                             <div className="table-bd">
+                              {/* <table className="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Sr. No</th>
+                                    <th>DIN Number</th>
+                                    <th>Name</th>
+                                    <th>Contact Number</th>
+                                    <th>View Document</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {DirectorData?.length > 0 ? (
+                                    DirectorData.map((elementInArray, input) => {
+                                      return (
+                                        <tr key={input}>
+                                          <td>{input + 1}</td>
+                                          <td>{elementInArray.din}</td>
+                                          <td>{elementInArray.name}</td>
+                                          <td>{elementInArray.contactNumber}</td>
+                                          <td>
+                                            <div className="row">
+                                              {elementInArray?.uploadPdf ? (
+                                                <button
+                                                  type="button"
+                                                  title="View Document"
+                                                  onClick={() => getDocShareholding(elementInArray?.uploadPdf)}
+                                                  className="btn btn-sm col-md-6 text-center"
+                                                >
+                                                  <VisibilityIcon color="info" className="icon" />
+                                                </button>
+                                              ) : (
+                                                <p></p>
+                                              )}
+                                              <div className="btn btn-sm col-md-6">
+                                                <label title="Upload Document" for={"uploaddirectorInfoPdf" + input}>
+                                                  <FileUpload color="primary" for={"uploaddirectorInfoPdf" + input} />
+                                                </label>
+                                                <input
+                                                  id={"uploaddirectorInfoPdf" + input}
+                                                  type="file"
+                                                  style={{ display: "none" }}
+                                                  onChange={(e) => getDocumentData(e?.target?.files[0], "directorInfoPdf", "directorInfoPdf", input)}
+                                                />
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td>
+                                            <a href="javascript:void(0)" title="Delete record" onClick={() => deleteDirectorTableRows(-1)}>
+                                              <DeleteIcon color="danger" className="icon" />
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      );
+                                    })
+                                  ) : (
+                                    <p></p>
+                                  )}
+                                </tbody>
+                              </table> */}
+
                               <Paper sx={{ width: "100%", overflow: "hidden" }}>
                                 <TableContainer sx={{ maxHeight: 440 }}>
                                   <Table stickyHeader aria-label="sticky table">
@@ -2238,6 +2446,9 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                                 </div>
                                               </StyledTableCell>
                                               <StyledTableCell align="center">
+                                                {/* <Button variant="contained" color={"primary"} title="Delete record" onClick={() => viewRecord(elementInArray, input)}>
+                                <DeleteIcon style={{ fill: "#ff1a1a" }} />
+                              </Button> */}
                                                 <a href="javascript:void(0)" title="Delete record" onClick={() => deleteDirectorTableRows(-1)}>
                                                   <DeleteIcon color="danger" className="icon" />
                                                 </a>
@@ -2267,7 +2478,8 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                       </div>
 
                       <p className="ml-1 my-3">
-                        {t("BPA_DIRECTOR_COMPANY_COMMON_EXISTING_COLONIZER")} <span className="text-danger font-weight-bold">*</span>
+                        In case the Partner/director of the applicant firm/company is common with any existing colonizer who has been granted a
+                        license under the 1975 act Yes/No. <span className="text-danger font-weight-bold">*</span>
                       </p>
 
                       <div className="form-group ml-2">
@@ -2294,11 +2506,116 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                         <label for="No">No</label>
                         {existingColonizer === "Y" && (
                           <div>
+                            {/* <div className="row ">
+                          <div className="form-group row">
+                            <div className="col-sm-12">
+                              <Col xs="12" md="12" sm="12">
+                                <Table className="table table-bordered" size="sm">
+                                  <thead>
+                                    <tr>
+                                      <th>S.No.</th>
+                                      <th>Document Name </th>
+                                      <th> Upload Documents</th>
+                                      <th> Annexure</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td> 1 &nbsp;&nbsp;</td>
+                                      <td>
+                                        {" "}
+                                        Agreement between the proposed developer and existing colonizer
+                                      </td>
+                                      <td align="center" style={{textAlign:'center'}} size="large">
+                                          <label for="aggreementBtwId">
+                                            <FileUpload color="primary" for="aggreementBtwId" />
+                                          </label>
+                                          <input
+                                            id="aggreementBtwId"
+                                            type="file"
+                                            accept="application/pdf"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => getDocumentData(e?.target?.files[0], "aggreementBtw", "existingColonizer")}
+                                          />
+                                      </td>
+                                      <td style={{textAlign:'center'}}>
+                                        {existingColonizerDetails.aggreementBtw ?
+                                          <button type="button" onClick={() => getDocShareholding(existingColonizerDetails.aggreementBtw)} className="btn btn-sm col-md-6">
+                                            <VisibilityIcon color="info" className="icon" />
+                                          </button> : <p></p>
+                                        }
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td> 2&nbsp;&nbsp; </td>
+                                      <td>
+                                        Board resolution of authorised signatory of the existing colonizer
+                                      </td>
+                                      <td align="center" style={{textAlign:'center'}} size="large">
+                                        <label for="boardResolutionId">
+                                          <FileUpload color="primary" for="boardResolutionId" />
+                                        </label>
+                                        <input
+                                          id="boardResolutionId"
+                                          type="file"
+                                          accept="application/pdf"
+                                          name="boardDoc"
+                                          style={{ display: "none" }}
+                                          onChange={(e) => getDocumentData(e?.target?.files[0], "boardResolution", "existingColonizer")}
+                                          class="employee-card-input"
+                                        />
+                                      </td>
+                                      <td style={{textAlign:'center'}}>
+                                        {existingColonizerDetails.boardResolution ?
+                                          <button type="button" onClick={() => getDocShareholding(existingColonizerDetails.boardResolution)} className="btn btn-sm col-md-6">
+                                            <VisibilityIcon color="info" className="icon" />
+                                          </button> : <p></p>
+                                        }
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </Table>
+                              </Col>
+                            </div>
+                          </div>
+                        </div> */}
+
                             <div className="row mx-2">
+                              {/* <div className="col col-4">
+                            <div className="form-group">
+                              <label htmlFor="dob">DOB <span className="text-danger font-weight-bold">*</span></label>
+                              <input
+                                type="date"
+                                value={existingColonizerDetails.dob}
+                                name="dob"
+                                // onChange={SelectName}
+                                onChange={(e) => setExistingColonizerDetails({ ...existingColonizerDetails, dob: e.target.value })}
+                                className="employee-card-input"
+                                max={convertEpochToDate(new Date().setFullYear(new Date().getFullYear() - 18))}
+                              />
+                            </div>
+                          </div> */}
+
+                              {/* <div className="col col-4">
+                            <div className="form-group">
+                              <label htmlFor="pan">PAN Number <span className="text-danger font-weight-bold">*</span></label>
+                              <input
+                                type="pan"
+                                value={existingColonizerDetails.pan}
+                                name="pan"
+                                // onChange={SelectName}
+                                onChange={(e) => setExistingColonizerDetails({ ...existingColonizerDetails, pan: e.target.value?.toUpperCase() })}
+                                className="employee-card-input"
+                                maxLength={10}
+                              />
+                              {existingColonizerDetails.pan && existingColonizerDetails.pan.length > 0 && !existingColonizerDetails.pan.match(Digit.Utils.getPattern('PAN')) && <CardLabelError style={{ width: "100%", marginTop: '-15px', fontSize: '16px', marginBottom: '12px', color: 'red' }}>{t("BPA_INVALID_PAN_NO")}</CardLabelError>}
+                            </div>
+                          </div> */}
+
                               <div className="col col-4">
                                 <div className="form-group">
                                   <label htmlFor="licNo">
-                                    {t("BPA_LICENSE_DETAILS_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                                    License No. <span className="text-danger font-weight-bold">*</span>
                                   </label>
                                   <input
                                     type="text"
@@ -2316,7 +2633,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                       <CardLabelError
                                         style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}
                                       >
-                                        {t("BPA_LICENSE_INVALID")}
+                                        {t("Invalid Licence No.")}
                                       </CardLabelError>
                                     )}
                                 </div>
@@ -2325,7 +2642,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                               <div className="col col-4">
                                 <div className="form-group">
                                   <label htmlFor="name">
-                                    {t("BPA_DEVELOPER_NAME_TEXT")} <span className="text-danger font-weight-bold">*</span>
+                                    Name of Developer <span className="text-danger font-weight-bold">*</span>
                                   </label>
                                   <input
                                     type="text"
@@ -2342,7 +2659,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                       <CardLabelError
                                         style={{ width: "100%", marginTop: "5px", fontSize: "16px", marginBottom: "12px", color: "red" }}
                                       >
-                                        {t("BPA_DEVELOPER_NAME_INVALID")}
+                                        {t("Please enter valid name.")}
                                       </CardLabelError>
                                     )}
                                 </div>
@@ -2351,7 +2668,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                               <div className="col col-4">
                                 <div className="form-group">
                                   <label htmlFor="licDate">
-                                    {t("BPA_GRANT_LICENSE_DATE")} <span className="text-danger font-weight-bold">*</span>
+                                    Date of Grant of Licence <span className="text-danger font-weight-bold">*</span>
                                   </label>
                                   <input
                                     type="date"
@@ -2364,6 +2681,44 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                                   />
                                 </div>
                               </div>
+
+                              {/* <div className="col col-4">
+                            <div className="form-group">
+                              <label htmlFor="licValidity">Validity <span className="text-danger font-weight-bold">*</span></label>
+                              <input
+                                type="date"
+                                value={existingColonizerDetails.licValidity}
+                                name="licValidity"
+                                onChange={(e) => setExistingColonizerDetails({ ...existingColonizerDetails, licValidity: e.target.value })}
+                                className="employee-card-input"
+                                disabled={!existingColonizerDetails.licDate}
+                                min={existingColonizerDetails.licDate}
+                              />
+                            </div>
+                          </div> */}
+
+                              {/* <div className="col col-4">
+                            <div className="form-group">
+                              <label htmlFor="licValidity">Select Purpose</label>
+                              <Select
+                                onChange={(e) => setExistingColonizerDetails({ ...existingColonizerDetails, licPurpose: e.target.value })}
+                                value={existingColonizerDetails.licPurpose}
+                                className="w-100"
+                                variant="standard"
+                                displayEmpty
+                                renderValue={
+                                  existingColonizerDetails.licPurpose !== "" ? undefined : () => <p>Select Purpose</p>
+                                }
+                              >
+                                {
+                                  purposeOptions?.data?.map((item, index) => (
+                                    <MenuItem value={item.value} >{item?.label}</MenuItem>
+                                  ))
+                                }
+                              </Select>
+
+                            </div>
+                          </div> */}
                             </div>
                           </div>
                         )}
@@ -2392,7 +2747,7 @@ const LicenseAddInfo = ({ t, config, onSelect, userType, formData, ownerIndex })
                 </Form.Group> */}
                     <Checkbox {...label} onChange={(e) => selectChecked(e)} value={isUndertaken} checked={isUndertaken} name={isUndertaken} />
                     <label>
-                      {t("BPA_UNDERTAKEN_CHECKBOX_TEXT")}
+                      It is undertaken that the above information is true and correct for all facts and purposes.{" "}
                       <span className="text-danger font-weight-bold">*</span>
                     </label>
                   </Col>

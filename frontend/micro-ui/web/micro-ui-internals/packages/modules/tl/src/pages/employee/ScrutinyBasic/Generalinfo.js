@@ -16,60 +16,20 @@ import Visibility from "@mui/icons-material/Visibility";
 import FileDownload from "@mui/icons-material/FileDownload";
 import { IconButton } from "@mui/material"; 
 import { getDocShareholding } from "./ScrutinyDevelopment/docview.helper";
-import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 
 const Genarelinfo = (props) => {
-  // useTranslation
-
-  const {t} = useTranslation();
-  const { pathname: url } = useLocation();
   const [showhide1, setShowhide1] = useState("No");
   const [uncheckedValue, setUncheckedVlue] = useState([]);
   const [checkValue, setCheckedVAlue] = useState([]);
   // const [fieldValue, setFieldValue] = useState("");
-  // let user = Digit.UserService.getUser();
-  // const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  // const hideRemarks = userRoles.some((item)=>item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
-  // const hideRemarksPatwari = userRoles.some((item)=>item ==="Patwari_HQ")
-  // const hideRemarksJE = userRoles.some((item)=>item ==="JE_HQ" || item === "JE_HR")
-  const applicationStatus = props.applicationStatus ;
   let user = Digit.UserService.getUser();
-  const userInfo = Digit.UserService.getUser()?.info || {};
-  const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
-  const filterDataRole = userRolesArray?.[0]?.code;
   const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  
-  console.log("rolelogintime" , userRoles );
-  console.log("afterfilter12" , filterDataRole)
+  const hideRemarks = userRoles.some((item)=>item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
+  const hideRemarksPatwari = userRoles.some((item)=>item ==="Patwari_HQ")
+  const hideRemarksJE = userRoles.some((item)=>item ==="JE_HQ" || item === "JE_HR")
 
-  const mDMSData = props.mDMSData;
-  const mDMSDataRole = mDMSData?.map((e) => e.role) || [];
-  const hideRemarks = mDMSDataRole.includes(filterDataRole);
-  const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [] ;
-  const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
-  const [fileddataName, setFiledDataName] = useState ();
-
- useEffect(() =>{
-    if(mDMSData&&mDMSData?.length){
-      console.log("filedDataMdms" , mDMSData,mDMSData?.[0]?.field , mDMSData?.[0]?.field.map((item , index) => item.fields ));
-      setFiledDataName(mDMSData?.[0]?.field.map((item , index) => item.fields ))
-       
-    }
-    
- },[mDMSData]
- )
- const showReportProblemIcon=(filedName)=>{
-   if (fileddataName&&fileddataName.length) {
-      let show = fileddataName.includes(filedName)
-      return show ;
-    } else {
-      return false ;
-    }
- }
- console.log("happyDateHIDE2" , hideRemarksPatwari,showReportProblemIcon("Purpose of colony"),hideRemarks);
   const genarelinfo = props.genarelinfo;
-  // const applicationStatus = props.applicationStatus;
+  const applicationStatus = props.applicationStatus;
   const dataIcons = props.dataForIcons;
   
 
@@ -387,7 +347,7 @@ const Genarelinfo = (props) => {
   };
 
   return (
-    <Form ref={props.generalInfoRef} t={t}> 
+    <Form ref={props.generalInfoRef}>
       <ModalChild
         labelmodal={labelValue}
         passmodalData={handlemodaldData}
@@ -425,16 +385,12 @@ const Genarelinfo = (props) => {
           <Form.Group className="justify-content-center" controlId="formBasicEmail" style={{ border: "2px solid #e9ecef", margin: 10, padding: 20 }}>
             <Row className="ml-auto" style={{ marginBottom: 5 }}>
               <Col md={4} xxl lg="3" className={classes.formLabel}>
-                {/* <Form.Label>
+                <Form.Label>
                
                   <h5 >
                     Purpose Of Licence  <span style={{ color: "red" }}>*</span>
                   </h5>
-                </Form.Label> */}
-                <label  className="card-title fw-bold" style={{ margin: 10 }} htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_PURPOSE_OF_LICENCE")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label>
+                </Form.Label>
 
                 <div className="d-flex flex-row  align-items-center">
                   <Form.Control
@@ -449,10 +405,10 @@ const Genarelinfo = (props) => {
                   </Form.Control>
                   {/* {JSON.stringify(userRoles)}
                     {JSON.stringify(hideRemarks)} */}
-                    {/*  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none", */}
+                    {/* display: hideRemarks?"none":"block", */}
                   <ReportProblemIcon
                     style={{
-                      display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                   
                       color: fieldIconColors.purpose
                     }}
@@ -504,7 +460,7 @@ const Genarelinfo = (props) => {
                 
                   <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                 
                       color: fieldIconColors.potential
                     }}
@@ -540,7 +496,7 @@ const Genarelinfo = (props) => {
                     </Form.Control>
                     <ReportProblemIcon
                       style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                        display: hideRemarks || hideRemarksPatwari ?"none":"block",
 
                         color: fieldIconColors.district
                       }}
@@ -575,7 +531,7 @@ const Genarelinfo = (props) => {
                     ></Form.Control>
                     <ReportProblemIcon
                       style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                        display: hideRemarks || hideRemarksPatwari ?"none":"block",
                       
                         color: fieldIconColors.state
                       }}
@@ -612,149 +568,111 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                   
                   <tr className="border-bottom-0">
                   <th class="fw-normal pb-0 border-bottom-0 align-top">
-                  {/* <label  className="card-title fw-bold" style={{ margin: 10 }} htmlFor="Developer Details">
-                            {`${t("NWL_APPLICANT_PURPOSE_OF_LICENCE")}`}
-                            <span class="text-danger font-weight-bold mx-2">*</span>
-                          </label> */}
-                            {`${t("NWL_APPLICANT_DISTRICT_LAND_SCHEDULE")}`}
-                  {/* District    */}
+                  District   
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Development Plan    */}
-                    {`${t("NWL_APPLICANT_DEVELOPMENT_PLAN_LAND_SCHEDULE")}`}
+                    Development Plan   
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Zone     */}
-                    {`${t("NWL_APPLICANT_ZONE_LAND_SCHEDULE")}`}
+                    Zone    
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Sector    */}
-                    {`${t("NWL_APPLICANT_SECTOR_LAND_SCHEDULE")}`} 
+                    Sector    
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Tehsil     */}
-                      {`${t("NWL_APPLICANT_TEHSIL_LAND_SCHEDULE")}`}
-
+                      Tehsil    
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Revenue Estate    */}
-                    {`${t("NWL_APPLICANT_REVENUE_ESTATE_LAND_SCHEDULE")}`}
+                    Revenue Estate   
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Hadbast No.  */}
-                    {`${t("NWL_APPLICANT_HADBAST_NUMBER_LAND_SCHEDULE")}`}
+                    Hadbast No. 
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Rectangle No.   */}
-                    {`${t("NWL_APPLICANT_RECTANGLE_NUMBER_LAND_SCHEDULE")}`}
+                    Rectangle No.  
                     </th>
                      <th class="fw-normal pb-0 border-bottom-0 align-top">
                     {/* Khasra No. */}
-                    {/* khewats No */}
-                    {`${t("NWL_APPLICANT_KHEWATS_NUMBER_LAND_SCHEDULE")}`}
+                    khewats No
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Name of Land Owner */}
-                    {`${t("NWL_APPLICANT_NAME_OF_LAND_OWNER_LAND_SCHEDULE")}`}
-                    
+                    Name of Land Owner
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Type of land */}
-                     {`${t("NWL_APPLICANT_TYPE_OF_LAND_SCHEDULE")}`}
+                    Type of land
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* change in information */}
-                     {`${t("NWL_APPLICANT_CHANGE_IN_INFORMATION_LAND_SCHEDULE")}`}
+                    change in information
                     </th>
                     
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Rectangle No./Mustil(Changed) */}
-                     {`${t("NWL_APPLICANT_RECTANGLE_NO_MUSTIL_LAND_SCHEDULE")}`}
+                    Rectangle No./Mustil(Changed)
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* khewats No(Changed) */}
-                     {`${t("NWL_APPLICANT_KHEWATS_NUMBER_CHANGED_LAND_SCHEDULE")}`}
+                    khewats No(Changed)
                     </th>
                      <th class="fw-normal pb-0 border-bottom-0 align-top">
-                     {/* Name of the Land Ower as per Mutation/Jamabandi */}
-                      {`${t("NWL_APPLICANT_NAME_OF_THE_LAND_OWNER_AS_PER_MUTATION_LAND_SCHEDULE")}`}
+                     Name of the Land Ower as per Mutation/Jamabandi
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Whether Khasra been developed in collaboration   */}
-                     {`${t("NWL_APPLICANT_DEVELOPED_IN_COLLABORATION_LAND_SCHEDULE")}`}
+                    Whether Khasra been developed in collaboration  
                     </th>
                      <th class="fw-normal pb-0 border-bottom-0 align-top">
-                     {/* Name of the developer company */}
-                      {`${t("NWL_APPLICANT_NAME_OF_THE_DEVELOPER_COMPANY_LAND_SCHEDULE")}`}
+                     Name of the developer company
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Date of registering collaboration agreement  */}
-                     {`${t("NWL_APPLICANT_DATA_OF_REGISTERING_COLLOABORATION_AGREEMENT_LAND_SCHEDULE")}`}
+                    Date of registering collaboration agreement 
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Whether collaboration agreement irrevocable (Yes/No) */}
-                     {`${t("NWL_APPLICANT_WHETER_COLLABORATION_AGREEMENT_IRREVOCABLE_LAND_SCHEDULE")}`}
+                    Whether collaboration agreement irrevocable (Yes/No)
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Name of authorized signatory on behalf of land owner(s) */}
-                     {`${t("NWL_APPLICANT_NAME_OF_AUTHORIZED_SIGNATORY_ON_BEHALF_OF_LAND_OWNER")}`}
+                    Name of authorized signatory on behalf of land owner(s)
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Name of authorized signatory on behalf of developer */}
-                     {`${t("NWL_APPLICANT_NAME_OF_AUTHORIZED_SIGNATORY_ON_BEHALF_OF_DEVELOPER")}`}
+                    Name of authorized signatory on behalf of developer
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Registering Authority */}
-                     {`${t("NWL_APPLICANT_REGISTERING_AUTHORITY_LAND_SCHEDULE")}`}
+                    Registering Authority
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Registering Authority document */}
-                     {`${t("NWL_APPLICANT_REGISTERING_AUTHORITY_DOCUMENT_LAND_SCHEDULE")}`}
+                    Registering Authority document
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Consolidation Type   */}
-                       {`${t("NWL_APPLICANT_CONSLIDATION_TYPE_LAND_SCHEDULE")}`}
+                      Consolidation Type  
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Kanal  */}
-                       {`${t("NWL_APPLICANT_KANAL_LAND_SCHEDULE")}`}
+                      Kanal 
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Marla   */}
-                       {`${t("NWL_APPLICANT_MARLA_LAND_SCHEDULE")}`}
+                      Marla  
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Sarsai */}
-                       {`${t("NWL_APPLICANT_SARSAI_LAND_SCHEDULE")}`}
+                      Sarsai
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Bigha  */}
-                       {`${t("NWL_APPLICANT_BIGHA_LAND_SCHEDULE")}`}
+                      Bigha 
                     </th>
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Biswa  */}
-                       {`${t("NWL_APPLICANT_BISWA_LAND_SCHEDULE")}`}
+                      Biswa 
                     </th>
 
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
-                      {/* Biswansi  */}
-                       {`${t("NWL_APPLICANT_BISWANSI_LAND_SCHEDULE")}`}
+                      Biswansi 
                     </th>
                   <th class="fw-normal pb-0 border-bottom-0 align-top">
-                    {/* Total Area */}
-                     {`${t("NWL_APPLICANT_TOTAL_AREA_LAND_SCHEDULE")}`}
+                    Total Area
                     </th> 
                     <th class="fw-normal pb-0 border-bottom-0 align-top">
                     Action Remarks 
-                    
                     </th>
                      
  </tr>
-                  <tr className="border-top-0">
+                  {/* <tr className="border-top-0">
                     <th class="fw-normal py-0 border-top-0">
                        <ReportProblemIcon
                       style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_DISTRICT_LAND_SCHEDULE") ? "block" : "none",
+                        display: hideRemarks || hideRemarksPatwari ?"none":"block",
 
                         color: fieldIconColors.district
                       }}
@@ -770,7 +688,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                        <ReportProblemIcon
                       style={{
-                         display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_DEVELOPMENT_PLAN_LAND_SCHEDULE") ? "block" : "none",
+                        display: hideRemarks || hideRemarksPatwari ?"none":"block",
 
                         color: fieldIconColors.developmentPlan
                       }}
@@ -786,7 +704,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                   <th class="fw-normal py-0 border-top-0">
                     <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_ZONE_LAND_SCHEDULE") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                 
                       color: fieldIconColors.potential
                     }}
@@ -804,7 +722,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       <ReportProblemIcon
                         style={{
                          
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_SECTOR_LAND_SCHEDULE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.sector
                         }}
                         onClick={() => {
@@ -820,7 +738,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       <ReportProblemIcon
                         style={{
                          
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_TEHSIL_LAND_SCHEDULE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.tehsil
                         }}
                         onClick={() => {
@@ -835,7 +753,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_REVENUE_ESTATE_LAND_SCHEDULE") ? "block" : "none",
+                          display: hideRemarks?"none":"block",
                           color: fieldIconColors.revenue
                         }}
                         onClick={() => {
@@ -850,7 +768,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                    <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_HADBAST_NUMBER_LAND_SCHEDULE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                          
                           color: fieldIconColors.hadbastNo
                         }}
@@ -866,8 +784,8 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          //  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_RECTANGLE_NUMBER_LAND_SCHEDULE") ? "block" : "none",
+                          // display: hideRemarks?"none":"block",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.rectangleNo
                         }}
                         onClick={() => {
@@ -882,7 +800,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_KHEWATS_NUMBER_LAND_SCHEDULE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.rectaNo
                         }}
                         onClick={() => {
@@ -897,7 +815,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.landOwner
                         }}
                         onClick={() => {
@@ -912,9 +830,9 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          //  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          // display: hideRemarks?"none":"block",
                           // display: hideRemarksPatwari?"none":"block",
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_KHEWATS_NUMBER_LAND_SCHEDULE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.typeLand
                         }}
                         onClick={() => {
@@ -929,9 +847,9 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          //  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          // display: hideRemarks?"none":"block",
                           // display: hideRemarksPatwari?"none":"block",
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.isChange
                         }}
                         onClick={() => {
@@ -947,9 +865,9 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          //  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          // display: hideRemarks?"none":"block",
                           // display: hideRemarksPatwari?"none":"block",
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.editRectangleNo
                         }}
                         onClick={() => {
@@ -968,7 +886,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.editKhewats
                         }}
                         onClick={() => {
@@ -985,7 +903,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       <ReportProblemIcon
                         style={{
                           
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.landOwnerRegistry
                         }}
                         onClick={() => {
@@ -1003,7 +921,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.collaboration
                         }}
                         onClick={() => {
@@ -1019,7 +937,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.developerCompany
                         }}
                         onClick={() => {
@@ -1035,7 +953,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.agreementValidFrom
                         }}
                         onClick={() => {
@@ -1051,7 +969,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.agreementIrrevocialble
                         }}
                         onClick={() => {
@@ -1067,7 +985,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.authSignature
                         }}
                         onClick={() => {
@@ -1083,7 +1001,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.nameAuthSign
                         }}
                         onClick={() => {
@@ -1099,7 +1017,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       {" "}
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.registeringAuthority
                         }}
                         onClick={() => {
@@ -1114,9 +1032,9 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          //  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          // display: hideRemarks?"none":"block",
                           // display: hideRemarksPatwari?"none":"block",
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.registeringAuthorityDoc
                         }}
                         onClick={() => {
@@ -1131,7 +1049,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.consolidationType
                         }}
                         onClick={() => {
@@ -1146,7 +1064,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.kanal
                         }}
                         onClick={() => {
@@ -1162,7 +1080,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.marla
                         }}
                         onClick={() => {
@@ -1177,7 +1095,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.sarsai
                         }}
                         onClick={() => {
@@ -1192,7 +1110,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.bigha
                         }}
                         onClick={() => {
@@ -1208,7 +1126,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.biswa
                         }}
                         onClick={() => {
@@ -1223,7 +1141,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                     <th class="fw-normal py-0 border-top-0">
                       <ReportProblemIcon
                         style={{
-                          display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksJE ?"none":"block",
                           color: fieldIconColors.biswansi
                         }}
                         onClick={() => {
@@ -1240,7 +1158,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                       <ReportProblemIcon
                         style={{
                           
-                           display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_PURPOSE_OF_LICENCE") ? "block" : "none",
+                          display: hideRemarks || hideRemarksPatwari ?"none":"block",
                           color: fieldIconColors.tehsil
                         }}
                         onClick={() => {
@@ -1252,7 +1170,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                         }}
                       ></ReportProblemIcon>
                     </th>
-                  </tr>
+                  </tr> */}
                 </thead>
                 <tbody>
                 {
@@ -1374,7 +1292,7 @@ Note: The term “Collaboration agreement" shall include all Development agreeme
                      {/* <th class="fw-normal py-0 border-top-0"> */}
                        <ReportProblemIcon
                       style={{
-                        display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("Total Area (in acres)") ? "block" : "none",
+                        display: hideRemarks ?"none":"block",
 
                         color: fieldIconColors.district
                       }}

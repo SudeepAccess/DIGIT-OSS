@@ -19,13 +19,11 @@ import { ScrutinyRemarksContext } from "../../../../../context/remarks-data-cont
 import { useTranslation } from "react-i18next";
 
 const ElectricalPlanScrutiny = (props) => {
-  const applicationStatus = props.applicationStatus;
   const [selects, setSelects] = useState();
   const [showhide, setShowhide] = useState("");
   const [open2, setOpen2] = useState(false);
   const { remarksData, iconStates } = useContext(ScrutinyRemarksContext);
   const { t } = useTranslation();
-
   const dataIcons = props.dataForIcons;
   const apiResponse = props.apiResponse;
   //  apiResponse,refreshScrutinyData, applicationNumber,iconStates
@@ -52,7 +50,7 @@ const ElectricalPlanScrutiny = (props) => {
   const [smShow, setSmShow] = useState(false);
   const [labelValue, setLabelValue] = useState("");
   const Colors = {
-    Conditional: "#2874A6",
+    conditional: "#2874A6",
     approved: "#09cb3d",
     disapproved: "#ff0000",
 
@@ -133,12 +131,12 @@ const ElectricalPlanScrutiny = (props) => {
           tempFieldColorState = {
             ...tempFieldColorState,
             [item.key]:
-              fieldPresent[0].isApproved === "In Order"
+              fieldPresent[0].isApproved === "approved"
                 ? Colors.approved
-                : fieldPresent[0].isApproved === "Not In Order"
+                : fieldPresent[0].isApproved === "disapproved"
                 ? Colors.disapproved
-                : fieldPresent[0].isApproved === "Conditional"
-                ? Colors.Conditional
+                : fieldPresent[0].isApproved === "conditional"
+                ? Colors.conditional
                 : Colors.info,
           };
         }
@@ -163,47 +161,6 @@ const ElectricalPlanScrutiny = (props) => {
   }, [labelValue]);
 
   console.log("Digit123", apiResponse);
-  let user = Digit.UserService.getUser();
-  const userInfo = Digit.UserService.getUser()?.info || {};
-  const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
-  const filterDataRole = userRolesArray?.[0]?.code;
-  const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-
-  console.log("rolelogintime", userRoles);
-  console.log("afterfilter12", filterDataRole);
-  const mDMSData = props.mDMSData;
-  const mDMSDataRole = mDMSData?.map((e) => e.role) || [];
-  const hideRemarks = mDMSDataRole.includes(filterDataRole);
-  const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [];
-  const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
-  const [fileddataName, setFiledDataName] = useState();
-
-  useEffect(() => {
-    if (mDMSData && mDMSData?.length) {
-      console.log(
-        "filedDataMdms",
-        mDMSData,
-        mDMSData?.[0]?.field,
-        mDMSData?.[0]?.field.map((item, index) => item.fields)
-      );
-      setFiledDataName(mDMSData?.[0]?.field.map((item, index) => item.fields));
-    }
-  }, [mDMSData]);
-  const showReportProblemIcon = (filedName) => {
-    if (fileddataName && fileddataName.length) {
-      let show = fileddataName.includes(filedName);
-      return show;
-    } else {
-      return false;
-    }
-  };
-
-  // mDMSData?.map((e) => e.role)||[]
-  console.log("happyRole", userRoles);
-  console.log("happyDate", mDMSData);
-  console.log("happyROLE", mDMSDataRole);
-  console.log("happyapplicationStatusMdms", applicationStatusMdms);
-  console.log("happyDateHIDE", hideRemarksPatwari, showReportProblemIcon("Purpose of colony"), hideRemarks);
 
   return (
     <form>
@@ -254,7 +211,6 @@ const ElectricalPlanScrutiny = (props) => {
 
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_LOI_NO") ? "block" : "none",
                         color: fieldIconColors.loiNumber,
                       }}
                       onClick={() => {
@@ -273,7 +229,6 @@ const ElectricalPlanScrutiny = (props) => {
                       selectedFieldData={selectedFieldData}
                       fieldValue={fieldValue}
                       remarksUpdate={currentRemarks}
-                      applicationStatus={applicationStatus}
                     ></ModalChild>
                   </div>
                   {/* </Form.Group> */}
@@ -308,7 +263,6 @@ const ElectricalPlanScrutiny = (props) => {
 
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_NAME") ? "block" : "none",
                         color: fieldIconColors.devName,
                       }}
                       onClick={() => {
@@ -343,7 +297,6 @@ const ElectricalPlanScrutiny = (props) => {
 
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_DEVELOPMENT_PLAN") ? "block" : "none",
                         color: fieldIconColors.developmentPlan,
                       }}
                       onClick={() => {
@@ -378,7 +331,6 @@ const ElectricalPlanScrutiny = (props) => {
 
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_PURPOSE_OF_LICENCE") ? "block" : "none",
                         color: fieldIconColors.purpose,
                       }}
                       onClick={() => {
@@ -413,7 +365,6 @@ const ElectricalPlanScrutiny = (props) => {
 
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_TOTAL_AREA") ? "block" : "none",
                         color: fieldIconColors.totalArea,
                       }}
                       onClick={() => {
@@ -454,7 +405,6 @@ const ElectricalPlanScrutiny = (props) => {
                     </label>
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_ELECTRICAL_INFRASTRUCTURE_FOR_ELECTRICAL_NEED") ? "block" : "none",
                         color: fieldIconColors.electricInfra,
                       }}
                       onClick={() => {
@@ -505,7 +455,6 @@ const ElectricalPlanScrutiny = (props) => {
                     </label>
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_PROVISION_ELECTRICITY_DISTRIBUTION") ? "block" : "none",
                         color: fieldIconColors.electricDistribution,
                       }}
                       onClick={() => {
@@ -546,7 +495,6 @@ const ElectricalPlanScrutiny = (props) => {
                     </label>
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_CAPACITY_OF_PROPOSED_ELECTRICAL_SUBSTATION") ? "block" : "none",
                         color: fieldIconColors.electricalCapacity,
                       }}
                       onClick={() => {
@@ -602,7 +550,6 @@ const ElectricalPlanScrutiny = (props) => {
 
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_PROVISION_OF_33KV_SWITCHING_STATION") ? "block" : "none",
                         color: fieldIconColors.switchingStation,
                       }}
                       onClick={() => {
@@ -653,7 +600,6 @@ const ElectricalPlanScrutiny = (props) => {
                     </label>
                     <ReportProblemIcon
                       style={{
-                        // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_LAND_SANCTION_APPROVAL") ? "block" : "none",
                         color: fieldIconColors.LoadSancation,
                       }}
                       onClick={() => {
@@ -717,7 +663,6 @@ const ElectricalPlanScrutiny = (props) => {
                       <div className="btn btn-sm col-md-4">
                         <ReportProblemIcon
                           style={{
-                            // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_SELF_CERTIFIED_DRAWING-TEMPLATE_AS_PER_TCP") ? "block" : "none",
                             color: fieldIconColors.selfCenteredDrawings,
                           }}
                           onClick={() => {
@@ -761,7 +706,6 @@ const ElectricalPlanScrutiny = (props) => {
                       <div className="btn btn-sm col-md-4">
                         <ReportProblemIcon
                           style={{
-                            // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_ENVIRONMENT_CLEARANCE") ? "block" : "none",
                             color: fieldIconColors.environmentalClearance,
                           }}
                           onClick={() => {
@@ -803,7 +747,6 @@ const ElectricalPlanScrutiny = (props) => {
                       <div className="btn btn-sm col-md-4">
                         <ReportProblemIcon
                           style={{
-                            // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_ELECTRICAL_PLAN_PDF") ? "block" : "none",
                             color: fieldIconColors.pdfFormat,
                           }}
                           onClick={() => {
@@ -845,7 +788,6 @@ const ElectricalPlanScrutiny = (props) => {
                       <div className="btn btn-sm col-md-4">
                         <ReportProblemIcon
                           style={{
-                            // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_AUTOCAD_FILE") ? "block" : "none",
                             color: fieldIconColors.autoCad,
                           }}
                           onClick={() => {
@@ -886,7 +828,6 @@ const ElectricalPlanScrutiny = (props) => {
                       <div className="btn btn-sm col-md-4">
                         <ReportProblemIcon
                           style={{
-                            // display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("EP_SCRUTINY_CERTIFIED_COPY_VERIFIED_THIRD_PARTY") ? "block" : "none",
                             color: fieldIconColors.verifiedPlan,
                           }}
                           onClick={() => {

@@ -23,14 +23,6 @@ import {  Box,
 const windowHeight = window !== undefined ? window.innerHeight : null;
 const ScrutinyDevelopment = (props) => {
 
-  // function createMarkup(el) {
-  //   return {__html:conatn};
-    
-  //   console.log("dataremarkswithouthtml" , el);
-    
-  // }
-  // console.log("dataremarkswithouthtml" , el);
-  
 
   const { handleGetFiledsStatesById, handleGetRemarkssValues } = useContext(ScrutinyRemarksContext);
   const { id } = useParams();
@@ -179,7 +171,6 @@ const toggleshown3 = designation => {
     setDataFrist(showState);
   }
 }
-
 console.log("log123Disrenu" ,id);
   return (
     <Container
@@ -195,7 +186,7 @@ console.log("log123Disrenu" ,id);
     >
       <Row class="remarkshelp">
         <div 
-        class="currentremarks"
+        // class="currentremarks"
          >
           <div class="WhatsNewCard" style={{ backgroundColor: "#ddf2cf" }}>
             <p class="text-center" ><h4>Current Remarks</h4></p>
@@ -317,8 +308,7 @@ console.log("log123Disrenu" ,id);
                                   <b>{el.isApproved}</b>
                                 </td>
                                 <td>
-                                  {/* <i>{<div dangerouslySetInnerHTML={createMarkup(el.remarks)}> </div>}</i> */}
-                                  <i>{<div dangerouslySetInnerHTML={{__html: el.remarks}}/>}</i>
+                                  <i>{el.remarks}</i>
                                 </td>
 
                               </tr>
@@ -388,8 +378,7 @@ console.log("log123Disrenu" ,id);
                                                 <b>{el.isApproved}</b>
                                               </td>
                                               <td>
-                                                {/* <i>{el.remarks}</i> */}
-                                                <i>{<div dangerouslySetInnerHTML={{__html: el.remarks}}/>}</i>
+                                                <i>{el.remarks}</i>
                                               </td>
               
                                             </tr>
@@ -459,8 +448,7 @@ console.log("log123Disrenu" ,id);
                                                 <b>{el.isApproved}</b>
                                               </td>
                                               <td>
-                                                {/* <i>{el.remarks}</i> */}
-                                                <i>{<div dangerouslySetInnerHTML={{__html: el.remarks}}/>}</i>
+                                                <i>{el.remarks}</i>
                                               </td>
               
                                             </tr>
@@ -506,7 +494,7 @@ console.log("log123Disrenu" ,id);
 
         </div>
 
-        <div class="histroryremarks">
+        {/* <div class="histroryremarks">
           <div class="WhatsNewCard" style={{ backgroundColor: "#ddf2cf" }}>
 
 
@@ -517,12 +505,10 @@ console.log("log123Disrenu" ,id);
                 <div key={index}>
                   <hr style={{ marginTop: 5, marginBottom: 5 }}></hr>
                   
-                  {/* {item.comment} */}
-                  {<div dangerouslySetInnerHTML={{__html: item.comment}}/>}
+                  {item.comment}
                   <div className="text-right">
                    
                     <div class="font-weight-bold">
-                      {item.assigner.name}
                     </div>
                
                   </div>
@@ -553,7 +539,7 @@ console.log("log123Disrenu" ,id);
             </div>
 
           </div>
-        </div>
+        </div> */}
       </Row>
 
 

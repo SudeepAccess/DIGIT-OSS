@@ -17,7 +17,7 @@ import axios from "axios";
 
 // import AddIcon from "@mui/icons-material/Add";
 
-const ServiceBase = ({apiResponse,applicationNumber,refreshScrutinyData,setAdditionalDetails,histeroyData,idwDataTreade,edcDataTreade,setExternalAgencies,applicationStatus}) => {
+const ServiceBase = ({apiResponse,applicationNumber,refreshScrutinyData,setAdditionalDetails,histeroyData,idwDataTreade,edcDataTreade,setExternalAgencies }) => {
   const [purpose, setPurpose] = useState("");
   const jeLandInfoRef = useRef();
 
@@ -31,7 +31,7 @@ const ServiceBase = ({apiResponse,applicationNumber,refreshScrutinyData,setAddit
   const [displayAppliedLand, setDisplayAppliedLandInfo] = useState([]);
   const [displayFeeandCharges, setDisplayFeeandChargesInfo] = useState([]);
 
-const { remarksData,iconStates,rolesDate,handleRoles,handleGetFiledsStatesById,handleGetRemarkssValues } = useContext(ScrutinyRemarksContext);
+const { remarksData,iconStates,handleGetFiledsStatesById,handleGetRemarkssValues } = useContext(ScrutinyRemarksContext);
   const [displayJeLand, setDisplayJeLand] = useState([]);
   const [ActiveKey, setActiveKey] = useState(1);
   const [defaultHeightPersonal, setDefaultHeightPersonal] = useState(0);
@@ -238,17 +238,15 @@ const { remarksData,iconStates,rolesDate,handleRoles,handleGetFiledsStatesById,h
         <div>
          <div>
          <ServicePlanService
-          edcDataTreade={edcDataTreade}
-             idwDataTreade={idwDataTreade}
+         edcDataTreade={edcDataTreade}
+         idwDataTreade={idwDataTreade}
            apiResponse={apiResponse}
            refreshScrutinyData={refreshScrutinyData}
            applicationNumber={applicationNumber}
-           showTable={curentDataPersonal}
            passUncheckedList={getUncheckedGeneralinfos}
            passCheckedList={getCheckedGeneralInfoValue}
            onClick={() => setOpen(!open)}
            dataForIcons={iconStates}
-          applicationStatus={applicationStatus} 
            ></ServicePlanService>
          </div>
          

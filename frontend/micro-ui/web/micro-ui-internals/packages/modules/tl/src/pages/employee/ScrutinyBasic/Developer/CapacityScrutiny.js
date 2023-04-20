@@ -22,9 +22,9 @@ import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import { useStyles } from "../css/personalInfoChild.style";
 import { add } from "lodash";
 
-const CapacityScrutiny = ({ t, config, onSelect, showTable, formData, formDataValue, data, addInfo,applicationStatus , capacityScrutinyInfo, iconColorState ,showDevTypeFields,getRemarkData,mDMSData }) => {
+const CapacityScrutiny = ({ t, config, onSelect, showTable, formData, formDataValue, data, addInfo,applicationStatus , capacityScrutinyInfo, iconColorState ,showDevTypeFields,getRemarkData}) => {
   const { pathname: url } = useLocation();
-  // const userInfo = Digit.UserService.getUser();
+  const userInfo = Digit.UserService.getUser();
   let validation = {};
   let isOpenLinkFlow = window.location.href.includes("openlink");
 
@@ -84,56 +84,10 @@ const CapacityScrutiny = ({ t, config, onSelect, showTable, formData, formDataVa
     formDataValue?.DeveloperCapacity?.technicalAssistanceAgreementDoc || ""
   );
 
-  // let user = Digit.UserService.getUser();
-  // const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  // const hideRemarks = userRoles.some((item)=>item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
-  // const hideRemarksPatwari = userRoles.some((item)=>item ==="Patwari_HQ")
-
-    // const applicationStatus = props.applicationStatus ;
   let user = Digit.UserService.getUser();
-  const userInfo = Digit.UserService.getUser()?.info || {};
-  const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
-  const filterDataRole = userRolesArray?.[0]?.code;
   const userRoles = user?.info?.roles?.map((e) => e.code) || [];
-  
-  console.log("rolelogintime" , userRoles );
-  console.log("afterfilter12" , filterDataRole)
-
-  // const mDMSData = props.mDMSData;
-  const mDMSDataRole = mDMSData?.map((e) => e.role) || [];
-  const hideRemarks = mDMSDataRole.includes(filterDataRole);
-  const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [] ;
-  const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
-  const [fileddataName, setFiledDataName] = useState ();
-
- useEffect(() =>{
-    if(mDMSData&&mDMSData?.length){
-      console.log("filedDataMdms" , mDMSData,mDMSData?.[0]?.field , mDMSData?.[0]?.field.map((item , index) => item.fields ));
-      setFiledDataName(mDMSData?.[0]?.field.map((item , index) => item.fields ))
-       
-    }
-    
- },[mDMSData]
- )
- const showReportProblemIcon=(filedName)=>{
-   if (fileddataName&&fileddataName.length) {
-      let show = fileddataName.includes(filedName)
-      return show ;
-    } else {
-      return false ;
-    }
- }
- 
-  // mDMSData?.map((e) => e.role)||[]
-  console.log("happyRole" , userRoles);
-  console.log("happyDate" , mDMSData);
-  console.log("happyROLE" , mDMSDataRole);
-  console.log("happyapplicationStatusMdms564654" , applicationStatusMdms);
-  console.log("happyDateHIDE45655" , hideRemarksPatwari,showReportProblemIcon("Purpose of colony"),hideRemarks);
-
-
-
-
+  const hideRemarks = userRoles.some((item)=>item === "CTP_HR" || item === "CTP_HQ" || item === "DTP_HR" || item === "DTP_HQ")
+  const hideRemarksPatwari = userRoles.some((item)=>item ==="Patwari_HQ")
 
   // console.log("AUTHNAME", authUserName);
 
@@ -566,11 +520,11 @@ const handlemodaldData = (data) => {
                           </td>
                           <td align="center" size="large">
                              {JSON.stringify(hideRemarks)} 
-                  {/*  display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none", */}
+                  {/* display: hideRemarks || hideRemarksPatwari ?"none":"block", */}
                           <div>
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -676,7 +630,7 @@ const handlemodaldData = (data) => {
                           <div>
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution3
                   }}
                   onClick={() => {
@@ -717,7 +671,7 @@ const handlemodaldData = (data) => {
                           <div>
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution4
                   }}
                   onClick={() => {
@@ -758,7 +712,7 @@ const handlemodaldData = (data) => {
                           <div>
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution5
                   }}
                   onClick={() => {
@@ -799,7 +753,7 @@ const handlemodaldData = (data) => {
                           <div>
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution6
                   }}
                   onClick={() => {
@@ -833,7 +787,7 @@ const handlemodaldData = (data) => {
                 <label className="m-0 mx-2" for="No">No</label>
                 <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution7
                   }}
                   onClick={() => {
@@ -972,7 +926,7 @@ const handlemodaldData = (data) => {
                             <div className="btn btn-sm col-md-6">
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1113,7 +1067,7 @@ const handlemodaldData = (data) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                       color:fieldIconColors.caution10
                     }}
                     onClick={() => {
@@ -1194,7 +1148,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution8
                   }}
                   onClick={() => {
@@ -1218,7 +1172,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution9
                   }}
                   onClick={() => {
@@ -1243,7 +1197,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution11
                   }}
                   onClick={() => {
@@ -1269,7 +1223,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution12
                   }}
                   onClick={() => {
@@ -1293,7 +1247,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution13
                   }}
                   onClick={() => {
@@ -1317,7 +1271,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution14
                   }}
                   onClick={() => {
@@ -1343,7 +1297,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution15
                   }}
                   onClick={() => {
@@ -1402,7 +1356,7 @@ const handlemodaldData = (data) => {
 
                             <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1426,7 +1380,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1450,7 +1404,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1475,7 +1429,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1578,7 +1532,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1621,7 +1575,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1660,7 +1614,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1703,7 +1657,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1740,7 +1694,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1766,7 +1720,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1792,7 +1746,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1818,7 +1772,7 @@ const handlemodaldData = (data) => {
                                &nbsp;&nbsp;
                                <ReportProblemIcon
                   style={{
-                     display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                    display: hideRemarks || hideRemarksPatwari ?"none":"block",
                     color: fieldIconColors.caution1
                   }}
                   onClick={() => {
@@ -1849,7 +1803,7 @@ const handlemodaldData = (data) => {
                   <label className="m-0 mx-2" for="No">No</label>
                   <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                       color: fieldIconColors.caution3
                     }}
                     onClick={() => {
@@ -1921,7 +1875,7 @@ const handlemodaldData = (data) => {
                               <td align="center" size="large">
                               <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                       color: fieldIconColors.caution3
                     }}
                     onClick={() => {
@@ -1974,7 +1928,7 @@ const handlemodaldData = (data) => {
                               <td align="center" size="large">
                               <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                       color: fieldIconColors.caution3
                     }}
                     onClick={() => {
@@ -2030,7 +1984,7 @@ const handlemodaldData = (data) => {
                               <td align="center" size="large">
                               <ReportProblemIcon
                     style={{
-                       display: hideRemarks && hideRemarksPatwari && showReportProblemIcon("X:Longitude") ? "block" : "none",
+                      display: hideRemarks || hideRemarksPatwari ?"none":"block",
                       color: fieldIconColors.caution3
                     }}
                     onClick={() => {

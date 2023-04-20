@@ -37,7 +37,6 @@ const authToken = Digit.UserService.getUser()?.access_token || null;
   const [businessService, setBusinessService] = useState("ELECTRICAL_PLAN");
   const [moduleCode,setModuleCode] = useState("TL")
   const [ scrutinyDetails, setScrutinyDetails] = useState();
-  const [status , setStatus] = useState();
   // const [applicationNumber,setApplicationNumber] = useState("");
   const [applicationDetails, setApplicationDetails] = useState();
   const [workflowDetails, setWorkflowDetails] = useState();
@@ -74,7 +73,6 @@ const authToken = Digit.UserService.getUser()?.access_token || null;
       });
     //   console.log("Response From API1", Resp, Resp?.Licenses[0]?.applicationNumber,Resp);
       setScrutinyDetails(Resp?.electricPlanResponse?.[0]);
-      setStatus(Resp?.electricPlanResponse?.[0]?.status);
 
       console.log("devDel123",Resp?.electricPlanResponse?.[0]);
       setApplicationData(Resp?.electricPlanResponse?.[0]);
@@ -169,10 +167,6 @@ const authToken = Digit.UserService.getUser()?.access_token || null;
     }
 
     closeModal();
-    setTimeout(() => {
-     
-      window.location.href = `/digit-ui/employee/tl/electricPlanInbox`
-      }, 3000);
   };
 
   // useEffect(()=>{
@@ -201,7 +195,7 @@ const authToken = Digit.UserService.getUser()?.access_token || null;
 
   return (
     <Card>
-      {/* <Card.Header class="fw-normal" style={{ top: 5, padding: 5 , fontSize: 14 ,height:90, lineHeight:2 }}>
+      <Card.Header class="fw-normal" style={{ top: 5, padding: 5 , fontSize: 14 ,height:90, lineHeight:2 }}>
         <div className="row">
           <div className="col-md-3">
             <p>Application Number:</p>
@@ -224,38 +218,6 @@ const authToken = Digit.UserService.getUser()?.access_token || null;
             <p class="fw-normal">{applicationData?.tcpDairyNumber}</p>
           </div>
         </div>
-      </Card.Header> */}
-      <Card.Header className="head-application" >
-        <div className="row fw-normal">
-          <div className="col-sm-2">
-            <b><p className="head-font">Application Number:</p></b>
-            <b><p className="head-font">{id}</p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">Service Id: </p></b>
-            <b><p className="head-font">
-              {applicationData?.businessService}
-              {/* Licence */}
-            </p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">TCP Application Number:</p></b>
-            {/* {item.name.substring(0, 4)} */}
-            <b><p className="head-font">{applicationData?.tcpApplicationNumber}</p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">TCP Case Number:</p></b>
-            <b><p className="head-font">{applicationData?.tcpCaseNumber}</p></b>
-          </div>
-          <div className="col-sm-2">
-            <b><p className="head-font">TCP Dairy Number: </p></b>
-            <b><p className="head-font">{applicationData?.tcpDairyNumber}</p></b>
-
-          </div>
-          {/* <div className="col-sm-2">
-            <Button style={{ textAlign: "right" }} value="Submit" id="Submit" onChange1={handleChange} name="Submit" onClick={handleshow19}>Views PDF</Button>
-          </div> */}
-        </div>
       </Card.Header>
       <Row style={{ top: 10, padding: 10 }}>
       
@@ -264,7 +226,6 @@ const authToken = Digit.UserService.getUser()?.access_token || null;
          apiResponse={scrutinyDetails}
          applicationNumber={id}
          refreshScrutinyData={getScrutinyData}
-         applicationStatus={status}
          ></ElecticalBase>
       </Row>
       {/* {JSON.stringify(scrutinyDetails)} */}

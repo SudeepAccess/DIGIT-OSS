@@ -21,12 +21,8 @@ import IndeterminateCheckbox from "../Proforma/ProformaForJE";
 import DrawingBranch from "../Proforma/ProformaForDB";
 import ProformaForlegalBranch from "../Proforma/ProformaForlegalBranch";
 import ProformaPatwari from "../Proforma/ProformaForPatwari";
-import Addmoreinput from "../Complaince/Compliances";
-import ProformForRevenu from "../Proforma/ProformForRevenu";
-import AdditionalDocument from "./AdditionalDocument";
-// import AddPost from "../Material/TextEditor";
 
-const ScrutitnyForms = ({ apiResponse, applicationNumber, refreshScrutinyData , histeroyData, feeandcharges , applicationStatus ,mDMSData }) => {
+const ScrutitnyForms = ({ apiResponse, applicationNumber, refreshScrutinyData , histeroyData, feeandcharges , applicationStatus }) => {
   const personalInfoRef = useRef();
   const generalInfoRef = useRef();
   const developerInfoRef = useRef();
@@ -326,7 +322,6 @@ console.log("roleData",rolesDate )
               showTable={curentDataPersonal}
               dataForIcons={iconStates}
               applicationStatus={applicationStatus}
-              mDMSData={mDMSData}
             ></Personalinfo>
           </div>
           <div>
@@ -338,7 +333,6 @@ console.log("roleData",rolesDate )
               ApiResponseData={apiResponse !== undefined ? apiResponse?.ApplicantPurpose : null}
               dataForIcons={iconStates}
               applicationStatus={applicationStatus}
-              mDMSData={mDMSData}
             ></Genarelinfo>
             {/* </Col> */}
           </div>
@@ -353,7 +347,6 @@ console.log("roleData",rolesDate )
               ApiResponseData={apiResponse !== undefined ? apiResponse?.LandSchedule : null}
               dataForIcons={iconStates}
               applicationStatus={applicationStatus}
-              mDMSData={mDMSData}
             ></Developerinfo>
             {/* </Col> */}
           </div>
@@ -368,7 +361,6 @@ console.log("roleData",rolesDate )
               heightApplied={defaultheightApplied}
               dataForIcons={iconStates}
               applicationStatus={applicationStatus}
-              mDMSData={mDMSData}
             ></AppliedLandinfo>
             {/* </Col> */}
           </div>
@@ -380,47 +372,15 @@ console.log("roleData",rolesDate )
               ApiResponseData={apiResponse !== undefined ? apiResponse?.FeesAndCharges : null}
               feeandchargesData={feeandcharges}
               applicationStatus={applicationStatus}
-              mDMSData={mDMSData}
             ></Feeandcharges>
-         
-          </div>
-          <div>
-            <AdditionalDocument>
-              
-            </AdditionalDocument>
-          </div>
-          <div>
-            <ProformForRevenu></ProformForRevenu>
-          </div>
-          <div>
-          <RadioButtonsGroup>
-      </RadioButtonsGroup>
-          </div>
-          <div>
-          <IndeterminateCheckbox>
-      </IndeterminateCheckbox>
-          </div>
-          <div>
-          <ProformaForlegalBranch>
-      </ProformaForlegalBranch>
-          </div>
-          <div>
-          <DrawingBranch>
-      </DrawingBranch>
-          </div>
-          <div>
-          <ProformaPatwari>
-      </ProformaPatwari>
-          </div>
-          <div>
-            
+            {/* </Col> */}
           </div>
 
         </div>
       </div>
-      {/* <div style={{ position: "relative", width: "100%", display: "flex", marginBottom: 2 }}>
-       <AddPost></AddPost>
-      </div> */}
+      <div style={{ position: "relative", width: "100%", display: "flex", marginBottom: 2 }}>
+       
+      </div>
 
       <div style={{ position: "relative", width: "100%", height: "100%", display: "flex" }}>
         <ScrutinyDevelopment
@@ -434,10 +394,25 @@ console.log("roleData",rolesDate )
            ApiResponseData={apiResponse !== undefined ? apiResponse?.ApplicantPurpose : null}
         ></TemplatesPatwar>
       </div> */}
-      
       <div style={{ position: "relative", width: "100%", height: "100%", display: "flex" }}>
-      <Addmoreinput>
-      </Addmoreinput>
+      <RadioButtonsGroup>
+      </RadioButtonsGroup>
+      </div>
+      <div style={{ position: "relative", width: "100%", height: "100%", display: "flex" }}>
+      <IndeterminateCheckbox>
+      </IndeterminateCheckbox>
+      </div>
+      <div style={{ position: "relative", width: "100%", height: "100%", display: "flex" }}>
+      <DrawingBranch>
+      </DrawingBranch>
+      </div>
+      <div style={{ position: "relative", width: "100%", height: "100%", display: "flex" }}>
+      <ProformaPatwari>
+      </ProformaPatwari>
+      </div>
+      <div style={{ position: "relative", width: "100%", height: "100%", display: "flex" }}>
+      <ProformaForlegalBranch>
+      </ProformaForlegalBranch>
       </div>
       
 

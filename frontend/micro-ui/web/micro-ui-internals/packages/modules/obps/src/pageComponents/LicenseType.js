@@ -208,7 +208,7 @@ const LicenseType = ({ t, config, onSelect, userType, formData }) => {
               <Row className="justify-content-between">
                 <Form.Group className="col-md-7">
                   <CardLabel>
-                    {t("BPA_LICENSE_TYPE_TEXT")} <span className="font-weight-bold text-danger">*</span>
+                    {t("Select applicant type")} <span className="font-weight-bold text-danger">*</span>
                   </CardLabel>
                   {/* <CardLabel>{t("BPA_LICENSE_TYPE_TEXT")} <span className="font-weight-bold text-danger">*</span></CardLabel> */}
                   <div className={"form-pt-dropdown-only"}>
@@ -274,7 +274,7 @@ const LicenseType = ({ t, config, onSelect, userType, formData }) => {
                   {licenceTypeSelected && licenceTypeSelected.includes("DEVELOPER") && (
                     <div>
                       <CardLabel>
-                        {`${t("BPA_DEVELOPER_TYPE_TEXT")}`} <span className="font-weight-bold text-danger">*</span>
+                        {`${t("Select Developer Type")}`} <span className="font-weight-bold text-danger">*</span>
                       </CardLabel>
                       <Select value={showDevTypeFields || ""} onChange={setDevType} className="w-100 form-control" variant="standard">
                         {arrayDevList?.map((item, index) => (
