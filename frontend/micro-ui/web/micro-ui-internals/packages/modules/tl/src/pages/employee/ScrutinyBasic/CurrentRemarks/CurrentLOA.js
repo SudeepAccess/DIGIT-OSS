@@ -18,7 +18,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import {  Box,
   Collapse,
   } from "@mui/material";
-import { convertEpochToDateDMY } from "../../../../utils";
 
 // import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -506,7 +505,7 @@ console.log("log123Disrenu" ,id);
                                          )}   
 
                    
-{/*                                           
+                                          
                                          <p>
                     <IconButton
                            onClick={() => toggleshown4(el.applicationStatus)}
@@ -587,7 +586,7 @@ console.log("log123Disrenu" ,id);
                            </tbody>
                           </table>
                           )} 
-                     */}
+                    
                         
                       <Row style={{ margin: 4 }}>
                       <b style={{ textAlign: "right", marginRight: 2 }}>{el.designation}</b>
@@ -595,8 +594,7 @@ console.log("log123Disrenu" ,id);
                      </Row>
                      <Row style={{ margin: 4 }}>
 
-                     <b style={{ textAlign: "right" }}>
-                     {convertEpochToDateDMY(el?.createdOn)} {el.ts}</b>
+                     <b style={{ textAlign: "right" }}>{el.createdOn}</b>
                      <b style={{ textAlign: "right" }}>
              
                    </b>

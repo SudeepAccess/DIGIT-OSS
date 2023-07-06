@@ -19,7 +19,6 @@ import { Label } from "@egovernments/digit-ui-react-components";
 import {  Box,
   Collapse,
   } from "@mui/material";
-import { convertEpochToDateDMY } from "../../../../utils";
 
 // import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -374,8 +373,6 @@ console.log("log123Disrenu" ,id);
                          
                          </IconButton>
                          </p>
-
-
                          {dataFrist.includes(el.designation) && (      
                                 <table colSpan = "3" className="table table-bordered" style={{ backgroundColor: "#ddf2cf" }}>
                                   <thead>
@@ -506,7 +503,7 @@ console.log("log123Disrenu" ,id);
 
                    
                                           
-                                         {/* <p>
+                                         <p>
                     <IconButton
                            onClick={() => toggleshown4(el.applicationStatus)}
                          >
@@ -585,7 +582,7 @@ console.log("log123Disrenu" ,id);
                               )}
                            </tbody>
                           </table>
-                          )}  */}
+                          )} 
                     
                         
                       <Row style={{ margin: 4 }}>
@@ -594,8 +591,7 @@ console.log("log123Disrenu" ,id);
                      </Row>
                      <Row style={{ margin: 4 }}>
 
-                     <b style={{ textAlign: "right" }}>
-                     {convertEpochToDateDMY(el?.createdOn)} {el.ts}</b>
+                     <b style={{ textAlign: "right" }}>{el.createdOn}</b>
                      <b style={{ textAlign: "right" }}>
              
                    </b>

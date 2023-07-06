@@ -414,7 +414,7 @@ function FullScreenDialog(props) {
                               {i + 1}
                             </td>
                             <td>
-                              <b>{t(data.name)}</b>
+                              <b>{data.name}</b>
                             </td>
                             <td>
                               <b>{data.value}</b>
@@ -478,8 +478,7 @@ function FullScreenDialog(props) {
                               {i1 + 1}
                             </td>
                             <td>
-                              <b>{t(data1.name)}</b>
-                              
+                              <b>{data1.name}</b>
                             </td>
                             <td>
                               <b>{data1.value}</b>
@@ -544,7 +543,7 @@ function FullScreenDialog(props) {
                               {i2s + 1}
                             </td>
                             <td>
-                              <b>{t(data2.name)}</b>
+                              <b>{data2.name}</b>
                             </td>
                             <td>
                               <b>{data2.value}</b>
