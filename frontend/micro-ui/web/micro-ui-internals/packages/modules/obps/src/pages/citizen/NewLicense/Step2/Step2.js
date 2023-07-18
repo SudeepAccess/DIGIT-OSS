@@ -25,9 +25,10 @@ import { useTranslation } from "react-i18next";
 import { getMaxNorms, getMinimumNorms } from "./validation.helper";
 
 const applicationType = [
-  { label: "New Licence", value: "newLicence" },
-  { label: "Addition", value: "addition" },
-  { label: "Migration", value: "migration" },
+  { label: "Fresh Application", value: "freshApplication" },
+  // { label: "Addition", value: "addition" },
+  // { label: "Migration", value: "migration" },
+  // { label: "Migration and Addition", value: "migrationAndAddition" },
 ];
 
 const ApllicantPuropseForm = (props) => {
@@ -443,6 +444,7 @@ const ApllicantPuropseForm = (props) => {
   const [getData, setData] = useState({ caseNumber: "", dairyNumber: "" });
   const [getTotalArea, setTotlArea] = useState();
   const [getAppNumbers, setAppNumbers] = useState([]);
+  const [getError, setError] = useState(false);
 
   const resetValues = () => {
     resetField("district");
@@ -893,80 +895,85 @@ const ApllicantPuropseForm = (props) => {
   }, [stepData?.AppliedLandDetails]);
 
   const PurposeFormSubmitHandler = async (data) => {
-    const token = window?.localStorage?.getItem("token");
-    data["purpose"] = data?.purpose?.value;
-    data["totalArea"] = getTotalArea;
-    delete data?.district;
-    delete data?.developmentPlan;
-    delete data?.typeLand;
-    delete data?.landOwnerRegistry;
-    delete data?.nonConsolidatedTotal;
-    delete data?.consolidatedTotal;
-    delete data?.editKhewats;
-    delete data?.editRectangleNo;
-    delete data?.hadbastNo;
-    delete data?.potential;
-    delete data?.zone;
-    delete data?.sector;
-    delete data?.tehsil;
-    delete data?.revenueEstate;
-    delete data?.rectangleNo;
-    delete data?.kanal;
-    delete data?.marla;
-    delete data?.sarsai;
-    delete data?.bigha;
-    delete data?.biswa;
-    delete data?.biswansi;
-    delete data?.acquistionStatus;
-    delete data?.agreementIrrevocialble;
-    delete data?.agreementValidFrom;
-    delete data?.validitydate;
-    delete data?.authSignature;
-    delete data?.collaboration;
-    delete data?.developerCompany;
-    delete data?.landOwner;
-    delete data?.nameAuthSign;
-    delete data?.registeringAuthority;
-    delete data?.registeringAuthorityDoc;
-    delete data?.consolidationType;
-    delete data?.khewats;
-    delete data?.rowid;
-    if (!modalData?.length && !stepData?.AppliedLandDetails) alert("Please enter atleast one record");
-    else {
-      const postDistrict = {
-        pageName: "ApplicantPurpose",
-        action: "PURPOSE",
-        applicationNumber: applicantId,
-        createdBy: userInfo?.id,
-        updatedBy: userInfo?.id,
-        LicenseDetails: {
-          ApplicantPurpose: {
-            ...data,
-            AppliedLandDetails: modalData,
+    if (getTotalArea <= "4") {
+      setError(true);
+      return;
+    } else {
+      const token = window?.localStorage?.getItem("token");
+      data["purpose"] = data?.purpose?.value;
+      data["totalArea"] = getTotalArea;
+      delete data?.district;
+      delete data?.developmentPlan;
+      delete data?.typeLand;
+      delete data?.landOwnerRegistry;
+      delete data?.nonConsolidatedTotal;
+      delete data?.consolidatedTotal;
+      delete data?.editKhewats;
+      delete data?.editRectangleNo;
+      delete data?.hadbastNo;
+      delete data?.potential;
+      delete data?.zone;
+      delete data?.sector;
+      delete data?.tehsil;
+      delete data?.revenueEstate;
+      delete data?.rectangleNo;
+      delete data?.kanal;
+      delete data?.marla;
+      delete data?.sarsai;
+      delete data?.bigha;
+      delete data?.biswa;
+      delete data?.biswansi;
+      delete data?.acquistionStatus;
+      delete data?.agreementIrrevocialble;
+      delete data?.agreementValidFrom;
+      delete data?.validitydate;
+      delete data?.authSignature;
+      delete data?.collaboration;
+      delete data?.developerCompany;
+      delete data?.landOwner;
+      delete data?.nameAuthSign;
+      delete data?.registeringAuthority;
+      delete data?.registeringAuthorityDoc;
+      delete data?.consolidationType;
+      delete data?.khewats;
+      delete data?.rowid;
+      if (!modalData?.length && !stepData?.AppliedLandDetails) alert("Please enter atleast one record");
+      else {
+        const postDistrict = {
+          pageName: "ApplicantPurpose",
+          action: "PURPOSE",
+          applicationNumber: applicantId,
+          createdBy: userInfo?.id,
+          updatedBy: userInfo?.id,
+          LicenseDetails: {
+            ApplicantPurpose: {
+              ...data,
+              AppliedLandDetails: modalData,
+            },
           },
-        },
-        RequestInfo: {
-          apiId: "Rainmaker",
-          ver: "v1",
-          ts: 0,
-          action: "_search",
-          did: "",
-          key: "",
-          msgId: "090909",
-          requesterId: "",
-          authToken: token,
-          userInfo: userInfo,
-        },
-      };
-      setLoader(true);
-      try {
-        const Resp = await axios.post("/tl-services/new/_create", postDistrict);
-        setLoader(false);
-        const useData = Resp?.data?.LicenseServiceResponseInfo?.[0]?.LicenseDetails?.[0];
-        props.Step2Continue(useData);
-      } catch (error) {
-        setLoader(false);
-        return error;
+          RequestInfo: {
+            apiId: "Rainmaker",
+            ver: "v1",
+            ts: 0,
+            action: "_search",
+            did: "",
+            key: "",
+            msgId: "090909",
+            requesterId: "",
+            authToken: token,
+            userInfo: userInfo,
+          },
+        };
+        setLoader(true);
+        try {
+          const Resp = await axios.post("/tl-services/new/_create", postDistrict);
+          setLoader(false);
+          const useData = Resp?.data?.LicenseServiceResponseInfo?.[0]?.LicenseDetails?.[0];
+          props.Step2Continue(useData);
+        } catch (error) {
+          setLoader(false);
+          return error;
+        }
       }
     }
   };
@@ -1224,6 +1231,18 @@ const ApllicantPuropseForm = (props) => {
             <h4 style={{ fontSize: "25px", marginLeft: "21px" }}>New Licence Application </h4>
             <h6 style={{ display: "flex", alignItems: "center" }}>Application No: {applicantId}</h6>
           </div>
+          <div style={{ marginLeft: "21px", marginTop: "20px" }} className="col col-lg-3 col-md-6 col-sm-6 p-0">
+            <label>
+              <h2>Application type</h2>
+            </label>
+            <ReactMultiSelect
+              control={control}
+              name="typeOfApplication"
+              placeholder="Select type"
+              data={applicationType}
+              labels="typeOfApplication"
+            />
+          </div>
           {getData?.caseNumber && (
             <div>
               <h6 className="mt-1" style={{ marginLeft: "21px" }}>
@@ -1374,6 +1393,9 @@ const ApllicantPuropseForm = (props) => {
                 <button type="submit" id="btnSearch" class="btn btn-primary btn-md center-block">
                   Save and Continue
                 </button>
+                <h3 className="error-message p-2" style={{ color: "red" }}>
+                  {getError && "Total area should be more that 4 acres"}
+                </h3>
               </div>
             </div>
           </Card>
