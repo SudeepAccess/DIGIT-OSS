@@ -213,7 +213,8 @@ const MyApplications = ({ view }) => {
       return error;
     }
   };
-
+  
+  console.log("data?.Licenses?.length", data);
   return (
     <div>
       {loader && <Spinner />}
@@ -439,7 +440,7 @@ const MyApplications = ({ view }) => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data?.length}
+          count={data?.Licenses?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

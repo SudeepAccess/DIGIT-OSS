@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Card, Row, Col } from "react-bootstrap";
+import axios from "axios";
 // import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
 // import Box from '@material-ui/core//Box';
 import { useForm } from "react-hook-form";
@@ -41,7 +42,7 @@ const feeandcharges = props.feeandchargesData
 
 
   const feeAndChargesData = props.ApiResponseData
-
+  const [loader, setLoader] = useState(false);
   const [form, setForm] = useState([]);
   const [feeDetail, setFeeDetail] = useState("");
   const [licenseFee, setLicenseFee] = useState("");
@@ -107,6 +108,12 @@ const feeandcharges = props.feeandchargesData
   const [uncheckedValue, setUncheckedVlue] = useState([]);
   console.log(uncheckedValue);
   console.log("step5" ,feeAndChargesData);
+
+
+
+
+
+
 
   const Tree = ({ data }) => {
     return (
@@ -191,6 +198,40 @@ const feeandcharges = props.feeandchargesData
 // setValue("totalScrutinyFee", feeAndChargesData?.feesTypeCalculationDto?.[0]?.totalScrutinyFee?.toLocaleString());
 // setValue("totalLicenseFee", feeAndChargesData?.feesTypeCalculationDto?.[0]?.totalLicenceFee?.toLocaleString());
 
+
+const userInfo = Digit.UserService.getUser()?.info || {};
+
+const downloadPayment = async (id) => {
+  const token = window?.localStorage?.getItem("token");
+  setLoader(true);
+  const payload = {
+    RequestInfo: {
+      apiId: "Rainmaker",
+      ver: ".01",
+      ts: null,
+      action: "_update",
+      did: "1",
+      key: "",
+      msgId: "20170310130900|en_IN",
+      authToken: token,
+      userInfo: userInfo,
+    },
+  };
+  try {
+    const Resp = await axios.post(`/tl-services/payment/pdf?applicationNumber=${id}`, payload, { responseType: "arraybuffer" });
+    setLoader(false);
+    const pdfBlob = new Blob([Resp.data], { type: "application/pdf" });
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = "file.pdf";
+    link.click();
+    window.URL.revokeObjectURL(pdfUrl);
+  } catch (error) {
+    setLoader(false);
+    return error;
+  }
+};
 
   return (
     <Form
@@ -531,6 +572,11 @@ const feeandcharges = props.feeandchargesData
                             </h4>
                               <input type="text" className="form-control"  style={{ textAlign: "right" }} placeholder={item?.totalFee?.toLocaleString("en-IN")}  disabled />
                             </Col>
+                            <Col className="col col-4" >
+                            {/* {item?.action == "PAID" && item?.status == "APPLIED" && ( */}
+                        <button onClick={() => downloadPayment(item?.applicationNumber)} type="button" class="btn btn-primary"></button>
+                      {/* )} */}
+                          </Col>
                           
                             
                           

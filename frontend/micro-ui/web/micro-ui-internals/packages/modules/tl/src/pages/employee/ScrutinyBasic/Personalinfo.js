@@ -205,7 +205,7 @@ const Personalinfo = (props) => {
           {/* {additionalDocResponData?.AdditionalDocumentReport != null &&  (
             <div>
          {applicantInfoopen === "applicantInfos" && ( */}
-         {/* {!additionalDocResponData?.AdditionalDocumentReport?.[0]?.applicantInfo == null && */}
+         {additionalDocResponData === null &&
           <div>
             <ApplicantInfo
             additionalDocRespon={additionalDocResponData}
@@ -213,8 +213,7 @@ const Personalinfo = (props) => {
             />
        
           </div>
-          
-{/* } */}
+ } 
 {/* {!additionalDocResponData?.AdditionalDocumentReport?.[0]?.applicantPurpose == null &&
           <div> 
           <ApplicationPurpose

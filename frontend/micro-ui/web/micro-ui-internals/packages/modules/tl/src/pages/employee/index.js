@@ -59,6 +59,7 @@ import CompletionInbox from "./ScrutinyBasic/AllServiceScrutiny/CompletionLic/In
 // import TechnicalProfessionalCard from "./ScrutinyBasic/AllServiceScrutiny/TechnicalProfessionals/TechnicalProfessionalCard";
 // import LowMediumInbox from "./ScrutinyBasic/AllServiceScrutiny/LowMedium/Inbox";
 import CompositionCluInbox from "./ScrutinyBasic/AllServiceScrutiny/CompositionClu/Inbox/Index";
+import Userlisting from "./ScrutinyBasic/ScrutinyDevelopment/RemarksPrint";
 // import BasicTable from "./ScrutinyBasic/ScrutinyDevelopment/UserRemarks";
 
 const TLBreadCrumb = ({ location }) => {
@@ -267,7 +268,7 @@ const EmployeeApp = ({ path, url, userType }) => {
             <PrivateRoute path={`${path}/CompositionClu/:id`} component={CompositionClu} />
             <PrivateRoute path={`${path}/Completionscrutiny/:id`} component={CompletionLicCard} />
             <PrivateRoute path={`${path}/ServiceScrutiny/:id`} component={ServiceScrutiny} />
-            {/* <PrivateRoute path={`${path}/ScrutinyForm`} component={ScrutinyForm} /> */}
+            <PrivateRoute path={`${path}/Userlisting`} component={Userlisting} />
             <PrivateRoute path={`${path}/ScrutinyForm/:id`} component={ScrutinyForm} />
             <PrivateRoute
               path={`${path}/StandardInbox`}

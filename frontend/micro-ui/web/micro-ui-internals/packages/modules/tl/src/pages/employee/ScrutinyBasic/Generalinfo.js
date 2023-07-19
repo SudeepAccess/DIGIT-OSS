@@ -61,12 +61,12 @@ const Genarelinfo = (props) => {
   const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [];
   const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
   const [fileddataName, setFiledDataName] = useState();
-
+  // console.log("mDMSData1233434",mDMSData , mDMSData?.[0]?.field?.map((item, index) => item?.fields))
   useEffect(() => {
     if (mDMSData && mDMSData?.length) {
-      console.log("filedDataMdms", mDMSData, mDMSData?.[0]?.field, mDMSData?.[0]?.field.map((item, index) => item.fields));
-      setFiledDataName(mDMSData?.[0]?.field.map((item, index) => item.fields))
-
+      // console.log("filedDataMdms", mDMSData, mDMSData?.[0]?.field, mDMSData?.[0]?.field.map((item, index) => item.fields));
+      setFiledDataName(mDMSData?.[0]?.field?.map((item, index) => item?.fields))
+      
     }
 
   }, [mDMSData]

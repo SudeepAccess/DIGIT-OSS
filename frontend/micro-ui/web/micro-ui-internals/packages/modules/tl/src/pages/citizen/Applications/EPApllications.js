@@ -226,7 +226,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       </table> */}
            <Col md={12} lg={12} mb={3} sx={{ marginY: 2 }}>
 
-<Paper sx={{ width: "126%", overflow: "hidden", marginY: 2 }}>
+<Paper sx={{ overflow: "hidden", marginY: 2 }}>
 
     <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -288,7 +288,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={data?.length}
+        count={data?.electricPlanResponse?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

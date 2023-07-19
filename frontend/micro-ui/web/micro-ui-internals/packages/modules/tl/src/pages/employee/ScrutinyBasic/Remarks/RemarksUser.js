@@ -23,6 +23,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import Collapse from "react-bootstrap/Collapse";
 import DataGridDemo from "../PatwariHQ";
 import { ScrutinyRemarksContext } from "../../../../../context/remarks-data-context";
+import { useReactToPrint } from "react-to-print";
+import { Link } from "react-router-dom";
 
 
 
@@ -105,7 +107,14 @@ function FullScreenDialog(props) {
     
     };
   // }
+  const conponentPDF= useRef();
+    const [userData, setUserdata]= useState([])
 
+  const generatePDF= useReactToPrint({
+    content: ()=>conponentPDF.current,
+    documentTitle:"Userdata",
+    onAfterPrint:()=>alert("Data saved in PDF")
+});
 
  
 
@@ -368,7 +377,7 @@ function FullScreenDialog(props) {
 
 <button type="submit" onClick={setRoleDataModal}>{inputFieldValue3}</button>
 
-
+<div ref={conponentPDF} style={{width:'100%'}}> 
 {remarksDataExternal !== null ?  (
                      remarksDataExternal?.map((el, index) => {
                         return (
@@ -573,6 +582,7 @@ function FullScreenDialog(props) {
 ) : (
 <p></p>
 )}
+</div>
 
                       {/* <DataGridDemo
                       
@@ -582,11 +592,14 @@ function FullScreenDialog(props) {
                     </DataGridDemo> */}
                       </Row>
                       <Row>
-
+                      <div className="d-grid d-md-flex justify-content-md-end mb-3">
+                    <button className="btn btn-success" onClick={ generatePDF}>PDF</button>                       
+                    </div>
                       </Row>
         </div>
       {/* </div>
             </Collapse> */}
+
       <Modal.Body>
 
         {/* <div class="col-md-12 bg-light text-right" style={{ position: "relative", marginBottom: 30 }}>
