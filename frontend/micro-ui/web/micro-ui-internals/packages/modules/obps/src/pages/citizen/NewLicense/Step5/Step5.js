@@ -210,6 +210,7 @@ const FeesChargesForm = (props) => {
     setApplicantId(id?.toString());
     if (id) getApplicantUserData(id);
   }, []);
+  
 
   const Tree = ({ data }) => {
     return (
