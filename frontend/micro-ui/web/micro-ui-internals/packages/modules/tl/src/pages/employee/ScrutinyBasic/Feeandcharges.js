@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
@@ -7,6 +7,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 // import Typography from '@material-ui/core/Typography'
 import Modal from "react-bootstrap/Modal";
+import ModalChild from "./Remarks/ModalChild";
+import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 // import InfoIcon from '@mui/icons-material/Info';
 import * as Icon from "react-bootstrap-icons";
 import { XCircleFill } from "react-bootstrap-icons";
@@ -109,7 +111,139 @@ const feeandcharges = props.feeandchargesData
   console.log(uncheckedValue);
   console.log("step5" ,feeAndChargesData);
 
+// ////////////////////////////////////////////////20-7-2023///////////////////////////////////
 
+const applicationStatus = props.applicationStatus;
+let user = Digit.UserService.getUser();
+const userInfo = Digit.UserService.getUser()?.info || {};
+const userRolesArray = userInfo?.roles.filter((user) => user.code !== "EMPLOYEE");
+const filterDataRole = userRolesArray?.[0]?.code;
+const userRoles = user?.info?.roles?.map((e) => e.code) || [];
+
+console.log("rolelogintime", userRoles);
+console.log("afterfilter12", filterDataRole)
+
+const mDMSData = props.mDMSData;
+const mDMSDataRole = mDMSData?.map((e) => e.role) || [];
+const hideRemarks = mDMSDataRole.includes(filterDataRole);
+const applicationStatusMdms = mDMSData?.map((e) => e.applicationStatus) || [];
+const hideRemarksPatwari = applicationStatusMdms.some((item) => item === applicationStatus) || [];
+const [fileddataName, setFiledDataName] = useState();
+
+useEffect(() => {
+  if (mDMSData && mDMSData?.length) {
+    // console.log("filedDataMdms", mDMSData, mDMSData?.[0]?.field, mDMSData?.[0]?.field.map((item, index) => item.fields));
+    setFiledDataName(mDMSData?.[0]?.field?.map((item, index) => item?.fields))
+
+  }
+
+}, [mDMSData]
+)
+const showReportProblemIcon = (filedName) => {
+  if (fileddataName && fileddataName.length) {
+    let show = fileddataName.includes(filedName)
+    return show;
+  } else {
+    return false;
+  }
+}
+
+
+console.log("happyRole", userRoles);
+console.log("happyDate", mDMSData);
+console.log("happyROLE", mDMSDataRole);
+console.log("happyapplicationStatusMdms", applicationStatusMdms);
+console.log("happyDateHIDE", hideRemarksPatwari, showReportProblemIcon("Purpose of colony"), hideRemarks);
+// const personalinfo = props.personalinfo;
+// const iconStates = props.iconColorState;
+const iconStates = props.dataForIcons;
+
+
+const [smShow, setSmShow] = useState(false);
+const [docModal, setDocModal] = useState(false);
+const [labelValue, setLabelValue] = useState("");
+const Colors = {
+  Conditional: "#2874A6",
+  approved: "#09cb3d",
+  disapproved: "#ff0000",
+  info: "#FFB602"
+}
+const [selectedFieldData, setSelectedFieldData] = useState();
+const [fieldValue, setFieldValue] = useState("");
+const [openedModal, setOpennedModal] = useState("")
+const [fieldIconColors, setFieldIconColors] = useState({
+  freeTotalScruitny: Colors.info,
+  totalLicenceFee: Colors.info,
+  totalFee: Colors.info,
+
+})
+
+const fieldIdList = [
+{ label: "NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE", key: "freeTotalScruitny" } , 
+{ label: "NWL_APPLICANT_FEE_TOTAL_LICENCE_FEE", key: "totalLicenceFee" },
+{ label: "NWL_APPLICANT_FEE_TOTAL_FEE", key: "totalFee" },
+]
+
+
+
+
+
+
+
+console.log("RemarksColor", iconStates);
+const getColorofFieldIcon = () => {
+  let tempFieldColorState = fieldIconColors;
+  fieldIdList.forEach((item) => {
+    if (iconStates !== null && iconStates !== undefined) {
+      console.log("color method called");
+      const fieldPresent = iconStates.egScrutiny.filter(ele => (ele.fieldIdL === item.label));
+      console.log("filteration value", fieldPresent, fieldPresent[0]?.isApproved);
+      if (fieldPresent && fieldPresent.length) {
+        console.log("filteration value1", fieldPresent, fieldPresent[0]?.isApproved);
+        tempFieldColorState = { ...tempFieldColorState, [item.key]: fieldPresent[0].isApproved === "In Order" ? Colors.approved : fieldPresent[0].isApproved === "Not In Order" ? Colors.disapproved : fieldPresent[0].isApproved === "In Order With Conditions" ? Colors.Conditional : Colors.info }
+
+      }
+    }
+  })
+
+  setFieldIconColors(tempFieldColorState);
+
+};
+
+
+useEffect(() => {
+  getColorofFieldIcon();
+  console.log("repeating1...",)
+}, [iconStates])
+
+useEffect(() => {
+  if (labelValue) {
+    const fieldPresent = iconStates.egScrutiny.filter(ele => (ele.fieldIdL === labelValue));
+    setSelectedFieldData(fieldPresent[0]);
+  } else {
+    setSelectedFieldData(null);
+  }
+}, [labelValue])
+
+
+
+const currentRemarks = (data) => {
+  showTable({ data: data.data });
+};
+
+const handlemodaldData = (data) => {
+  // setmodaldData(data.data);
+  setSmShow(false);
+  console.log("here", openedModal, data);
+  if (openedModal && data) {
+    setFieldIconColors({ ...fieldIconColors, [openedModal]: data.data.isApproved ? Colors.approved : Colors.disapproved })
+
+
+    // fieldPresent[0].isApproved === "approved" ?Colors.approved: fieldPresent[0].isApproved === "disapproved" ? Colors.disapproved:fieldPresent[0].isApproved === "conditional" ? Colors.conditional:Colors.info
+  }
+  setOpennedModal("");
+  setLabelValue("");
+};
 
 
 
@@ -199,7 +333,7 @@ const feeandcharges = props.feeandchargesData
 // setValue("totalLicenseFee", feeAndChargesData?.feesTypeCalculationDto?.[0]?.totalLicenceFee?.toLocaleString());
 
 
-const userInfo = Digit.UserService.getUser()?.info || {};
+// const userInfo = Digit.UserService.getUser()?.info || {};
 
 const downloadPayment = async (id) => {
   const token = window?.localStorage?.getItem("token");
@@ -286,6 +420,18 @@ const downloadPayment = async (id) => {
             style={{ display: props.displayFeeandCharges, border: "2px solid #e9ecef", margin: 10, padding: 10 }}
             className="justify-content-center"
           >
+             <ModalChild
+
+labelmodal={labelValue}
+passmodalData={handlemodaldData}
+displaymodal={smShow}
+disPlayDoc={docModal}
+onClose={() => { setSmShow(false); setDocModal(false) }}
+selectedFieldData={selectedFieldData}
+fieldValue={fieldValue}
+remarksUpdate={currentRemarks}
+applicationStatus={applicationStatus}
+></ModalChild>
             {/* <h1>New License</h1> */}
             {/* <Card style={{ width: "126%", marginLeft: "-2px", paddingRight: "10px", marginTop: "10px" }}> */}
               <Form.Group className="justify-content-center" controlId="formBasicEmail">
@@ -552,7 +698,26 @@ const downloadPayment = async (id) => {
                       
                           {`${t("NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE")}`}
                           </h4>
+                          <div style={{ display: "flex" }}>
                               <input type="text" className="form-control" style={{ textAlign: "right" }} disabled  placeholder={item?.totalScruitnyFee?.toLocaleString("en-IN")} />
+                           &nbsp;&nbsp;
+                              <ReportProblemIcon
+                  style={{
+                    // display: hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE") ? "block" : "none",
+                    color: fieldIconColors.freeTotalScruitny
+                  }}
+                  onClick={() => {
+                    setOpennedModal("freeTotalScruitny")
+                    setLabelValue("NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE"),
+                      setSmShow(true),
+                      setDocModal(false),
+                      console.log("modal open"),
+                      setFieldValue(feeAndChargesData !== null ? feeAndChargesData?.feesTypeCalculationDto?.[0]?.totalScruitnyFee : null);
+                  }}
+                ></ReportProblemIcon>
+                </div>
+                          
+                          
                             </Col>
                             
                           
@@ -562,7 +727,24 @@ const downloadPayment = async (id) => {
                           
                             {`${t("NWL_APPLICANT_FEE_TOTAL_LICENCE_FEE")}`} 
                             </h4>
+                            <div style={{ display: "flex" }}>
                               <input type="text" className="form-control" style={{ textAlign: "right" }} placeholder={item?.totalLicenceFee?.toLocaleString("en-IN")} disabled />
+                              &nbsp;&nbsp;
+                              <ReportProblemIcon
+                  style={{
+                    // display: hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE") ? "block" : "none",
+                    color: fieldIconColors.totalLicenceFee
+                  }}
+                  onClick={() => {
+                    setOpennedModal("totalLicenceFee")
+                    setLabelValue("NWL_APPLICANT_FEE_TOTAL_LICENCE_FEE"),
+                      setSmShow(true),
+                      setDocModal(false),
+                      console.log("modal open"),
+                      setFieldValue(feeAndChargesData !== null ? feeAndChargesData?.feesTypeCalculationDto?.[0]?.totalLicenceFee : null);
+                  }}
+                ></ReportProblemIcon>
+                         </div>
                             </Col>
                          
                             <Col className="col col-4" >
@@ -570,13 +752,32 @@ const downloadPayment = async (id) => {
                   
                             {`${t("NWL_APPLICANT_FEE_TOTAL_FEE")}`}
                             </h4>
+
+                            <div style={{ display: "flex" }}>
                               <input type="text" className="form-control"  style={{ textAlign: "right" }} placeholder={item?.totalFee?.toLocaleString("en-IN")}  disabled />
+                              &nbsp;&nbsp;
+                            <ReportProblemIcon
+                  style={{
+                    // display: hideRemarksPatwari && showReportProblemIcon("NWL_APPLICANT_FEE_TOTAL_SCRUITNY_FEE") ? "block" : "none",
+                    color: fieldIconColors.totalFee
+                  }}
+                  onClick={() => {
+                    setOpennedModal("freeTotalScruitny")
+                    setLabelValue("NWL_APPLICANT_FEE_TOTAL_FEE"),
+                      setSmShow(true),
+                      setDocModal(false),
+                      console.log("modal open"),
+                      setFieldValue(feeAndChargesData !== null ? feeAndChargesData?.feesTypeCalculationDto?.[0]?.totalFee : null);
+                  }}
+                ></ReportProblemIcon>
+                </div>
+                           
                             </Col>
-                            <Col className="col col-4" >
-                            {/* {item?.action == "PAID" && item?.status == "APPLIED" && ( */}
+                            {/* <Col className="col col-4" >
+                            {item?.action == "PAID" && item?.status == "APPLIED" && (
                         <button onClick={() => downloadPayment(item?.applicationNumber)} type="button" class="btn btn-primary"></button>
-                      {/* )} */}
-                          </Col>
+                      )}
+                          </Col> */}
                           
                             
                           

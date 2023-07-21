@@ -453,6 +453,7 @@ function convertToObjectArray(obj) {
 const handleData = async (data) => {
   if (!userID) {
     setLoader(true);
+    setOpen19(true);
  const payload = {
   "requestInfo": {
       "api_id": "1",
@@ -533,20 +534,21 @@ try {
   setLoader(false);
   console.log("savehandle" , data);
   console.log("savehandle" , Resps);
-  
+
  
 } 
 catch (error) {
   console.log(error);
 
 }
+
 handleGetNotingRemarkssValues(id)
-setOpen19(true);
+// setOpen19(true);
 console.log("response from API3242526277", Resp);
 
 } else { 
   setLoader(true);
- 
+  setOpen19(true);
    
  const payload = {
   "requestInfo": {
@@ -626,7 +628,7 @@ try {
   setLoader(false);
   console.log("savehandle" , data);
   console.log("savehandle" , Resps);
- 
+
  
 } 
 catch (error) {
@@ -634,7 +636,7 @@ catch (error) {
 
 }
 setLoader(false);
-setOpen19(true);
+// setOpen19(true);
 }
 
 handleGetNotingRemarkssValues(id)
@@ -1068,11 +1070,13 @@ console.log("userInFODATA123" , userInfo);
           <div>
             <Feeandcharges
               feeandchargesInfoRef={feeandchargesInfoRef}
-              passUncheckedList={getUncheckedFeeandChargesInfo}
+              passUncheckedList={getUncheckedAppliedLandInfo}
+              passCheckedList={getCheckedAppliedInfoValue}
               heightFee={defaultheightFee}
               ApiResponseData={apiResponse !== undefined ? apiResponse?.FeesAndCharges : null}
               // feeandchargesData={feeandcharges}
               applicationStatus={applicationStatus}
+              dataForIcons={iconStates}
               mDMSData={mDMSData}
               additionalDocRespon={additionalDocResponData}
             ></Feeandcharges>

@@ -569,6 +569,7 @@ const CapacityScrutiny = ({ config, onSelect, showTable,  formDataValue,  addInf
       >
         <span style={{ color: "#817f7f", fontSize: 14 }} className="">
           - Developer Capacity
+          {/* {`${t("BPA_DEV_DEVELOPER_CAPACITY")}`} */}
         </span>
         {open ? <RemoveIcon></RemoveIcon> : <AddIcon></AddIcon>}
       </div>

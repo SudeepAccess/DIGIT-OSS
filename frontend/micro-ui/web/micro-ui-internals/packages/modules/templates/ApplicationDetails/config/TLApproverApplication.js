@@ -20,8 +20,9 @@ export const configTLApproverApplication = ({
   let checkCondtions = true;
   if (action?.action == "SENDBACKTOCITIZEN" || action?.action == "APPROVE") checkCondtions = false;
   if (action.isTerminateState) checkCondtions = false;
-
-  
+  // let checkCondtion = true;
+  // if(action?.action === "HEARING" ) checkCondtion =true;
+  // console.log("setStatesetComment",setComment,comment);
 
   return {
     label: {
@@ -68,20 +69,28 @@ export const configTLApproverApplication = ({
             
           },
           //////////////////////TCP///////////////////////
+
+          
           // {
-          //   label: t("WF_COMMON_COMMENTS"),
-          //   type: "textarea",
-          //   populators: (  
-          //     <AdvanceTextArea
-          //     modal={true}
-          //     setState={setComment}
-          //     ></AdvanceTextArea>
+          //   label: !checkCondtion ? null :  t("WF_COMMON_COMMENTS"),
+          //   type: "input",
+          //   populators: !checkCondtions ? null :  (  
+          //     // <AdvanceTextArea
+          //     // modal={true}
+          //     // setState={setComment}
+          //     // ></AdvanceTextArea>
+          //     // <DatePicker selected={setComment} onChange={(date) => setStartDate(date)} />
+          //     <input  modal={true} type="date" name="comments" placeholder="dd-mm-yyyy" />
           //   )
+          //   //  populators: {
+          //   //   name: "comments",
+          //   // },
            
           // },
+       
           // populators: {
-            //   name: "comments",
-            // },
+          //     name: "comments",
+          //   },
           //////////////////////TCP///////////////////////
           //////////////////////TCP///////////////////////
           // {

@@ -78,7 +78,7 @@ useEffect(() => {
  setValue("data27Remarks", dataProfrmaFileds?.data?.data27Remarks)
  setValue("data27", dataProfrmaFileds?.data?.data27)
  setValue("data28Remarks", dataProfrmaFileds?.data?.data28Remarks)
- setValue("data2", dataProfrmaFileds?.data?.data28)
+ setValue("data28", dataProfrmaFileds?.data?.data28)
  setValue("data29Remarks", dataProfrmaFileds?.data?.data29Remarks)
  setValue("data29", dataProfrmaFileds?.data?.data29)
  setValue("data29Remarks", dataProfrmaFileds?.data?.data30Remarks)

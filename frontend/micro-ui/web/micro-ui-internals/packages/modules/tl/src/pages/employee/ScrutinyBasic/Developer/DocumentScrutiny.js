@@ -203,7 +203,9 @@ const DocumentScrutiny = ({ developerType, iconColorState, getRemarkData, addInf
         }}
       >
         <span style={{ color: "#817f7f", fontSize: 14 }} className="">
-          - Licence Documents Details
+          {/* - Licence Documents Details */}
+          - Developer-related documents
+          {/* {`${t("BPA_DEV_LICENCE_DOCUMENTS_DETAILS")}`} */}
         </span>
         {open ? <RemoveIcon></RemoveIcon> : <AddIcon></AddIcon>}
       </div>

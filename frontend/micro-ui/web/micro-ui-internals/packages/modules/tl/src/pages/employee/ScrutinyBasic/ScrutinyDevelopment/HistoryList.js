@@ -1,5 +1,5 @@
 
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect,useRef, useState } from "react";
 
 import { Row, Col, Card, Container, Form, Button } from "react-bootstrap";
 import axios from "axios";
@@ -15,6 +15,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import { useReactToPrint } from "react-to-print";
+import { Link } from "react-router-dom";
 
 
 
@@ -276,6 +278,14 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
 };
 
 
+const conponentPDF= useRef();
+const [userData, setUserdata]= useState([])
+
+const generatePDF= useReactToPrint({
+content: ()=>conponentPDF.current,
+documentTitle:"Userdata",
+onAfterPrint:()=>alert("Data saved in PDF")
+});
 
 
 
@@ -384,14 +394,24 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
 
         <div class="histrorynotingremarks" id="historyList">
           <Card style={{backgroundColor: "rgb(255, 217, 84)"}}>
-          <p class="text-center"><h3><b>Noting</b></h3></p>
+            <Row>
+            <p class="text-center"><h3><b>Noting</b></h3></p>
+          
+          <div className="d-grid d-md-flex justify-content-md-end">
+          <button className="btn btn-success right" onClick={ generatePDF}>PDF</button>                  
+                    </div>
+            </Row>
+         
+                    {/* <div className="d-grid d-md-flex justify-content-md-end mb-3">
+                                           
+                    </div> */}
           </Card>
           <div 
           // class="WhatsNewCard"
         
            style={{ backgroundColor: "#ddf2cf" , fontSize: 16 }}>
 
-
+            
 
             {/* <div >
               <p class="text-center" ><h4>History Remarks</h4></p>
@@ -448,6 +468,7 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
            
       
             <div>
+            
               <Form.Group>
               <FullScreenDialog
              
@@ -462,15 +483,91 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
 ></FullScreenDialog>
 
 
-               <div>
+<div ref={conponentPDF} style={{marginRight:"3%",marginLeft:"3%",paddingLeft:"2%" ,padding:"1%"}}> 
+
                {remarkDataResp !== null ?  (
                       remarkDataResp?.map((el, index) => {
                         return (
-                          <div>
+                          <div >
                          {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open full-screen dialog
       </Button> */}
-                                          
+<b>Noting # {index + 1}</b>
+                           <br></br>
+                           <br></br>
+<Row>
+              <Col md={3} xxl lg="3">
+              <h1>Single User Remark</h1>
+              <TextSnippetIcon
+                  
+                  onClick={() => {
+                 
+                    setSmShow(true);
+                   
+                   
+                    setFieldValue(el.employeeName !== null ? el.employeeName : null);
+                    setFieldValue2(el.designation !== null ? el.designation : null);
+                    setFieldValue3(el.role !== null ? el.role : null);
+                  }}
+                ></TextSnippetIcon>
+                </Col>
+<Col md={6} xxl lg="6"></Col>
+               
+                <Col md={3} xxl lg="3">
+                   {el?.notingDetail !== null ?  (
+                      el?.notingDetail?.map((item , i) => {
+                        return (
+                          <div>
+                            
+                            {/* <b>{item?.isApproved}# {index + 1}</b> */}
+
+
+                            {/* <br></br>
+                         <i>{<div dangerouslySetInnerHTML={{__html: item.remarks}}/>}</i>
+
+                         <br></br> */}
+                         { item?.docId &&
+                            <Fragment>
+                         {/* <div style={{textAlign:"right"}}> */}
+                         <h1>View Document</h1>
+            {/* <div className="btn btn-sm col-md-2"> */}
+              <IconButton
+                style={{
+                  color: " #1266af",
+                  fontSize: " 12px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  textDecorationLine: "underline",
+                }}
+                onClick={() => {
+                  if (item?.docId) getDocShareholding(item?.docId, setLoader);
+                  else setShowToastError({ label: "No Document here", error: true, success: false });
+                }}
+              ><Visibility color="info" className="icon" />
+                
+              </IconButton>
+            
+            {/* </div> */}
+                          {/* </div> */}
+
+                    
+                          </Fragment>
+                      }     
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p></p>
+                    )}
+</Col>
+              </Row>
+
+
+
+
+
+
+{/*                                           
                                           <div style={{width:20}}>
                          <TextSnippetIcon
                   
@@ -484,10 +581,11 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
                     setFieldValue3(el.role !== null ? el.role : null);
                   }}
                 ></TextSnippetIcon>
-                         </div>
-                  
+                         </div> */}
+                         {/* <div ref={conponentPDF} style={{marginRight:"3%",marginLeft:"3%",paddingLeft:"2%" ,padding:"1%"}}>         */}
 <div >
 <Box>
+
 <Row>
 {/* <p>
                   <IconButton
@@ -504,7 +602,9 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
                        </IconButton>
                        </p> */}
                         
-                        <b>Noting # {index + 1}</b>
+                        {/* <b>Noting # {index + 1}</b>
+                           <br></br> */}
+                           <br></br>
                            
                            {/* {dataThree.includes(el.applicationStatus) && (   */}
                            {el?.performaFieldDetail?.[0]?.isApproved == "Proforma"  &&     
@@ -600,10 +700,12 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
                          <i>{<div dangerouslySetInnerHTML={{__html: item.remarks}}/>}</i>
 
                          <br></br>
-                         { item?.docId &&
+                         {/* { item?.docId &&
                             <Fragment>
                          <div style={{textAlign:"right"}}>
-                         {/* <div className="btn btn-sm col-md-2">
+
+                          old
+                         <div className="btn btn-sm col-md-2">
                           
               <IconButton
                
@@ -623,7 +725,7 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
                 </IconButton>
                 
 
-            </div> */}
+            </div>
             <div className="btn btn-sm col-md-2">
               <IconButton
                 style={{
@@ -646,7 +748,7 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
 
                     
                           </Fragment>
-                      }     
+                      }      */}
                           </div>
                         );
                       })
@@ -681,6 +783,7 @@ const Resp = await axios.post(`/tl-services/new/license/pdf?applicationNumber=${
                     </Row>
                     <hr></hr>
                           </div>
+                          // </div>
                         );
                       })
                     ) : (
